@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pl">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -41,7 +41,7 @@
       box-shadow: 0 2px 10px rgba(0,0,0,0.3);
     }
 
-    /* Ekran tworzenia postaci */
+    /* Character Creator */
     #creator-screen {
       padding: 20px;
       display: flex;
@@ -94,7 +94,7 @@
       margin-top: 10px;
     }
 
-    /* Główny ekran gry */
+    /* Main Game Screen */
     #game-screen {
       display: none;
       flex-direction: column;
@@ -130,7 +130,7 @@
       padding: 12px;
       font-size: 0.95rem;
       line-height: 1.5;
-      max-height: 200px;
+      max-height: 280px;
       overflow-y: auto;
       border: 1px solid #2a3c50;
     }
@@ -172,21 +172,6 @@
     }
     .rel-fill { height: 100%; background-color: var(--accent-green); }
 
-    /* Stats Section */
-    .stats-container {
-      background-color: var(--card-bg);
-      padding: 12px;
-      border-radius: 10px;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      border: 1px solid #2a3c50;
-    }
-
-    .stat-row { display: flex; align-items: center; gap: 10px; font-size: 0.9rem; font-weight: 600; }
-    .stat-bar { flex: 1; height: 12px; background-color: #0d1722; border-radius: 6px; overflow: hidden; }
-    .stat-fill { height: 100%; background-color: var(--accent-green); transition: width 0.3s; }
-
     /* Navigation Bar */
     .navbar {
       display: flex;
@@ -217,21 +202,35 @@
       background: var(--accent-green);
       color: white;
       border: 4px solid var(--bg-dark);
-      width: 65px;
-      height: 65px;
+      width: 60px;
+      height: 60px;
       border-radius: 50%;
       font-weight: bold;
-      font-size: 1rem;
+      font-size: 0.9rem;
       cursor: pointer;
       box-shadow: 0 4px 12px rgba(0,0,0,0.4);
-      transform: translateY(-15px);
+      transform: translateY(-10px);
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
     }
 
-    /* Modale */
+    /* Stats Section at Very Bottom */
+    .stats-container {
+      background-color: #0d1722;
+      padding: 10px 15px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      border-top: 2px solid #2a3c50;
+    }
+
+    .stat-row { display: flex; align-items: center; gap: 10px; font-size: 0.85rem; font-weight: 600; }
+    .stat-bar { flex: 1; height: 10px; background-color: #1e2d3d; border-radius: 5px; overflow: hidden; }
+    .stat-fill { height: 100%; background-color: var(--accent-green); transition: width 0.3s; }
+
+    /* Modals */
     .modal-overlay {
       position: absolute;
       top: 0; left: 0; right: 0; bottom: 0;
@@ -279,49 +278,49 @@
 <body>
 
 <div class="game-container">
-  <div class="header">E-LIFE SIMULATION</div>
+  <div class="header">E-LIFE SIMULATOR</div>
 
   <div id="creator-screen">
-    <h2 style="text-align: center; color: var(--accent-orange);">Stwórz Nowe Życie</h2>
+    <h2 style="text-align: center; color: var(--accent-orange);">Create New Life</h2>
     
     <div class="avatar-preview" id="custom-avatar-preview">👶</div>
 
     <div class="form-group">
-      <label>Imię:</label>
-      <input type="text" id="input-firstname" placeholder="Wpisz imię..." value="Felix">
+      <label>First Name:</label>
+      <input type="text" id="input-firstname" placeholder="Enter first name..." value="Felix">
     </div>
 
     <div class="form-group">
-      <label>Nazwisko:</label>
-      <input type="text" id="input-lastname" placeholder="Wpisz nazwisko..." value="Moore">
+      <label>Last Name:</label>
+      <input type="text" id="input-lastname" placeholder="Enter last name..." value="Moore">
     </div>
 
     <div class="form-group">
-      <label>Płeć:</label>
+      <label>Gender:</label>
       <select id="input-gender" onchange="updateAvatarPreview()">
-        <option value="male">Mężczyzna 👦</option>
-        <option value="female">Kobieta 👧</option>
+        <option value="male">Male 👦</option>
+        <option value="female">Female 👧</option>
       </select>
     </div>
 
     <div class="form-group">
-      <label>Odcień skóry / Styl Awatara:</label>
+      <label>Skin Tone / Avatar Style:</label>
       <select id="input-skin" onchange="updateAvatarPreview()">
-        <option value="👶">Jasny 👶</option>
-        <option value="👶🏻">Jasna karnacja 👶🏻</option>
-        <option value="👶🏼">Średnia karnacja 👶🏼</option>
-        <option value="👶🏽">Oliwkowa karnacja 👶🏽</option>
-        <option value="👶🏾">Ciemna karnacja 👶🏾</option>
-        <option value="👶🏿">Głęboki brąz 👶🏿</option>
+        <option value="👶">Light 👶</option>
+        <option value="👶🏻">Fair Skin 👶🏻</option>
+        <option value="👶🏼">Medium Skin 👶🏼</option>
+        <option value="👶🏽">Olive Skin 👶🏽</option>
+        <option value="👶🏾">Dark Skin 👶🏾</option>
+        <option value="👶🏿">Deep Brown 👶🏿</option>
       </select>
     </div>
 
     <div class="form-group">
-      <label>Kraj zamieszkania:</label>
+      <label>Country of Birth:</label>
       <select id="input-country"></select>
     </div>
 
-    <button class="start-btn" onclick="startGame()">Rozpocznij Życie 🚀</button>
+    <button class="start-btn" onclick="startGame()">Start Life 🚀</button>
   </div>
 
   <div id="game-screen">
@@ -330,7 +329,7 @@
         <span class="avatar" id="avatar">👶</span>
         <div>
           <div id="char-name" style="font-weight: bold; font-size: 1.1rem;">-</div>
-          <div id="char-status" style="font-size: 0.8rem; color: #94a3b8;">Niemowlę</div>
+          <div id="char-status" style="font-size: 0.8rem; color: #94a3b8;">Infant</div>
         </div>
       </div>
       <div class="money" id="money-display">$0</div>
@@ -338,42 +337,23 @@
 
     <div class="main-content">
       <div id="view-main" class="view-panel active">
-        <h3 id="age-display" style="margin-bottom: 10px; color: var(--accent-orange);">Wiek: 0 lat</h3>
+        <h3 id="age-display" style="margin-bottom: 10px; color: var(--accent-orange);">Age: 0 years</h3>
         <div class="log-box" id="log-box"></div>
       </div>
 
       <div id="view-relationships" class="view-panel">
-        <div class="panel-header">RELACJE</div>
+        <div class="panel-header">RELATIONSHIPS</div>
         <div id="family-list"></div>
       </div>
 
       <div id="view-activities" class="view-panel">
-        <div class="panel-header">AKTYWNOŚCI</div>
+        <div class="panel-header">ACTIVITIES</div>
         <div id="activities-list"></div>
       </div>
 
       <div id="view-assets" class="view-panel">
-        <div class="panel-header">MAJĄTEK</div>
+        <div class="panel-header">ASSETS</div>
         <div id="assets-list"></div>
-      </div>
-
-      <div class="stats-container">
-        <div class="stat-row">
-          <span>Szczęście 😄</span>
-          <div class="stat-bar"><div class="stat-fill" id="stat-happy"></div></div>
-        </div>
-        <div class="stat-row">
-          <span>Zdrowie ❤️</span>
-          <div class="stat-bar"><div class="stat-fill" id="stat-health"></div></div>
-        </div>
-        <div class="stat-row">
-          <span>Mądrość 💡</span>
-          <div class="stat-bar"><div class="stat-fill" id="stat-smart"></div></div>
-        </div>
-        <div class="stat-row">
-          <span>Wygląd 🌤️</span>
-          <div class="stat-bar"><div class="stat-fill" id="stat-looks"></div></div>
-        </div>
       </div>
     </div>
 
@@ -382,30 +362,49 @@
         <span class="icon">📜</span>Log
       </button>
       <button class="nav-btn" onclick="switchTab('assets', this)">
-        <span class="icon">🏠</span>Majątek
+        <span class="icon">🏠</span>Assets
       </button>
       
       <button class="age-btn" onclick="ageUp()">
-        <span style="font-size: 1.4rem;">+</span>
-        <span style="font-size: 0.7rem;">Wiek</span>
+        <span style="font-size: 1.2rem;">+</span>
+        <span style="font-size: 0.65rem;">Age</span>
       </button>
 
       <button class="nav-btn" onclick="switchTab('relationships', this)">
-        <span class="icon">❤️</span>Relacje
+        <span class="icon">❤️</span>Rel.
       </button>
       <button class="nav-btn" onclick="switchTab('activities', this)">
-        <span class="icon">💬</span>Akcje
+        <span class="icon">💬</span>Actions
       </button>
+    </div>
+
+    <div class="stats-container">
+      <div class="stat-row">
+        <span>Happiness 😄</span>
+        <div class="stat-bar"><div class="stat-fill" id="stat-happy"></div></div>
+      </div>
+      <div class="stat-row">
+        <span>Health ❤️</span>
+        <div class="stat-bar"><div class="stat-fill" id="stat-health"></div></div>
+      </div>
+      <div class="stat-row">
+        <span>Smarts 💡</span>
+        <div class="stat-bar"><div class="stat-fill" id="stat-smart"></div></div>
+      </div>
+      <div class="stat-row">
+        <span>Looks 🌤️</span>
+        <div class="stat-bar"><div class="stat-fill" id="stat-looks"></div></div>
+      </div>
     </div>
   </div>
 
   <div class="modal-overlay" id="event-modal">
     <div class="modal-card">
-      <div class="modal-header" id="modal-header-title">Zdarzenie</div>
+      <div class="modal-header" id="modal-header-title">Event</div>
       <div class="modal-body">
         <div style="font-size: 3rem;" id="modal-icon">👦</div>
-        <div style="font-size: 1.2rem; font-weight: bold; margin: 10px 0;" id="modal-title">Tytuł</div>
-        <div style="font-size: 0.95rem; color: #475569;" id="modal-desc">Opis</div>
+        <div style="font-size: 1.2rem; font-weight: bold; margin: 10px 0;" id="modal-title">Title</div>
+        <div style="font-size: 0.95rem; color: #475569;" id="modal-desc">Description</div>
         <div class="modal-options" id="modal-options"></div>
       </div>
     </div>
@@ -413,40 +412,44 @@
 </div>
 
 <script>
-  // Pełna lista państw świata
   const countries = [
-    "Polska", "Afganistan", "Albania", "Algieria", "Andora", "Angola", "Antigua i Barbuda", "Arabia Saudyjska",
-    "Argentyna", "Armenia", "Australia", "Austria", "Azerbejdżan", "Bahamy", "Bahrajn", "Bangladesz", "Barbados",
-    "Belgia", "Belize", "Benin", "Bhutan", "Białoruś", "Boliwia", "Bośnia i Hercegowina", "Botswana", "Brazylia",
-    "Brunei", "Bułgaria", "Burkina Faso", "Burundi", "Chile", "Chiny", "Chorwacja", "Cypr", "Czad", "Czarnogóra",
-    "Czechy", "Dania", "Dominika", "Dominikana", "Dżibuti", "Egipt", "Ekwador", "Erytrea", "Estonia", "Eswatini",
-    "Etiopia", "Fidżi", "Filipiny", "Finlandia", "Francja", "Gabon", "Gambia", "Ghana", "Grecja", "Grenada",
-    "Gruzja", "Gwatemala", "Gwinea", "Gwinea Bissau", "Gwinea Równikowa", "Gujana", "Haiti", "Hiszpania",
-    "Holandia", "Honduras", "Indie", "Indonezja", "Irak", "Iran", "Irlandia", "Islandia", "Izrael", "Jamajka",
-    "Japonia", "Jemen", "Jordania", "Kambodża", "Kamerun", "Kanada", "Katar", "Kazachstan", "Kenia", "Kirgistan",
-    "Kiribati", "Kolumbia", "Komory", "Kongo", "Korea Południowa", "Korea Północna", "Kostaryka", "Kuba", "Kuwejt",
-    "Laos", "Lesotho", "Liban", "Liberia", "Libia", "Liechtenstein", "Litwa", "Luksemburg", "Łotwa",
-    "Macedonia Północna", "Madagaskar", "Majotta", "Malawi", "Malediwy", "Malezja", "Mali", "Malta", "Maroko",
-    "Mauretania", "Mauritius", "Meksyk", "Mikronezja", "Mołdawia", "Monako", "Mongolia", "Mozambik", "Mjanma",
-    "Namibia", "Nauru", "Nepal", "Niemcy", "Niger", "Nigeria", "Nikaragua", "Norwegia", "Nowa Zelandia", "Oman",
-    "Pakistan", "Palau", "Panama", "Papua-Nowa Gwinea", "Paragwaj", "Peru", "Portugalia", "RPA", "Republika Środkowoafrykańska",
-    "Republika Zielonego Przylądka", "Rosja", "Rumunia", "Rwanda", "Saint Kitts i Nevis", "Saint Lucia",
-    "Saint Vincent i Grenadyny", "Salwador", "Samoa", "San Marino", "Senegal", "Serbia", "Seszele", "Sierra Leone",
-    "Singapur", "Słowacja", "Słowenia", "Somalia", "Sri Lanka", "Stany Zjednoczone", "Sudan", "Sudan Południowy",
-    "Surinam", "Szwajcaria", "Szwecja", "Syria", "Tadżykistan", "Tajlandia", "Tanzania", "Timor Wschodni", "Togo",
-    "Tonga", "Trynidad i Tobago", "Tunezja", "Turcja", "Turkmenistan", "Tuvalu", "Uganda", "Ukraina", "Urugwaj",
-    "Uzbekistan", "Vanuatu", "Watykan", "Wenezuela", "Węgry", "Wielka Brytania", "Wietnam", "Włochy",
-    "Wybrzeże Kości Słoniowej", "Wyspy Marshalla", "Wyspy Salomona", "Wyspy Świętego Tomasza i Książęca",
-    "Zambia", "Zimbabwe", "Zjednoczone Emiraty Arabskie"
+    "United States", "United Kingdom", "Poland", "Canada", "Australia", "Germany", "France", "Japan",
+    "Brazil", "Italy", "Spain", "Mexico", "South Korea", "Netherlands", "Sweden", "Norway", "Denmark",
+    "Finland", "Switzerland", "Argentina", "Chile", "Colombia", "Egypt", "Greece", "India", "Indonesia",
+    "Ireland", "Israel", "Jamaica", "Kenya", "Malaysia", "New Zealand", "Nigeria", "Pakistan", "Peru",
+    "Philippines", "Portugal", "Saudi Arabia", "Singapore", "South Africa", "Thailand", "Turkey", "Ukraine",
+    "United Arab Emirates", "Vietnam"
   ];
 
-  // Wypełnianie listy krajów w menu tworzenia postaci
+  const yearlyEvents = [
+    "You spent a peaceful year with your family.",
+    "You learned something new and felt inspired.",
+    "You had a fun day playing in the park.",
+    "You enjoyed watching your favorite cartoons.",
+    "You tried a new food that you really liked.",
+    "You made a new friend in your neighborhood.",
+    "You helped your family with daily chores.",
+    "You went on a small weekend trip.",
+    "You felt healthy and full of energy all year.",
+    "You spent time reading books and relaxing."
+  ];
+
+  const petTypes = [
+    { type: "Dog", icon: "🐶", names: ["Buddy", "Max", "Charlie", "Bella", "Luna"] },
+    { type: "Cat", icon: "🐱", names: ["Oliver", "Milo", "Leo", "Lucy", "Nala"] },
+    { type: "Parrot", icon: "🦜", names: ["Coco", "Kiwi", "Mango", "Rio"] },
+    { type: "Hamster", icon: "🐹", names: ["Peanut", "Cookie", "Gizmo", "Nibbles"] }
+  ];
+
+  const firstNamesListMale = ["James", "John", "Robert", "Michael", "William", "David", "Richard", "Joseph"];
+  const firstNamesListFemale = ["Mary", "Patricia", "Jennifer", "Linda", "Elizabeth", "Barbara", "Susan", "Jessica"];
+
   const countrySelect = document.getElementById('input-country');
   countries.forEach(c => {
     const opt = document.createElement('option');
     opt.value = c;
     opt.innerText = c;
-    if(c === "Polska") opt.selected = true;
+    if(c === "United States") opt.selected = true;
     countrySelect.appendChild(opt);
   });
 
@@ -463,7 +466,7 @@
     country: "",
     age: 0,
     money: 0,
-    job: "Niemowlę",
+    job: "Infant",
     salary: 0,
     stats: { happy: 80, health: 95, smart: 60, looks: 50 },
     family: [],
@@ -471,10 +474,10 @@
   };
 
   const availableJobs = [
-    { title: "Kasjer 🛒", salary: 24000 },
-    { title: "Programista 💻", salary: 75000 },
-    { title: "Kierowca 🚚", salary: 36000 },
-    { title: "Menedżer 📊", salary: 90000 }
+    { title: "Cashier 🛒", salary: 24000 },
+    { title: "Software Engineer 💻", salary: 75000 },
+    { title: "Truck Driver 🚚", salary: 36000 },
+    { title: "Manager 📊", salary: 90000 }
   ];
 
   function startGame() {
@@ -484,19 +487,51 @@
     player.skin = document.getElementById('input-skin').value;
     player.country = document.getElementById('input-country').value;
 
+    const fatherName = firstNamesListMale[Math.floor(Math.random() * firstNamesListMale.length)];
+    const motherName = firstNamesListFemale[Math.floor(Math.random() * firstNamesListFemale.length)];
+
     player.family = [
-      { name: `Ojciec ${player.lastName}`, role: "Ojciec", age: 30, rel: 90, icon: "👨" },
-      { name: `Matka ${player.lastName}`, role: "Matka", age: 28, rel: 95, icon: "👩" },
-      { name: "Brat Przyrodni", role: "Brat Przyrodni", age: 3, rel: 65, icon: "👦" }
+      { name: `${fatherName} ${player.lastName}`, role: "Father", age: 30, rel: 90, icon: "👨" },
+      { name: `${motherName} ${player.lastName}`, role: "Mother", age: 28, rel: 95, icon: "👩" }
     ];
+
+    // Random sibling (50% chance)
+    if (Math.random() > 0.5) {
+      const isBrother = Math.random() > 0.5;
+      const sibName = isBrother ? 
+        firstNamesListMale[Math.floor(Math.random() * firstNamesListMale.length)] :
+        firstNamesListFemale[Math.floor(Math.random() * firstNamesListFemale.length)];
+      
+      player.family.push({
+        name: `${sibName} ${player.lastName}`,
+        role: isBrother ? "Brother" : "Sister",
+        age: Math.floor(Math.random() * 5) + 1,
+        rel: 75,
+        icon: isBrother ? "👦" : "👧"
+      });
+    }
+
+    // Random family pet (40% chance)
+    if (Math.random() > 0.6) {
+      const pet = petTypes[Math.floor(Math.random() * petTypes.length)];
+      const petName = pet.names[Math.floor(Math.random() * pet.names.length)];
+      
+      player.family.push({
+        name: petName,
+        role: `Family ${pet.type}`,
+        age: Math.floor(Math.random() * 4) + 1,
+        rel: 90,
+        icon: pet.icon
+      });
+    }
 
     document.getElementById('creator-screen').style.display = "none";
     document.getElementById('game-screen').style.display = "flex";
 
     document.getElementById('char-name').innerText = `${player.firstName} ${player.lastName}`;
 
-    addLog(`Urodziłeś/aś się w kraju: <b>${player.country}</b>.`);
-    addLog(`Twoje imię i nazwisko to <b>${player.firstName} ${player.lastName}</b>.`);
+    addLog(`You were born in <b>${player.country}</b>.`);
+    addLog(`Your name is <b>${player.firstName} ${player.lastName}</b>.`);
 
     updateUI();
   }
@@ -508,14 +543,14 @@
   }
 
   function updateUI() {
-    document.getElementById('age-display').innerText = `Wiek: ${player.age} lat`;
+    document.getElementById('age-display').innerText = `Age: ${player.age} years`;
     document.getElementById('money-display').innerText = `$${player.money.toLocaleString()}`;
     document.getElementById('avatar').innerText = getAvatarIcon();
 
-    if(player.age < 3) player.job = "Niemowlę";
-    else if(player.age < 6) player.job = "Maluch";
-    else if(player.age < 18) player.job = "Uczeń 📚";
-    else if(player.job === "Uczeń 📚" || player.job === "Niemowlę" || player.job === "Maluch") player.job = "Bezrobotny";
+    if(player.age < 3) player.job = "Infant";
+    else if(player.age < 6) player.job = "Toddler";
+    else if(player.age < 18) player.job = "Student 📚";
+    else if(player.job === "Student 📚" || player.job === "Infant" || player.job === "Toddler") player.job = "Unemployed";
     
     document.getElementById('char-status').innerText = player.job;
 
@@ -538,23 +573,27 @@
     player.age++;
     player.family.forEach(f => f.age++);
 
+    // Random yearly event entry in the log
+    const randomYearLog = yearlyEvents[Math.floor(Math.random() * yearlyEvents.length)];
+    addLog(randomYearLog);
+
     if (player.salary > 0) {
       player.money += player.salary;
-      addLog(`Otrzymałeś wynagrodzenie z pracy (${player.job}): +$${player.salary.toLocaleString()}`);
+      addLog(`Received annual salary from job (${player.job}): +$${player.salary.toLocaleString()}`);
     }
 
-    if(player.age === 6) addLog("Rozpocząłeś naukę w Szkole Podstawowej.");
-    if(player.age === 15) addLog("Rozpocząłeś naukę w Liceum.");
-    if(player.age === 18) addLog("Stałeś się pełnoletni! Odblokowano studia, pracę i majątek.");
+    if(player.age === 6) addLog("You started attending Elementary School.");
+    if(player.age === 15) addLog("You started attending High School.");
+    if(player.age === 18) addLog("You turned 18! Jobs, university, and assets are now unlocked.");
 
     if(player.age === 3) {
       showEventModal(
-        "Kłótnia", "👦", "Kłótnia z bratem",
-        "Twój przyrodni brat zabrał Twoją ulubioną zabawkę! Co zrobisz?",
+        "Argument", "👦", "Toy Argument",
+        "A relative took your favorite toy! What will you do?",
         [
-          { text: "Uderz go", action: () => { player.stats.happy -= 5; addLog("Uderzyłeś brata! Mama dała Ci karę."); } },
-          { text: "Przeproś i odpuść", action: () => { addLog("Zostawiłeś zabawkę bratu."); } },
-          { text: "Naskarż mamie", action: () => { player.stats.happy += 5; addLog("Mama oddała Ci zabawkę."); } }
+          { text: "Hit them", action: () => { player.stats.happy -= 5; addLog("You hit them and got grounded!"); } },
+          { text: "Let it go", action: () => { addLog("You decided to let them keep the toy."); } },
+          { text: "Tell Mom", action: () => { player.stats.happy += 5; addLog("Mom got your toy back!"); } }
         ]
       );
     }
@@ -588,15 +627,15 @@
 
   function openJobMarket() {
     const options = availableJobs.map(j => ({
-      text: `${j.title} ($${j.salary.toLocaleString()}/rok)`,
+      text: `${j.title} ($${j.salary.toLocaleString()}/yr)`,
       action: () => {
         player.job = j.title;
         player.salary = j.salary;
-        addLog(`Podjąłeś pracę jako ${j.title}.`);
+        addLog(`You got a job as a ${j.title}.`);
       }
     }));
 
-    showEventModal("Praca", "💼", "Wybierz Pracę", "Dostępne oferty pracy:", options);
+    showEventModal("Careers", "💼", "Apply for a Job", "Available job offers:", options);
   }
 
   function switchTab(tabName, btn) {
@@ -618,7 +657,7 @@
           <span style="font-size:1.5rem">${f.icon}</span>
           <div>
             <b>${f.name}</b> (${f.role})
-            <div style="font-size:0.75rem; color:#94a3b8">Wiek: ${f.age}</div>
+            <div style="font-size:0.75rem; color:#94a3b8">Age: ${f.age}</div>
           </div>
         </div>
         <div class="rel-bar"><div class="rel-fill" style="width: ${f.rel}%;"></div></div>
@@ -632,17 +671,17 @@
     container.innerHTML = "";
 
     const acts = [
-      { name: "🧘 Medytacja & Joga", icon: "🧘‍♀️", req: 12, action: () => { player.stats.happy = Math.min(100, player.stats.happy + 8); addLog("Zrelaksowałeś się podczas medytacji."); } },
-      { name: "🩺 Idź do Lekarza", icon: "👨‍⚕️", req: 0, action: () => { player.stats.health = 100; addLog("Lekarz potwierdził idealny stan zdrowia."); } },
-      { name: "🏎️ Zrób Prawo Jazdy", icon: "🚘", req: 16, action: () => { addLog("Zdałeś egzamin na prawo jazdy!"); } },
-      { name: "💼 Szukaj Pracy", icon: "🏢", req: 18, action: () => openJobMarket() },
-      { name: "🎓 Idź na Studia", icon: "🏫", req: 18, action: () => { player.job = "Inżynier"; player.salary = 60000; addLog("Ukończyłeś studia i zostałeś Inżynierem!"); } },
-      { name: "🦹 Drobne Przestępstwo", icon: "🎭", req: 14, action: () => { 
-          if(Math.random() > 0.5) { player.money += 300; addLog("Udało Ci się zrobić przekręt! (+$300)"); }
-          else { player.stats.happy -= 15; addLog("Przyłapano Cię na wybryku!"); }
+      { name: "🧘 Meditation & Yoga", icon: "🧘‍♀️", req: 12, action: () => { player.stats.happy = Math.min(100, player.stats.happy + 8); addLog("You felt relaxed after meditating."); } },
+      { name: "🩺 Visit Doctor", icon: "👨‍⚕️", req: 0, action: () => { player.stats.health = 100; addLog("The doctor confirmed you are in perfect health."); } },
+      { name: "🏎️ Driver's License", icon: "🚘", req: 16, action: () => { addLog("You passed your driving test!"); } },
+      { name: "💼 Find a Job", icon: "🏢", req: 18, action: () => openJobMarket() },
+      { name: "🎓 Go to University", icon: "🏫", req: 18, action: () => { player.job = "Engineer"; player.salary = 60000; addLog("You graduated and became an Engineer!"); } },
+      { name: "🦹 Petty Crime", icon: "🎭", req: 14, action: () => { 
+          if(Math.random() > 0.5) { player.money += 300; addLog("You pulled off a scam! (+$300)"); }
+          else { player.stats.happy -= 15; addLog("You got caught doing mischief!"); }
         } 
       },
-      { name: "💃 Klub & Imprezy", icon: "🍸", req: 18, action: () => { player.stats.happy = Math.min(100, player.stats.happy + 10); addLog("Wyszalałeś się na imprezie."); } }
+      { name: "💃 Nightclub & Party", icon: "🍸", req: 18, action: () => { player.stats.happy = Math.min(100, player.stats.happy + 10); addLog("You had a wild night partying!"); } }
     ];
 
     acts.forEach(act => {
@@ -651,7 +690,7 @@
       div.className = `list-item ${isLocked ? 'disabled' : ''}`;
       div.innerHTML = `
         <span>${act.icon} <b>${act.name}</b></span>
-        <span>${isLocked ? `Od ${act.req} lat` : '➡️'}</span>
+        <span>${isLocked ? `Age ${act.req}+` : '➡️'}</span>
       `;
       if(!isLocked) div.onclick = () => { act.action(); updateUI(); };
       container.appendChild(div);
@@ -663,9 +702,9 @@
     container.innerHTML = "";
 
     const items = [
-      { name: "📱 Smartfon", price: 1000, req: 12, icon: "📱" },
-      { name: "🏎️ Samochód Sportowy", price: 50000, req: 18, icon: "🚘" },
-      { name: "🏠 Własne Mieszkanie", price: 150000, req: 18, icon: "🏠" }
+      { name: "📱 Smartphone", price: 1000, req: 12, icon: "📱" },
+      { name: "🏎️ Sports Car", price: 50000, req: 18, icon: "🚘" },
+      { name: "🏠 Apartment", price: 150000, req: 18, icon: "🏠" }
     ];
 
     items.forEach(item => {
@@ -680,10 +719,10 @@
         div.onclick = () => {
           if(player.money >= item.price) {
             player.money -= item.price;
-            addLog(`Kupiłeś: ${item.name}!`);
+            addLog(`You bought: ${item.name}!`);
             updateUI();
           } else {
-            alert("Nie masz tyle pieniędzy!");
+            alert("You don't have enough money!");
           }
         };
       }
