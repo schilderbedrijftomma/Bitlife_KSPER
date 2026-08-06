@@ -31,6 +31,7 @@
       overflow: hidden;
     }
 
+    /* Top Bar */
     .header {
       background: linear-gradient(90deg, #ef4444, #f97316);
       padding: 12px;
@@ -38,8 +39,10 @@
       font-weight: 900;
       font-size: 1.3rem;
       letter-spacing: 1px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.3);
     }
 
+    /* Character Creator */
     #creator-screen {
       padding: 20px;
       display: flex;
@@ -49,8 +52,18 @@
       height: 100%;
     }
 
-    .form-group { display: flex; flex-direction: column; gap: 5px; }
-    .form-group label { font-size: 0.9rem; color: #94a3b8; font-weight: bold; }
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .form-group label {
+      font-size: 0.9rem;
+      color: #94a3b8;
+      font-weight: bold;
+    }
+
     .form-group input, .form-group select {
       background-color: var(--card-bg);
       border: 1px solid #2a3c50;
@@ -79,9 +92,15 @@
       font-size: 1.1rem;
       border-radius: 10px;
       cursor: pointer;
+      margin-top: 10px;
     }
 
-    #game-screen { display: none; flex-direction: column; height: 100%; }
+    /* Main Game Screen */
+    #game-screen {
+      display: none;
+      flex-direction: column;
+      height: 100%;
+    }
 
     .profile-bar {
       background-color: #0d1722;
@@ -96,6 +115,7 @@
     .avatar { font-size: 2.2rem; }
     .money { color: var(--accent-green); font-weight: bold; font-size: 1.2rem; }
 
+    /* Content Area */
     .main-content {
       flex: 1;
       padding: 15px;
@@ -105,6 +125,7 @@
       gap: 15px;
     }
 
+    /* BitLife Style Log Box */
     .log-box {
       background-color: var(--card-bg);
       border-radius: 10px;
@@ -124,9 +145,17 @@
       margin-bottom: 4px;
     }
 
-    .log-age-header:first-child { margin-top: 0; }
-    .log-entry { color: #f1f5f9; margin-bottom: 4px; }
+    .log-age-header:first-child {
+      margin-top: 0;
+    }
 
+    .log-entry {
+      color: #f1f5f9;
+      margin-bottom: 4px;
+      padding-left: 2px;
+    }
+
+    /* Views */
     .view-panel { display: none; }
     .view-panel.active { display: block; }
 
@@ -171,6 +200,7 @@
     }
     .rel-fill { height: 100%; background-color: var(--accent-green); }
 
+    /* Navigation Bar */
     .navbar {
       display: flex;
       justify-content: space-around;
@@ -195,6 +225,7 @@
     .nav-btn.active { color: var(--accent-orange); font-weight: bold; }
     .nav-btn .icon { font-size: 1.5rem; }
 
+    /* Age Button */
     .age-btn {
       background: var(--accent-green);
       color: white;
@@ -203,7 +234,9 @@
       height: 60px;
       border-radius: 50%;
       font-weight: bold;
+      font-size: 0.9rem;
       cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
       transform: translateY(-10px);
       display: flex;
       flex-direction: column;
@@ -211,6 +244,7 @@
       justify-content: center;
     }
 
+    /* Stats Section at Very Bottom */
     .stats-container {
       background-color: #0d1722;
       padding: 10px 15px;
@@ -224,6 +258,7 @@
     .stat-bar { flex: 1; height: 10px; background-color: #1e2d3d; border-radius: 5px; overflow: hidden; }
     .stat-fill { height: 100%; background-color: var(--accent-green); transition: width 0.3s; }
 
+    /* Modals */
     .modal-overlay {
       position: absolute;
       top: 0; left: 0; right: 0; bottom: 0;
@@ -245,10 +280,20 @@
       border: 6px solid #ef4444;
       overflow: hidden;
       text-align: center;
+      max-height: 90vh;
+      display: flex;
+      flex-direction: column;
     }
 
-    .modal-header { background-color: #ef4444; color: white; font-size: 1.3rem; font-weight: 900; padding: 10px; }
-    .modal-body { padding: 15px; }
+    .modal-header {
+      background-color: #ef4444;
+      color: white;
+      font-size: 1.3rem;
+      font-weight: 900;
+      padding: 10px;
+    }
+
+    .modal-body { padding: 15px; overflow-y: auto; }
     .modal-options { display: flex; flex-direction: column; gap: 8px; margin-top: 10px; }
     .option-btn {
       background-color: var(--accent-blue);
@@ -258,8 +303,11 @@
       border-radius: 20px;
       font-weight: bold;
       cursor: pointer;
+      font-size: 0.9rem;
     }
-    .option-btn.close { background-color: #64748b; }
+    .option-btn.close {
+      background-color: #64748b;
+    }
   </style>
 </head>
 <body>
@@ -269,16 +317,19 @@
 
   <div id="creator-screen">
     <h2 style="text-align: center; color: var(--accent-orange);">Create New Life</h2>
+    
     <div class="avatar-preview" id="custom-avatar-preview">👶</div>
 
     <div class="form-group">
       <label>First Name:</label>
-      <input type="text" id="input-firstname" value="Felix">
+      <input type="text" id="input-firstname" placeholder="Enter first name..." value="Felix">
     </div>
+
     <div class="form-group">
       <label>Last Name:</label>
-      <input type="text" id="input-lastname" value="Moore">
+      <input type="text" id="input-lastname" placeholder="Enter last name..." value="Moore">
     </div>
+
     <div class="form-group">
       <label>Gender:</label>
       <select id="input-gender" onchange="updateAvatarPreview()">
@@ -286,18 +337,21 @@
         <option value="female">Female 👧</option>
       </select>
     </div>
+
     <div class="form-group">
-      <label>Skin Tone:</label>
+      <label>Skin Tone / Avatar Style:</label>
       <select id="input-skin" onchange="updateAvatarPreview()">
         <option value="👶">Light 👶</option>
-        <option value="👶🏻">Fair 👶🏻</option>
-        <option value="👶🏼">Medium 👶🏼</option>
-        <option value="👶🏽">Olive 👶🏽</option>
-        <option value="👶🏾">Dark 👶🏾</option>
+        <option value="👶🏻">Fair Skin 👶🏻</option>
+        <option value="👶🏼">Medium Skin 👶🏼</option>
+        <option value="👶🏽">Olive Skin 👶🏽</option>
+        <option value="👶🏾">Dark Skin 👶🏾</option>
+        <option value="👶🏿">Deep Brown 👶🏿</option>
       </select>
     </div>
+
     <div class="form-group">
-      <label>Country:</label>
+      <label>Country of Birth:</label>
       <select id="input-country"></select>
     </div>
 
@@ -309,7 +363,7 @@
       <div class="profile-info">
         <span class="avatar" id="avatar">👶</span>
         <div>
-          <div id="char-name" style="font-weight: bold;">-</div>
+          <div id="char-name" style="font-weight: bold; font-size: 1.1rem;">-</div>
           <div id="char-status" style="font-size: 0.8rem; color: #94a3b8;">Infant</div>
         </div>
       </div>
@@ -362,10 +416,22 @@
     </div>
 
     <div class="stats-container">
-      <div class="stat-row"><span>Happiness 😄</span><div class="stat-bar"><div class="stat-fill" id="stat-happy"></div></div></div>
-      <div class="stat-row"><span>Health ❤️</span><div class="stat-bar"><div class="stat-fill" id="stat-health"></div></div></div>
-      <div class="stat-row"><span>Smarts 💡</span><div class="stat-bar"><div class="stat-fill" id="stat-smart"></div></div></div>
-      <div class="stat-row"><span>Looks 🌤️</span><div class="stat-bar"><div class="stat-fill" id="stat-looks"></div></div></div>
+      <div class="stat-row">
+        <span>Happiness 😄</span>
+        <div class="stat-bar"><div class="stat-fill" id="stat-happy"></div></div>
+      </div>
+      <div class="stat-row">
+        <span>Health ❤️</span>
+        <div class="stat-bar"><div class="stat-fill" id="stat-health"></div></div>
+      </div>
+      <div class="stat-row">
+        <span>Smarts 💡</span>
+        <div class="stat-bar"><div class="stat-fill" id="stat-smart"></div></div>
+      </div>
+      <div class="stat-row">
+        <span>Looks 🌤️</span>
+        <div class="stat-bar"><div class="stat-fill" id="stat-looks"></div></div>
+      </div>
     </div>
   </div>
 
@@ -383,41 +449,87 @@
 </div>
 
 <script>
-  const countries = ["United States", "United Kingdom", "Netherlands", "Canada", "Australia", "Germany", "France", "Japan", "Brazil"];
+  const countries = [
+    "United States", "United Kingdom", "Netherlands", "Canada", "Australia", "Germany", "France", "Japan",
+    "Brazil", "Italy", "Spain", "Mexico", "South Korea", "Sweden", "Norway", "Denmark",
+    "Switzerland", "Argentina", "Belgium", "Greece", "India", "Indonesia", "Ireland", "Portugal"
+  ];
+
   const yearlyEvents = [
     "You spent a peaceful year with your family.",
     "You learned something new and felt inspired.",
+    "You had a fun day playing in the park.",
     "You enjoyed watching your favorite shows.",
     "You tried a new dish that tasted amazing.",
-    "You made a new friend in your neighborhood."
+    "You made a new friend in your neighborhood.",
+    "You helped out around the house.",
+    "You went on a small weekend trip.",
+    "You felt healthy and full of energy.",
+    "You spent time reading books and relaxing."
+  ];
+
+  const petTypes = [
+    { type: "Dog", icon: "🐶", names: ["Buddy", "Max", "Charlie", "Bella", "Luna"] },
+    { type: "Cat", icon: "🐱", names: ["Oliver", "Milo", "Leo", "Lucy", "Nala"] },
+    { type: "Parrot", icon: "🦜", names: ["Coco", "Kiwi", "Mango", "Rio"] }
   ];
 
   const availableAssetsList = [
-    { id: 'toy', name: "Action Figure", price: 50, req: 3, icon: "🧸" },
+    { id: 'toy', name: "Action Figure / Doll", price: 50, req: 3, icon: "🧸" },
     { id: 'console', name: "Gaming Console", price: 500, req: 10, icon: "🎮" },
-    { id: 'phone', name: "Smartphone", price: 1200, req: 12, icon: "📱" },
-    { id: 'pc', name: "Gaming PC", price: 3000, req: 14, icon: "🖥️" },
-    { id: 'car', name: "Used Car", price: 6000, req: 18, icon: "🚗" },
-    { id: 'house', name: "Cozy Apartment", price: 180000, req: 18, icon: "🏢" }
+    { id: 'phone', name: "Latest Smartphone", price: 1200, req: 12, icon: "📱" },
+    { id: 'pc', name: "Pro Gaming PC", price: 3000, req: 14, icon: "🖥️" },
+    { id: 'scooter', name: "Electric Scooter", price: 800, req: 14, icon: "🛴" },
+    { id: 'used_car', name: "Used Sedan", price: 6000, req: 18, icon: "🚗" },
+    { id: 'sports_car', name: "Luxury Sports Car", price: 85000, req: 18, icon: "🏎️" },
+    { id: 'house_small', name: "Cozy Apartment", price: 180000, req: 18, icon: "🏢" },
+    { id: 'house_villa', name: "Modern Villa with Pool", price: 750000, req: 18, icon: "🏡" }
   ];
+
+  const firstNamesListMale = ["James", "John", "Robert", "Michael", "William", "David", "Richard", "Joseph"];
+  const firstNamesListFemale = ["Mary", "Patricia", "Jennifer", "Linda", "Elizabeth", "Barbara", "Susan", "Jessica"];
 
   const countrySelect = document.getElementById('input-country');
   countries.forEach(c => {
     const opt = document.createElement('option');
-    opt.value = opt.innerText = c;
+    opt.value = c;
+    opt.innerText = c;
+    if(c === "Netherlands") opt.selected = true;
     countrySelect.appendChild(opt);
   });
 
   function updateAvatarPreview() {
-    document.getElementById('custom-avatar-preview').innerText = document.getElementById('input-skin').value;
+    const skin = document.getElementById('input-skin').value;
+    document.getElementById('custom-avatar-preview').innerText = skin;
   }
 
-  let player = {};
+  let player = {
+    firstName: "",
+    lastName: "",
+    gender: "male",
+    skin: "👶",
+    country: "",
+    age: 0,
+    money: 0,
+    job: "Infant",
+    salary: 0,
+    isDead: false,
+    stats: { happy: 80, health: 95, smart: 60, looks: 50 },
+    family: [],
+    inventory: []
+  };
+
+  const availableJobs = [
+    { title: "Cashier 🛒", salary: 24000 },
+    { title: "Software Engineer 💻", salary: 75000 },
+    { title: "Truck Driver 🚚", salary: 36000 },
+    { title: "Manager 📊", salary: 90000 }
+  ];
 
   function startGame() {
     player = {
-      firstName: document.getElementById('input-firstname').value || "Felix",
-      lastName: document.getElementById('input-lastname').value || "Moore",
+      firstName: document.getElementById('input-firstname').value.trim() || "Felix",
+      lastName: document.getElementById('input-lastname').value.trim() || "Moore",
       gender: document.getElementById('input-gender').value,
       skin: document.getElementById('input-skin').value,
       country: document.getElementById('input-country').value,
@@ -427,37 +539,60 @@
       salary: 0,
       isDead: false,
       stats: { happy: 80, health: 95, smart: 60, looks: 50 },
-      family: [
-        { name: `John ${document.getElementById('input-lastname').value}`, role: "Father", age: 30, rel: 90, icon: "👨" },
-        { name: `Mary ${document.getElementById('input-lastname').value}`, role: "Mother", age: 28, rel: 95, icon: "👩" }
-      ],
+      family: [],
       inventory: []
     };
+
+    const fatherName = firstNamesListMale[Math.floor(Math.random() * firstNamesListMale.length)];
+    const motherName = firstNamesListFemale[Math.floor(Math.random() * firstNamesListFemale.length)];
+
+    player.family = [
+      { id: 1, name: `${fatherName} ${player.lastName}`, role: "Father", age: 30, rel: 90, icon: "👨" },
+      { id: 2, name: `${motherName} ${player.lastName}`, role: "Mother", age: 28, rel: 95, icon: "👩" }
+    ];
+
+    if (Math.random() > 0.5) {
+      const pet = petTypes[Math.floor(Math.random() * petTypes.length)];
+      const petName = pet.names[Math.floor(Math.random() * pet.names.length)];
+      player.family.push({ id: 3, name: petName, role: `Family ${pet.type}`, age: 2, rel: 90, icon: pet.icon });
+    }
 
     document.getElementById('creator-screen').style.display = "none";
     document.getElementById('game-screen').style.display = "flex";
     document.getElementById('log-box').innerHTML = "";
+
     document.getElementById('char-name').innerText = `${player.firstName} ${player.lastName}`;
 
     addLog(`You were born in <b>${player.country}</b>.`);
+    addLog(`Your name is <b>${player.firstName} ${player.lastName}</b>.`);
+
     updateUI();
+  }
+
+  function getAvatarIcon() {
+    if(player.isDead) return "🪦";
+    if(player.age < 3) return player.skin;
+    if(player.age < 18) return player.gender === "male" ? "👦" : "👧";
+    return player.gender === "male" ? "👨" : "👩";
   }
 
   function updateUI() {
     document.getElementById('money-display').innerText = `$${player.money.toLocaleString()}`;
-    document.getElementById('avatar').innerText = player.isDead ? "🪦" : (player.age < 3 ? player.skin : (player.gender === "male" ? "👨" : "👩"));
+    document.getElementById('avatar').innerText = getAvatarIcon();
 
     if(!player.isDead) {
       if(player.age < 3) player.job = "Infant";
+      else if(player.age < 6) player.job = "Toddler";
       else if(player.age < 18) player.job = "Student 📚";
-      else if(player.job === "Student 📚" || player.job === "Infant") player.job = "Unemployed";
+      else if(player.job === "Student 📚" || player.job === "Infant" || player.job === "Toddler") player.job = "Unemployed";
     }
     
     document.getElementById('char-status').innerText = player.job;
 
-    ['happy', 'health', 'smart', 'looks'].forEach(s => {
-      document.getElementById(`stat-${s}`).style.width = Math.max(0, Math.min(100, player.stats[s])) + '%';
-    });
+    document.getElementById('stat-happy').style.width = Math.max(0, Math.min(100, player.stats.happy)) + '%';
+    document.getElementById('stat-health').style.width = Math.max(0, Math.min(100, player.stats.health)) + '%';
+    document.getElementById('stat-smart').style.width = Math.max(0, Math.min(100, player.stats.smart)) + '%';
+    document.getElementById('stat-looks').style.width = Math.max(0, Math.min(100, player.stats.looks)) + '%';
 
     renderFamily();
     renderActivities();
@@ -472,7 +607,12 @@
     if (!group) {
       group = document.createElement('div');
       group.id = ageHeaderId;
-      group.innerHTML = `<div class="log-age-header">Age: ${player.age} years</div>`;
+      
+      const header = document.createElement('div');
+      header.className = 'log-age-header';
+      header.innerText = `Age: ${player.age} ${player.age === 1 ? 'year' : 'years'}`;
+      
+      group.appendChild(header);
       logBox.insertBefore(group, logBox.firstChild);
     }
 
@@ -483,94 +623,342 @@
   }
 
   function goToLogTab() {
-    switchTab('main', document.getElementById('nav-btn-main'));
+    const mainBtn = document.getElementById('nav-btn-main');
+    switchTab('main', mainBtn);
   }
 
   function ageUp() {
     if(player.isDead) return;
+
     goToLogTab();
 
     player.age++;
     player.family.forEach(f => f.age++);
 
-    if(player.stats.health <= 0 || player.age >= 100) {
-      player.isDead = true;
-      addLog("You have passed away.");
-      updateUI();
+    if(player.age > 65) {
+      player.stats.health -= Math.floor(Math.random() * 8) + 2;
+    }
+
+    if(player.stats.health <= 0 || player.age >= 100 || (player.age > 75 && Math.random() < 0.15)) {
+      handleDeath();
       return;
     }
 
-    addLog(yearlyEvents[Math.floor(Math.random() * yearlyEvents.length)]);
+    const randomYearLog = yearlyEvents[Math.floor(Math.random() * yearlyEvents.length)];
+    addLog(randomYearLog);
+
     if (player.salary > 0) {
       player.money += player.salary;
-      addLog(`Salary received: +$${player.salary.toLocaleString()}`);
+      addLog(`Received annual salary from job (${player.job}): +$${player.salary.toLocaleString()}`);
     }
+
+    if(player.age === 6) addLog("You started attending Elementary School.");
+    if(player.age === 15) addLog("You started attending High School.");
+    if(player.age === 18) addLog("You turned 18! Jobs, university, and assets are now unlocked.");
+
     updateUI();
+  }
+
+  function handleDeath() {
+    player.isDead = true;
+    player.stats.health = 0;
+    player.job = "Deceased 🪦";
+    updateUI();
+
+    showEventModal(
+      "REST IN PEACE", "🪦", "You Have Died",
+      `You died at the age of <b>${player.age}</b>.<br>Total Money Accumulated: <b>$${player.money.toLocaleString()}</b>`,
+      [
+        { 
+          text: "Start a New Life 🔄", 
+          action: () => {
+            document.getElementById('event-modal').classList.remove('active');
+            document.getElementById('game-screen').style.display = "none";
+            document.getElementById('creator-screen').style.display = "flex";
+          } 
+        }
+      ]
+    );
+  }
+
+  function showEventModal(headerText, icon, title, desc, options) {
+    document.getElementById('modal-header-title').innerText = headerText;
+    document.getElementById('modal-icon').innerText = icon;
+    document.getElementById('modal-title').innerText = title;
+    document.getElementById('modal-desc').innerHTML = desc;
+
+    const optContainer = document.getElementById('modal-options');
+    optContainer.innerHTML = "";
+
+    options.forEach(opt => {
+      const btn = document.createElement('button');
+      btn.className = `option-btn ${opt.isClose ? 'close' : ''}`;
+      btn.innerText = opt.text;
+      btn.onclick = () => {
+        opt.action();
+        if(!opt.keepModal) {
+          document.getElementById('event-modal').classList.remove('active');
+        }
+        updateUI();
+      };
+      optContainer.appendChild(btn);
+    });
+
+    document.getElementById('event-modal').classList.add('active');
+  }
+
+  function openDoctorMenu() {
+    const options = [
+      {
+        text: "General Checkup (Free)",
+        action: () => {
+          player.stats.health = Math.min(100, player.stats.health + 20);
+          addLog("You went for a general health checkup and feel great!");
+          goToLogTab();
+        }
+      },
+      {
+        text: "Therapy Session ($100)",
+        action: () => {
+          if(player.money >= 100) {
+            player.money -= 100;
+            player.stats.happy = Math.min(100, player.stats.happy + 25);
+            addLog("You had a great therapy session. (+Happiness)");
+          } else {
+            addLog("You can't afford therapy ($100)!");
+          }
+          goToLogTab();
+        }
+      },
+      {
+        text: "Plastic Surgery ($2,500)",
+        action: () => {
+          if(player.money >= 2500) {
+            player.money -= 2500;
+            player.stats.looks = Math.min(100, player.stats.looks + 30);
+            addLog("Plastic surgery was a success! You look stunning.");
+          } else {
+            addLog("You need $2,500 for plastic surgery!");
+          }
+          goToLogTab();
+        }
+      },
+      { text: "Cancel ❌", isClose: true, action: () => {} }
+    ];
+    showEventModal("HEALTHCARE", "👨‍⚕️", "Doctor Options", "Choose a healthcare service:", options);
+  }
+
+  function openUniversityMenu() {
+    const degrees = [
+      { name: "Computer Science", job: "Software Developer 💻", salary: 85000 },
+      { name: "Medicine", job: "Doctor / Surgeon 🩺", salary: 140000 },
+      { name: "Law", job: "Attorney / Lawyer ⚖️", salary: 110000 },
+      { name: "Business", job: "Corporate Executive 📊", salary: 95000 },
+      { name: "Fine Arts", job: "Artist / Designer 🎨", salary: 50000 }
+    ];
+
+    const options = degrees.map(deg => ({
+      text: `${deg.name} Major`,
+      action: () => {
+        player.job = deg.job;
+        player.salary = deg.salary;
+        player.stats.smart = Math.min(100, player.stats.smart + 20);
+        addLog(`You graduated with a degree in <b>${deg.name}</b> and got hired as a <b>${deg.job}</b>! ($${deg.salary.toLocaleString()}/yr)`);
+        goToLogTab();
+      }
+    }));
+    options.push({ text: "Cancel ❌", isClose: true, action: () => {} });
+
+    showEventModal("EDUCATION", "🎓", "Select Your Major", "Choose your field of study at University:", options);
+  }
+
+  function openJobMarket() {
+    const options = availableJobs.map(j => ({
+      text: `${j.title} ($${j.salary.toLocaleString()}/yr)`,
+      action: () => {
+        player.job = j.title;
+        player.salary = j.salary;
+        addLog(`You got a job as a ${j.title}.`);
+        goToLogTab();
+      }
+    }));
+    options.push({ text: "Cancel ❌", isClose: true, action: () => {} });
+
+    showEventModal("Careers", "💼", "Apply for a Job", "Available job offers:", options);
+  }
+
+  function openFitnessMenu() {
+    const options = [
+      {
+        text: "Gym Workout 🏋️",
+        action: () => {
+          player.stats.health = Math.min(100, player.stats.health + 10);
+          player.stats.looks = Math.min(100, player.stats.looks + 5);
+          addLog("You had a great workout at the gym! (+Health, +Looks)");
+          goToLogTab();
+        }
+      },
+      {
+        text: "Yoga & Meditation 🧘‍♀️",
+        action: () => {
+          player.stats.happy = Math.min(100, player.stats.happy + 10);
+          player.stats.health = Math.min(100, player.stats.health + 5);
+          addLog("Yoga helped you relax and de-stress.");
+          goToLogTab();
+        }
+      },
+      { text: "Cancel ❌", isClose: true, action: () => {} }
+    ];
+    showEventModal("FITNESS", "💪", "Stay Active", "Choose your physical activity:", options);
+  }
+
+  function openCrimeMenu() {
+    const options = [
+      {
+        text: "Pickpocket ($100 - $300)",
+        action: () => {
+          if(Math.random() > 0.3) {
+            const gain = Math.floor(Math.random() * 200) + 100;
+            player.money += gain;
+            addLog(`You pickpocketed someone and got <b>+$${gain}</b>!`);
+          } else {
+            player.stats.happy -= 10;
+            addLog("You got caught pickpocketing and paid a fine!");
+          }
+          goToLogTab();
+        }
+      },
+      {
+        text: "Illegal Gambling 🎲",
+        action: () => {
+          if(player.money >= 100) {
+            player.money -= 100;
+            if(Math.random() > 0.45) {
+              player.money += 350;
+              addLog("You won big at illegal poker! (+$350)");
+            } else {
+              addLog("You lost your $100 bet at gambling.");
+            }
+          } else {
+            addLog("You need at least $100 to gamble!");
+          }
+          goToLogTab();
+        }
+      },
+      { text: "Cancel ❌", isClose: true, action: () => {} }
+    ];
+    showEventModal("CRIME & RISKS", "🦹", "Underground World", "Take a risky crime chance:", options);
   }
 
   function switchTab(tabName, btn) {
     document.querySelectorAll('.view-panel').forEach(el => el.classList.remove('active'));
     document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
+    
     document.getElementById(`view-${tabName}`).classList.add('active');
     btn.classList.add('active');
   }
 
   function renderFamily() {
     const container = document.getElementById('family-list');
-    container.innerHTML = player.family.map(f => `
-      <div class="list-item">
+    container.innerHTML = "";
+    player.family.forEach(f => {
+      const div = document.createElement('div');
+      div.className = "list-item";
+      div.innerHTML = `
         <div style="display:flex; align-items:center; gap:10px;">
           <span style="font-size:1.5rem">${f.icon}</span>
-          <div><b>${f.name}</b> (${f.role})<div style="font-size:0.75rem; color:#94a3b8">Age: ${f.age}</div></div>
+          <div>
+            <b>${f.name}</b> (${f.role})
+            <div style="font-size:0.75rem; color:#94a3b8">Age: ${f.age}</div>
+          </div>
         </div>
         <div class="rel-bar"><div class="rel-fill" style="width: ${f.rel}%;"></div></div>
-      </div>
-    `).join('');
+      `;
+      container.appendChild(div);
+    });
   }
 
   function renderActivities() {
     const container = document.getElementById('activities-list');
+    container.innerHTML = "";
+
     const acts = [
-      { name: "🩺 Visit Doctor", icon: "👨‍⚕️", req: 0, action: () => { player.stats.health = 100; addLog("Doctor cured all ailments!"); goToLogTab(); } },
-      { name: "🏋️ Gym", icon: "💪", req: 12, action: () => { player.stats.health = Math.min(100, player.stats.health + 10); addLog("Worked out at the gym!"); goToLogTab(); } },
-      { name: "🎓 University", icon: "🏫", req: 18, action: () => { player.job = "Engineer"; player.salary = 75000; addLog("Graduated University as an Engineer!"); goToLogTab(); } }
+      { name: "🩺 Doctor & Healthcare", icon: "👨‍⚕️", req: 0, action: () => openDoctorMenu() },
+      { name: "💪 Gym & Sports", icon: "🏋️", req: 12, action: () => openFitnessMenu() },
+      { name: "🎓 University & Degrees", icon: "🏫", req: 18, action: () => openUniversityMenu() },
+      { name: "💼 Find a Job", icon: "🏢", req: 18, action: () => openJobMarket() },
+      { name: "🏎️ Driver's License", icon: "🚘", req: 16, action: () => { addLog("You passed your driving test and got a license!"); goToLogTab(); } },
+      { name: "✈️ Luxury Vacation ($500)", icon: "🏝️", req: 18, action: () => {
+          if(player.money >= 500) {
+            player.money -= 500;
+            player.stats.happy = Math.min(100, player.stats.happy + 25);
+            addLog("You enjoyed a tropical vacation in Hawaii!");
+          } else {
+            addLog("You don't have $500 for a vacation!");
+          }
+          goToLogTab();
+        }
+      },
+      { name: "🦹 Crime & Illegal Actions", icon: "🎭", req: 14, action: () => openCrimeMenu() }
     ];
 
-    container.innerHTML = acts.map((act, i) => {
+    acts.forEach(act => {
       const isLocked = player.age < act.req || player.isDead;
-      return `
-        <div class="list-item ${isLocked ? 'disabled' : ''}" onclick="${!isLocked ? `runAct(${i})` : ''}">
-          <span>${act.icon} <b>${act.name}</b></span>
-          <span>${isLocked ? `Age ${act.req}+` : '➡️'}</span>
-        </div>
+      const div = document.createElement('div');
+      div.className = `list-item ${isLocked ? 'disabled' : ''}`;
+      div.innerHTML = `
+        <span>${act.icon} <b>${act.name}</b></span>
+        <span>${isLocked ? (player.isDead ? 'Dead' : `Age ${act.req}+`) : '➡️'}</span>
       `;
-    }).join('');
-
-    window.runAct = (i) => { acts[i].action(); updateUI(); };
+      if(!isLocked) div.onclick = () => { act.action(); updateUI(); };
+      container.appendChild(div);
+    });
   }
 
   function renderAssets() {
+    const ownedContainer = document.getElementById('owned-assets-list');
     const shopContainer = document.getElementById('assets-shop-list');
-    shopContainer.innerHTML = availableAssetsList.map((item, i) => {
-      const isLocked = player.age < item.req || player.isDead;
-      return `
-        <div class="list-item ${isLocked ? 'disabled' : ''}" onclick="${!isLocked ? `buyAsset(${i})` : ''}">
-          <span>${item.icon} <b>${item.name}</b></span>
-          <span style="color:var(--accent-green)">$${item.price.toLocaleString()}</span>
-        </div>
-      `;
-    }).join('');
+    
+    ownedContainer.innerHTML = "";
+    shopContainer.innerHTML = "";
 
-    window.buyAsset = (i) => {
-      const item = availableAssetsList[i];
-      if(player.money >= item.price) {
-        player.money -= item.price;
-        player.inventory.push(item);
-        addLog(`Bought ${item.name}!`);
-        goToLogTab();
-        updateUI();
-      } else { alert("Not enough money!"); }
-    };
+    if(player.inventory.length === 0) {
+      ownedContainer.innerHTML = `<div style="font-size:0.85rem; color:#64748b; padding: 5px;">You don't own any assets yet.</div>`;
+    } else {
+      player.inventory.forEach(item => {
+        const div = document.createElement('div');
+        div.className = "list-item";
+        div.innerHTML = `
+          <span>${item.icon} <b>${item.name}</b></span>
+          <span style="color:#94a3b8; font-size:0.8rem">Owned</span>
+        `;
+        ownedContainer.appendChild(div);
+      });
+    }
+
+    availableAssetsList.forEach(item => {
+      const isLocked = player.age < item.req || player.isDead;
+      const div = document.createElement('div');
+      div.className = `list-item ${isLocked ? 'disabled' : ''}`;
+      div.innerHTML = `
+        <span>${item.icon} <b>${item.name}</b></span>
+        <span style="color:var(--accent-green)">$${item.price.toLocaleString()}</span>
+      `;
+      if(!isLocked) {
+        div.onclick = () => {
+          if(player.money >= item.price) {
+            player.money -= item.price;
+            player.inventory.push(item);
+            addLog(`You purchased: ${item.name} for $${item.price.toLocaleString()}!`);
+            goToLogTab();
+            updateUI();
+          } else {
+            alert("You don't have enough money for this!");
+          }
+        };
+      }
+      shopContainer.appendChild(div);
+    });
   }
 </script>
 </body>
