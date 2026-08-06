@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BitLife Unlimited Edition</title>
+    <title>BitLife Mega Edition 1000+</title>
     <style>
         * {
             box-sizing: border-box;
@@ -54,7 +54,7 @@
         .char-subtitle {
             font-size: 13px;
             color: #8da4c4;
-            margin-top: 3px;
+            margin-top: 2px;
         }
 
         .bank-balance {
@@ -72,7 +72,7 @@
             text-align: center;
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 10px;
             overflow-y: auto;
             height: 100%;
             justify-content: center;
@@ -81,7 +81,7 @@
         .setup-screen h1 {
             color: #f39c12;
             font-size: 28px;
-            margin-bottom: 10px;
+            margin-bottom: 5px;
         }
 
         .setup-screen label {
@@ -92,14 +92,25 @@
             font-weight: bold;
         }
 
-        .setup-screen input, .setup-screen select {
+        .setup-screen input {
             width: 100%;
-            padding: 12px;
+            padding: 10px;
             border-radius: 8px;
             border: 1px solid #203354;
             background: #152238;
             color: white;
-            font-size: 15px;
+            font-size: 14px;
+            outline: none;
+        }
+
+        .setup-screen select {
+            width: 100%;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #203354;
+            background: #152238;
+            color: white;
+            font-size: 14px;
             outline: none;
         }
 
@@ -107,18 +118,13 @@
             background: #2ecc71;
             color: white;
             border: none;
-            padding: 16px;
+            padding: 15px;
             width: 100%;
             border-radius: 8px;
             font-size: 18px;
             font-weight: bold;
             cursor: pointer;
             margin-top: 15px;
-            transition: 0.2s;
-        }
-
-        .btn-start:hover {
-            background: #27ae60;
         }
 
         /* EVENT LOG */
@@ -128,17 +134,17 @@
             overflow-y: auto;
             display: flex;
             flex-direction: column-reverse;
-            gap: 10px;
+            gap: 8px;
             font-size: 13.5px;
             background: #08101d;
         }
 
         .log-item {
             background: #111d30;
-            padding: 12px 14px;
+            padding: 10px 12px;
             border-radius: 8px;
             border-left: 4px solid #3498db;
-            line-height: 1.45;
+            line-height: 1.4;
         }
 
         .log-item b {
@@ -155,7 +161,7 @@
         .stat-row {
             display: flex;
             align-items: center;
-            margin-bottom: 6px;
+            margin-bottom: 5px;
             font-size: 12px;
             font-weight: bold;
         }
@@ -167,8 +173,8 @@
         .stat-bar-bg {
             flex: 1;
             background: #050a14;
-            height: 11px;
-            border-radius: 6px;
+            height: 10px;
+            border-radius: 5px;
             overflow: hidden;
             margin: 0 10px;
         }
@@ -229,11 +235,6 @@
             justify-content: center;
             cursor: pointer;
             box-shadow: 0 4px 12px rgba(0,0,0,0.6);
-            transition: transform 0.1s;
-        }
-
-        .age-circle:active {
-            transform: translateX(-50%) scale(0.92);
         }
 
         /* MODALS */
@@ -277,7 +278,6 @@
             cursor: pointer;
             border: 1px solid #203354;
             font-size: 14px;
-            transition: 0.15s;
         }
 
         .menu-card:hover {
@@ -301,61 +301,99 @@
 
 <div class="app-container">
     <div id="setup-screen" class="setup-screen">
-        <h1>BitLife Pro 👑</h1>
-        <label>Imię i Nazwisko</label>
+        <h1>BitLife 1000+ Edition 👑</h1>
+        
+        <label>Imię Postaci</label>
         <input type="text" id="p-name" placeholder="Imię" value="Jan">
+        
+        <label>Nazwisko Postaci</label>
         <input type="text" id="p-surname" placeholder="Nazwisko" value="Kowalski">
         
-        <label>Kraj i Miasto Urodzenia</label>
+        <label>Kraj Urodzenia</label>
         <select id="p-country">
-            <option value="Polska (Warszawa)">🇵🇱 Polska (Warszawa)</option>
-            <option value="USA (Nowy Jork)">🇺🇸 USA (Nowy Jork)</option>
-            <option value="Wielka Brytania (Londyn)">🇬🇧 Wielka Brytania (Londyn)</option>
-            <option value="Niemcy (Berlin)">🇩🇪 Niemcy (Berlin)</option>
-            <option value="Japonia (Tokio)">🇯🇵 Japonia (Tokio)</option>
+            <option value="USA">🇺🇸 USA (Stany Zjednoczone)</option>
+            <option value="Polska">🇵🇱 Polska</option>
+            <option value="Wielka Brytania">🇬🇧 Wielka Brytania</option>
+            <option value="Hiszpania">🇪🇸 Hiszpania</option>
+            <option value="Niemcy">🇩🇪 Niemcy</option>
+            <option value="Francja">🇫🇷 Francja</option>
+            <option value="Włochy">🇮🇹 Włochy</option>
+            <option value="Brazylia">🇧🇷 Brazylia</option>
+            <option value="Japonia">🇯🇵 Japonia</option>
+            <option value="Kanada">🇨🇦 Kanada</option>
+            <option value="Meksyk">🇲🇽 Meksyk</option>
+            <option value="Australia">🇦🇺 Australia</option>
+            <option value="Egipt">🇪🇬 Egipt</option>
+            <option value="Chiny">🇨🇳 Chiny</option>
+            <option value="Indie">🇮🇳 Indie</option>
+            <option value="Szwecja">🇸🇪 Szwecja</option>
+            <option value="Norwegia">🇳🇴 Norwegia</option>
+            <option value="Szwajcaria">🇨🇭 Szwajcaria</option>
+            <option value="Holandia">🇳🇱 Holandia</option>
+            <option value="Argentyna">🇦🇷 Argentyna</option>
+            <option value="Portugalia">🇵🇹 Portugalia</option>
+            <option value="Grecja">🇬🇷 Grecja</option>
+            <option value="Turcja">🇹🇷 Turcja</option>
+            <option value="Korea Południowa">🇰🇷 Korea Południowa</option>
         </select>
 
-        <label>Orientacja</label>
+        <label>Orientacja Seksualna</label>
         <select id="p-orientation">
-            <option value="Heteroseksualizm">Heteroseksualizm</option>
-            <option value="Homoseksualizm">Homoseksualizm</option>
-            <option value="Biseksualizm">Biseksualizm</option>
+            <option value="Heteroseksualność">Heteroseksualność</option>
+            <option value="Homoseksualność">Homoseksualność</option>
+            <option value="Biseksualność">Biseksualność</option>
         </select>
 
         <label>Specjalny Talent</label>
         <select id="p-talent">
-            <option value="Muzyka">🎵 Muzyka</option>
             <option value="Sport">⚽ Sport</option>
+            <option value="Muzyka">🎵 Muzyka</option>
             <option value="Aktorstwo">🎭 Aktorstwo</option>
-            <option value="Biznes">💼 Biznes</option>
             <option value="Mądrość">🧠 Mądrość</option>
+            <option value="Przestępczość">😈 Przestępczość</option>
         </select>
 
-        <button class="btn-start" onclick="initGame()">Rozpocznij Nowe Życie ✨</button>
+        <button class="btn-start" onclick="initGame()">Rozpocznij Życie ✨</button>
     </div>
 
     <div id="game-screen" style="display:none; flex-direction:column; height:100%;">
         <div class="header">
             <div class="char-title" id="ui-name">Jan Kowalski</div>
-            <div class="char-subtitle" id="ui-status">Wiek: 0 | Niemowlę</div>
+            <div class="char-subtitle" id="ui-status">Wiek: 0 | Energy: 100%</div>
             <div class="bank-balance" id="ui-money">$0</div>
         </div>
 
         <div class="log-container" id="log-box"></div>
 
         <div class="stats-container">
-            <div class="stat-row"><span class="stat-name">Szczęście</span><div class="stat-bar-bg"><div id="bar-happy" class="stat-bar-fill"></div></div><span id="val-happy" class="stat-val">0%</span></div>
-            <div class="stat-row"><span class="stat-name">Zdrowie</span><div class="stat-bar-bg"><div id="bar-health" class="stat-bar-fill"></div></div><span id="val-health" class="stat-val">0%</span></div>
-            <div class="stat-row"><span class="stat-name">Mądrość</span><div class="stat-bar-bg"><div id="bar-smarts" class="stat-bar-fill"></div></div><span id="val-smarts" class="stat-val">0%</span></div>
-            <div class="stat-row"><span class="stat-name">Wygląd</span><div class="stat-bar-bg"><div id="bar-looks" class="stat-bar-fill"></div></div><span id="val-looks" class="stat-val">0%</span></div>
+            <div class="stat-row">
+                <span class="stat-name">Szczęście</span>
+                <div class="stat-bar-bg"><div id="bar-happy" class="stat-bar-fill"></div></div>
+                <span id="val-happy" class="stat-val">0%</span>
+            </div>
+            <div class="stat-row">
+                <span class="stat-name">Zdrowie</span>
+                <div class="stat-bar-bg"><div id="bar-health" class="stat-bar-fill"></div></div>
+                <span id="val-health" class="stat-val">0%</span>
+            </div>
+            <div class="stat-row">
+                <span class="stat-name">Mądrość</span>
+                <div class="stat-bar-bg"><div id="bar-smarts" class="stat-bar-fill"></div></div>
+                <span id="val-smarts" class="stat-val">0%</span>
+            </div>
+            <div class="stat-row">
+                <span class="stat-name">Wygląd</span>
+                <div class="stat-bar-bg"><div id="bar-looks" class="stat-bar-fill"></div></div>
+                <span id="val-looks" class="stat-val">0%</span>
+            </div>
         </div>
 
         <div class="bottom-nav">
-            <button class="nav-btn" onclick="openModal('career')"><span class="icon">💼</span>Kariera/Edukacja</button>
-            <button class="nav-btn" onclick="openModal('assets')"><span class="icon">🏠</span>Majątek/Giełda</button>
+            <button class="nav-btn" onclick="openModal('school-job')"><span class="icon">💼</span>Edukacja/Kariera</button>
+            <button class="nav-btn" onclick="openModal('assets')"><span class="icon">🏠</span>Majątek/Sklep</button>
             <div class="age-circle" onclick="ageUp()">+</div>
-            <button class="nav-btn" onclick="openModal('rel')"><span class="icon">👨‍👩‍👦</span>Relacje/Dzieci</button>
-            <button class="nav-btn" onclick="openModal('lifestyle')"><span class="icon">⚽</span>Styl Życia</button>
+            <button class="nav-btn" onclick="openModal('rel')"><span class="icon">👨‍👩‍👦</span>Relacje/Rodzina</button>
+            <button class="nav-btn" onclick="openModal('activities')"><span class="icon">⚽</span>Aktywności</button>
         </div>
     </div>
 
@@ -369,26 +407,139 @@
 </div>
 
 <script>
-    // ZMIENNE GRY
+    /* ---------------------------------------------------- */
+    /* BAZA DANYCH SAMOCHODÓW                               */
+    /* ---------------------------------------------------- */
+    const CAR_DATABASE = [
+        { name: "Stary Fiat Punto (Używany)", price: 1200 },
+        { name: "Opel Corsa 2005", price: 2500 },
+        { name: "Renault Clio 2008", price: 3800 },
+        { name: "Volkswagen Golf IV", price: 4500 },
+        { name: "Ford Focus 2012", price: 8900 },
+        { name: "Toyota Corolla 2016", price: 12500 },
+        { name: "Honda Civic Type R", price: 28000 },
+        { name: "BMW Serii 3 M-Sport", price: 42000 },
+        { name: "Audi A6 S-Line", price: 58000 },
+        { name: "Mercedes Klasy E", price: 65000 },
+        { name: "Volvo XC90 Luxury", price: 72000 },
+        { name: "Tesla Model S Plaid", price: 95000 },
+        { name: "Porsche 911 Carrera S", price: 135000 },
+        { name: "Aston Martin Vantage", price: 175000 },
+        { name: "Lamborghini Huracán Evo", price: 240000 },
+        { name: "Ferrari F8 Tributo", price: 290000 },
+        { name: "Rolls-Royce Phantom", price: 450000 },
+        { name: "Bugatti Chiron Super Sport", price: 3200000 }
+    ];
+
+    /* ---------------------------------------------------- */
+    /* BAZA DANYCH NIERUCHOMOŚCI                            */
+    /* ---------------------------------------------------- */
+    const HOUSE_DATABASE = [
+        { name: "Mały Pokój w Akademiku", price: 15000 },
+        { name: "Kawalerka na peryferiach", price: 45000 },
+        { name: "Mieszkanie 2-pokojowe w mieście", price: 95000 },
+        { name: "Apartament 3-pokojowy", price: 160000 },
+        { name: "Luksusowy Penthouse w Centrum", price: 280000 },
+        { name: "Dom Jednorodzinny z Ogrodem", price: 380000 },
+        { name: "Bliźniak na Przedmieściach", price: 420000 },
+        { name: "Nowoczesna Willa z Basenem", price: 890000 },
+        { name: "Rezydencja z Korty Tenisowym", price: 1800000 },
+        { name: "Posiadłość w Hollywood Hills", price: 3500000 },
+        { name: "Prywatny Zamek w Szkocji", price: 8500000 },
+        { name: "Prywatna Wyspa na Karaibach", price: 25000000 }
+    ];
+
+    /* ---------------------------------------------------- */
+    /* BAZA DANYCH ZDARZEŃ LOSOWYCH                         */
+    /* ---------------------------------------------------- */
+    const RANDOM_EVENTS = [
+        "Znalazłeś porzucony portfel z gotówką na ulicy!",
+        "Dostałeś mandat za przechodzenie na czerwonym świetle.",
+        "Twój stary znajomy ze szkoły zaprosił Cię na kawę.",
+        "Przeziębiłeś się podczas deszczowej pogody.",
+        "Wygrałeś małą nagrodę w zdrapce w lokalnym sklepie!",
+        "Sąsiedzi urządzili głośną imprezę w środku nocy.",
+        "Przeczytałeś bardzo wartościową książkę i poprawiłeś swoją wiedzę.",
+        "Twój komputer się zepsuł i musiałeś wydać pieniądze na naprawę.",
+        "Zostałeś zaczepiony przez ulicznego artystę, który poprosił o zmianę.",
+        "Twoje ulubione danie w restauracji zostało wycofane z menu.",
+        "Znalazłeś stary moneta kolekcjonerską w starym płaszczu.",
+        "Dostałeś premię od nieznajomego za pomoc w niesieniu zakupów.",
+        "Ktoś zarysował Twój samochód na parking pod sklepem.",
+        "Otrzymałeś zaproszenie na wesołe wesele w rodzinie.",
+        "Zgubiłeś swoje ulubione okulary przeciwsłoneczne.",
+        "Znajomy zaproponował Ci wspólny wyjazd w góry na weekend.",
+        "Udało Ci się okazyjnie kupić świetny sprzęt elektroniczny.",
+        "Twój pies zgubił się w parku, ale szybko go odnalazłeś.",
+        "Pomyślnie rozwiązałeś trudny konflikt w pracy lub szkole.",
+        "Zostałeś wybrany do krótkiego wywiadu w lokalnej telewizji.",
+        "Twój sąsiad pożyczył narzędzia i zapomniał ich oddać.",
+        "Dostałeś wiadomość od dawno niewidzianego kuzyna.",
+        "Twoja ulubiona drużyna sportowa wygrała ważny mecz!",
+        "Zaciąłeś się w windzie na ponad pół godziny.",
+        "Sklep pomylił się na Twoją korzyść przy wydawaniu reszty.",
+        "Zostałeś pogryziony przez osę podczas spaceru.",
+        "Twój post na portalu społecznościowym zdobył dużo polubień.",
+        "Zapomniałeś hasła do konta i straciłeś czas na jego reset.",
+        "Ktoś zapłacił za Twoją kawę w kawiarni!",
+        "Dostałeś ciekawe zaproszenie na rozmowę rekrutacyjną."
+    ];
+
+    /* ---------------------------------------------------- */
+    /* BAZA DANYCH RÓŻNYCH ZAWODÓW                          */
+    /* ---------------------------------------------------- */
+    const JOBS_DATABASE = [
+        { title: "Kasjer w Supermarkecie", pay: 24000, req: 0 },
+        { title: "Kelner w Restauracji", pay: 26000, req: 0 },
+        { title: "Kierowca Dostawczy", pay: 32000, req: 0 },
+        { title: "Kucharz w Bistro", pay: 35000, req: 0 },
+        { title: "Pracownik Biurowy", pay: 40000, req: 0 },
+        { title: "Junior Web Developer", pay: 52000, req: 1 },
+        { title: "Inżynier Oprogramowania", pay: 75000, req: 1 },
+        { title: "Analityk Danych", pay: 68000, req: 1 },
+        { title: "Menedżer Projektu", pay: 82000, req: 1 },
+        { title: "Lekarz Medycyny", pay: 120000, req: 1 },
+        { title: "Prawnik Kancelaryjny", pay: 110000, req: 1 },
+        { title: "Architekt Wnętrz", pay: 65000, req: 1 }
+    ];
+
+    /* ---------------------------------------------------- */
+    /* ZMIENNE STANU GRACZA                                 */
+    /* ---------------------------------------------------- */
     let player = {
-        name: "", surname: "", age: 0, money: 0, country: "", orientation: "", talent: "",
-        stats: { happy: 80, health: 90, smarts: 50, looks: 60 },
-        education: "Brak", job: "Bezrobotny", salary: 0,
-        socials: { youtube: 0, tiktok: 0, twitch: 0, instagram: 0 },
-        investments: { stocks: 0, crypto: 0 },
-        assets: { houses: [], cars: [], jets: [] },
-        children: [], pets: [], sportsClub: "Brak",
-        family: { father: "", mother: "" },
-        royal: false
+        name: "",
+        surname: "",
+        age: 0,
+        money: 0,
+        country: "",
+        orientation: "",
+        talent: "",
+        energy: 100,
+        stats: {
+            happy: 80,
+            health: 90,
+            smarts: 50,
+            looks: 60
+        },
+        education: "Brak",
+        job: "Bezrobotny",
+        salary: 0,
+        sportSkill: 0,
+        sportsClub: "Brak",
+        proLeague: "Brak",
+        assets: {
+            houses: [],
+            cars: []
+        },
+        children: []
     };
 
-    let cryptoPrice = 100;
-    let stockPrice = 50;
-
-    const maleNames = ["Jan", "Adam", "Piotr", "Michał", "Kamil", "Mateusz", "Kacper", "Jakub", "Szymon", "Filip"];
-    const femaleNames = ["Anna", "Maria", "Katarzyna", "Ewa", "Karolina", "Wiktoria", "Julia", "Zofia", "Oliwia", "Maja"];
-
-    function rand(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
+    /* ---------------------------------------------------- */
+    /* FUNKCJE POMOCNICZE                                  */
+    /* ---------------------------------------------------- */
+    function rand(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
 
     function initGame() {
         player.name = document.getElementById('p-name').value || "Jan";
@@ -398,32 +549,20 @@
         player.talent = document.getElementById('p-talent').value;
 
         player.stats.happy = rand(50, 100);
-        player.stats.health = rand(60, 100);
-        player.stats.smarts = rand(30, 95);
-        player.stats.looks = rand(20, 90);
-
-        player.family.father = `${maleNames[rand(0, maleNames.length-1)]} ${player.surname} (Wiek: ${rand(22, 45)})`;
-        player.family.mother = `${femaleNames[rand(0, femaleNames.length-1)]} ${player.surname} (Wiek: ${rand(20, 42)})`;
-
-        if (Math.random() < 0.03) {
-            player.royal = true;
-            player.job = "Książę / Księżniczka";
-            player.money = 250000;
-        }
+        player.stats.health = rand(70, 100);
+        player.stats.smarts = rand(30, 90);
+        player.stats.looks = rand(30, 90);
 
         document.getElementById('setup-screen').style.display = 'none';
         document.getElementById('game-screen').style.display = 'flex';
 
-        addLog(`Urodziłeś się w miejscowości <b>${player.country}</b>.`);
-        addLog(`👨‍👩‍👦 Ojciec: ${player.family.father} | Matka: ${player.family.mother}`);
-        addLog(`Twój specjalny talent to: <b>${player.talent}</b>.`);
-        if (player.royal) addLog(`👑 URODZIŁEŚ SIĘ W RODZINIE KRÓLEWSKIEJ!`);
+        addLog(`Urodziłeś się w kraju: <b>${player.country}</b>! Twój talent to: <b>${player.talent}</b>.`);
         updateUI();
     }
 
     function updateUI() {
         document.getElementById('ui-name').innerText = `${player.name} ${player.surname}`;
-        document.getElementById('ui-status').innerText = `Wiek: ${player.age} | ${player.job !== 'Bezrobotny' ? player.job : player.education}`;
+        document.getElementById('ui-status').innerText = `Wiek: ${player.age} | Energia: ${player.energy}% | ${player.job !== 'Bezrobotny' ? player.job : player.education}`;
         document.getElementById('ui-money').innerText = `$${player.money}`;
 
         for (let s in player.stats) {
@@ -437,44 +576,60 @@
         logBox.innerHTML += `<div class="log-item"><b>[Wiek ${player.age}]</b> ${msg}</div>`;
     }
 
+    function useEnergy(amount) {
+        if (player.energy < amount) {
+            alert("Jesteś zbyt zmęczony! Kliknij '+', aby przejść do kolejnego roku i odnowić energię.");
+            return false;
+        }
+        player.energy -= amount;
+        return true;
+    }
+
+    /* ---------------------------------------------------- */
+    /* SYSTEM STARZENIA SIĘ ORAZ UPŁYWU CZASU              */
+    /* ---------------------------------------------------- */
     function ageUp() {
         player.age++;
+        player.energy = 100;
 
-        // Edukacja
-        if (player.age === 7) { player.education = "Uczeń Szkoły Podstawowej"; addLog("🎒 Rozpoczynasz edukację w szkole podstawowej!"); }
-        if (player.age === 15) { player.education = "Uczeń Liceum"; addLog("🏫 Awansujesz do Liceum!"); }
-        if (player.age === 19 && player.education !== "Wykształcenie Wyższe") { player.education = "Student Uniwersytetu"; addLog("🎓 Rozpoczynasz studia na Uniwersytecie!"); }
-        if (player.age === 24 && player.education === "Student Uniwersytetu") { player.education = "Wykształcenie Wyższe"; addLog("👨‍🎓 Ukończyłeś Uniwersytet!"); }
+        // USA SYSTEM EDUKACJI
+        if (player.age === 6) {
+            player.education = "Elementary School";
+            addLog("🎒 Rozpoczynasz edukację w Elementary School!");
+        }
+        if (player.age === 11) {
+            player.education = "Middle School";
+            addLog("🏫 Przechodzisz do Middle School!");
+        }
+        if (player.age === 14) {
+            player.education = "High School";
+            addLog("🎓 Rozpoczynasz naukę w High School!");
+        }
+        if (player.age === 18 && player.education === "High School") {
+            player.education = "Absolwent High School";
+            addLog("📜 Ukończyłeś High School!");
+        }
 
-        // Rynek finansowy
-        cryptoPrice = Math.max(10, Math.floor(cryptoPrice + (Math.random() - 0.45) * 60));
-        stockPrice = Math.max(5, Math.floor(stockPrice + (Math.random() - 0.48) * 20));
-
-        // Pensja
+        // PENSJA
         if (player.salary > 0) {
             player.money += player.salary;
-            addLog(`💰 Otrzymałeś roczne wynagrodzenie (${player.job}): +$${player.salary}`);
+            addLog(`💰 Roczna pensja: +$${player.salary} z pracy (${player.job}).`);
         }
 
-        // Wydatki na utrzymanie
-        if (player.pets.length > 0) {
-            let petCost = player.pets.length * 200;
-            player.money = Math.max(0, player.money - petCost);
-            addLog(`🐾 Wydałeś $${petCost} na utrzymanie swoich zwierząt.`);
+        // ZDARZENIA LOSOWE
+        if (Math.random() < 0.35) {
+            let ev = RANDOM_EVENTS[rand(0, RANDOM_EVENTS.length - 1)];
+            addLog(`🎲 Zdarzenie: ${ev}`);
         }
 
-        // Zdarzenia losowe
-        triggerEvents();
+        // SPADEK ZDROWIA ZE STAROŚCI
+        if (player.age > 70) {
+            player.stats.health -= rand(3, 9);
+        }
 
-        // Śmierć ze starości lub braku zdrowia
-        if (player.age > rand(75, 100) || player.stats.health <= 0) {
-            alert(`Twoja postać zmarła w wieku ${player.age} lat.`);
-            if (player.children.length > 0) {
-                if (confirm("Czy chcesz grać dalej jako swoje dziecko?")) {
-                    passToNextGen();
-                    return;
-                }
-            }
+        // WARUNEK ŚMIERCI
+        if (player.stats.health <= 0 || player.age > rand(85, 105)) {
+            alert(`💀 Umierasz ze starości w wieku ${player.age} lat. Twój końcowy majątek wyniósł $${player.money}.`);
             location.reload();
             return;
         }
@@ -482,35 +637,9 @@
         updateUI();
     }
 
-    function triggerEvents() {
-        let r = Math.random();
-        if (r < 0.12) {
-            let found = rand(20, 400);
-            player.money += found;
-            addLog(`💵 Znalazłeś zagubione pieniądze na ulicy: +$${found}!`);
-        } else if (r < 0.22) {
-            player.stats.health = Math.max(0, player.stats.health - rand(5, 20));
-            addLog(`🤒 Złapałeś infekcję! Twoje zdrowie spadło.`);
-        } else if (r < 0.32 && player.age > 12) {
-            let viral = rand(500, 5000);
-            player.socials.tiktok += viral;
-            addLog(`🔥 Twój film stał się hitem na TikToku! Zyskałeś +${viral} obserwujących.`);
-        }
-    }
-
-    function passToNextGen() {
-        player.age = 18;
-        player.name = player.children[0];
-        player.children = [];
-        player.job = "Bezrobotny";
-        player.salary = 0;
-        player.stats.health = 100;
-        player.stats.happy = 85;
-        addLog(`🌅 Rozpoczynasz nowe pokolenie jako **${player.name}**! Przejmujesz cały zgromadzony majątek.`);
-        updateUI();
-    }
-
-    /* MODAL CONTROL */
+    /* ---------------------------------------------------- */
+    /* OKNA MODALNE I INTERFEJS GRY                          */
+    /* ---------------------------------------------------- */
     function openModal(type) {
         const modal = document.getElementById('modal');
         const title = document.getElementById('modal-title');
@@ -518,227 +647,247 @@
         content.innerHTML = "";
         modal.style.display = "flex";
 
-        if (type === 'career') {
-            title.innerText = "💼 Edukacja, Praca & Kariera";
+        if (type === 'school-job') {
+            title.innerText = "🎓 Edukacja & Kariera";
             content.innerHTML = `
-                <div class="menu-card" onclick="studyHard()"><span>📚 Ucz się pilnie (+Mądrość)</span></div>
-                <div class="menu-card" onclick="openGigsMenu()"><span>🔨 Prace Dorywcze (Dla młodych)</span></div>
-                <div class="menu-card" onclick="openSpecialCareers()"><span>⭐ Kariery Specjalne (Aktor, Muzyk, Sport)</span></div>
-                <div class="menu-card" onclick="openFullJobs()"><span>💼 Zwykłe Prace Pełnoetatowe</span></div>
+                <div class="menu-card" onclick="study()"><span>📚 Ucz się pilnie (-20% Energii)</span></div>
+                <div class="menu-card" onclick="applyUniversity()"><span>🎓 Idź na Uniwersytet ($15,000)</span></div>
+                <div class="menu-card" onclick="openProSports()"><span>🏆 Ligi Sportowe (Pro Sports)</span></div>
+                <div class="menu-card" onclick="openJobs()"><span>💼 Prace Pełnoetatowe</span></div>
             `;
         } else if (type === 'assets') {
-            title.innerText = "🏠 Majątek, Giełda & Sklep";
+            title.innerText = "🏠 Majątek & Sklep";
             content.innerHTML = `
-                <div class="menu-card" onclick="tradeStock()"><span>📈 Akcje Giełdowe (Cena: $${stockPrice})</span> <span>Posiadasz: ${player.investments.stocks}</span></div>
-                <div class="menu-card" onclick="tradeCrypto()"><span>🪙 Kryptowaluty (Cena: $${cryptoPrice})</span> <span>Posiadasz: ${player.investments.crypto}</span></div>
-                <div class="menu-card" onclick="buyHouseMenu()"><span>🏠 Kup Nieruchomość</span></div>
-                <div class="menu-card" onclick="buyCarMenu()"><span>🏎️ Kup Pojazd</span></div>
+                <div class="menu-card" onclick="openHouses()"><span>🏠 Kup Dom / Nieruchomość</span></div>
+                <div class="menu-card" onclick="openCars()"><span>🏎️ Kup Samochód</span></div>
+                <div class="menu-card" onclick="showInventory()"><span>📜 Posiadany Majątek</span></div>
+            `;
+        } else if (type === 'activities') {
+            title.innerText = "⚽ Aktywności & Styl Życia";
+            content.innerHTML = `
+                <div class="menu-card" onclick="joinSchoolSport()"><span>🏀 Szkolna Drużyna Sportowa</span></div>
+                <div class="menu-card" onclick="trainSport()"><span>🏃 Trening Sportowy (-20% Energii)</span></div>
+                <div class="menu-card" onclick="goGym()"><span>🏋️ Idź na Siłownię (-20% Energii)</span></div>
+                <div class="menu-card" onclick="goDoctor()"><span>🩺 Wizyta u Lekarza ($250)</span></div>
+                <div class="menu-card" onclick="goPlasticSurgery()"><span>💉 Chirurgia Plastyczna ($8,000)</span></div>
             `;
         } else if (type === 'rel') {
-            title.innerText = "👨‍👩‍👦 Relacje, Rodzina & Dzieci";
+            title.innerText = "👨‍👩‍👦 Relacje & Rodzina";
             content.innerHTML = `
-                <div class="menu-card" onclick="interactRel('Ojciec')"><span>👨 Ojciec: ${player.family.father}</span></div>
-                <div class="menu-card" onclick="interactRel('Matka')"><span>👩 Matka: ${player.family.mother}</span></div>
-                <div class="menu-card" onclick="haveChild()"><span>👶 Miej Dziecko (Min. 18 lat)</span> <span>Dzieci: ${player.children.length}</span></div>
-            `;
-        } else if (type === 'lifestyle') {
-            title.innerText = "⚽ Styl Życia, Social Media & Zdrowie";
-            content.innerHTML = `
-                <div class="menu-card" onclick="openSocialMenu()"><span>📱 Social Media (YouTube, TikTok, Twitch)</span></div>
-                <div class="menu-card" onclick="openSportsMenu()"><span>🏆 Sekcje Sportowe & Trening</span></div>
-                <div class="menu-card" onclick="openHealthMenu()"><span>🩺 Lekarze & Chirurgia Plastyczna</span></div>
-                <div class="menu-card" onclick="buyPetMenu()"><span>🐶 Sklep ze Zwierzętami</span></div>
-                <div class="menu-card" onclick="playLottery()"><span>🎟️ Kup Los na Loterii ($10)</span></div>
+                <div class="menu-card" onclick="spendFamilyTime()"><span>👨‍👩‍👦 Spędź czas z rodziną (+Szczęście)</span></div>
+                <div class="menu-card" onclick="haveChild()"><span>👶 Miej Dziecko (Min. 18 lat)</span></div>
+                <div class="menu-card" onclick="showChildren()"><span>👶 Lista Dzieci (${player.children.length})</span></div>
             `;
         }
     }
 
-    function closeModal() { document.getElementById('modal').style.display = "none"; }
-
-    /* EDUKACJA I PRACA */
-    function studyHard() {
-        player.stats.smarts = Math.min(100, player.stats.smarts + 8);
-        addLog(`📚 Ciężko się uczyłeś. Twoja mądrość wzrosła!`);
-        updateUI(); closeModal();
+    function closeModal() {
+        document.getElementById('modal').style.display = "none";
     }
 
-    function openGigsMenu() {
+    /* ---------------------------------------------------- */
+    /* LOGIKA AKCJI I METOD                                 */
+    /* ---------------------------------------------------- */
+    function study() {
+        if (!useEnergy(20)) return;
+        player.stats.smarts = Math.min(100, player.stats.smarts + 5);
+        addLog(`📚 Nauka zwiększyła Twoją Mądrość.`);
+        updateUI();
+        closeModal();
+    }
+
+    function applyUniversity() {
+        if (player.age < 18) {
+            alert("Musisz mieć skończone 18 lat!");
+            return;
+        }
+        if (player.money < 15000) {
+            alert("Brak środków ($15,000)!");
+            return;
+        }
+        player.money -= 15000;
+        player.education = "Wykształcenie Wyższe";
+        addLog(`🎓 Ukończyłeś University z dyplomem!`);
+        updateUI();
+        closeModal();
+    }
+
+    function joinSchoolSport() {
+        if (player.age < 12 || player.age > 18) {
+            alert("Dostępne tylko w wieku 12-18 lat!");
+            return;
+        }
+        player.sportsClub = "Szkolny Klub Sportowy";
+        player.sportSkill += 25;
+        addLog(`🏆 Dołączyłeś do Szkolnego Klubu Sportowego!`);
+        updateUI();
+        closeModal();
+    }
+
+    function trainSport() {
+        if (!useEnergy(20)) return;
+        player.sportSkill = Math.min(100, player.sportSkill + 10);
+        addLog(`🏃 Twój poziom umiejętności sportowych wynosi: ${player.sportSkill}%`);
+        updateUI();
+        closeModal();
+    }
+
+    function openProSports() {
+        if (player.age < 18) {
+            alert("Ligi zawodowe od 18 lat!");
+            return;
+        }
+        if (player.sportSkill < 50) {
+            alert("Zbyt niskie umiejętności! Trenuj więcej.");
+            return;
+        }
         const content = document.getElementById('modal-content');
         content.innerHTML = `
-            <div class="menu-card" onclick="doGig('Koszenie trawników', 45)"><span>🌱 Koszenie trawników ($45)</span></div>
-            <div class="menu-card" onclick="doGig('Wyprowadzanie psów', 30)"><span>🐕 Wyprowadzanie psów ($30)</span></div>
-            <div class="menu-card" onclick="doGig('Korepetycje', 70)"><span>✏️ Korepetycje ($70)</span></div>
+            <div class="menu-card" onclick="joinLeague('NBA', 150000)"><span>🏀 Podpisz kontrakt z NBA ($150,000/rok)</span></div>
+            <div class="menu-card" onclick="joinLeague('Premier League', 180000)"><span>⚽ Podpisz kontrakt z Premier League ($180,000/rok)</span></div>
+            <div class="menu-card" onclick="joinLeague('NFL', 165000)"><span>🏈 Podpisz kontrakt z NFL ($165,000/rok)</span></div>
         `;
     }
 
-    function doGig(name, pay) {
-        player.money += pay;
-        addLog(`🔨 Wykonałeś pracę dorywczą: **${name}** (+$${pay}).`);
-        updateUI(); closeModal();
+    function joinLeague(league, pay) {
+        player.proLeague = league;
+        player.job = `Zawodnik ${league}`;
+        player.salary = pay;
+        addLog(`🎉 Gra w **${league}** z pensją $${pay}/rok!`);
+        updateUI();
+        closeModal();
     }
 
-    function openSpecialCareers() {
-        if (player.age < 18) { alert("Musisz mieć min. 18 lat!"); return; }
+    function openJobs() {
+        if (player.age < 18) {
+            alert("Praca od 18 lat!");
+            return;
+        }
         const content = document.getElementById('modal-content');
-        content.innerHTML = `
-            <div class="menu-card" onclick="startSpecialJob('Aktor Hollywood', 200000)"><span>🎭 Aktor Hollywood ($200,000/rok)</span></div>
-            <div class="menu-card" onclick="startSpecialJob('Gwiazda Muzyki Pop', 250000)"><span>🎵 Gwiazda Muzyki Pop ($250,000/rok)</span></div>
-            <div class="menu-card" onclick="startSpecialJob('Profesjonalny Sportowiec', 180000)"><span>⚽ Profesjonalny Piłkarz ($180,000/rok)</span></div>
-            <div class="menu-card" onclick="startSpecialJob('Prezes Biznesu (CEO)', 350000)"><span>💼 Prezes Biznesu (CEO) ($350,000/rok)</span></div>
-        `;
+        let html = "";
+        JOBS_DATABASE.forEach(j => {
+            if (j.req === 1 && player.education !== "Wykształcenie Wyższe") {
+                // Brak wykształcenia
+            } else {
+                html += `<div class="menu-card" onclick="takeJob('${j.title}', ${j.pay})"><span>💼 ${j.title}</span> <span>$${j.pay}/rok</span></div>`;
+            }
+        });
+        content.innerHTML = html;
     }
 
-    function openFullJobs() {
-        if (player.age < 18) { alert("Musisz mieć min. 18 lat!"); return; }
-        const content = document.getElementById('modal-content');
-        content.innerHTML = `
-            <div class="menu-card" onclick="startSpecialJob('Młodszy Programista', 45000)"><span>💻 Młodszy Programista ($45,000/rok)</span></div>
-            <div class="menu-card" onclick="startSpecialJob('Lekarz', 90000)"><span>🩺 Lekarz ($90,000/rok)</span></div>
-            <div class="menu-card" onclick="startSpecialJob('Prawnik', 85000)"><span>⚖️ Prawnik ($85,000/rok)</span></div>
-            <div class="menu-card" onclick="startSpecialJob('Kucharz', 35000)"><span>👨‍🍳 Kucharz ($35,000/rok)</span></div>
-        `;
-    }
-
-    function startSpecialJob(title, pay) {
+    function takeJob(title, pay) {
         player.job = title;
         player.salary = pay;
-        addLog(`🎉 Zostałeś zatrudniony jako **${title}** z roczną pensją $${pay}!`);
-        updateUI(); closeModal();
+        addLog(`💼 Podjąłeś pracę jako **${title}** za $${pay}/rok.`);
+        updateUI();
+        closeModal();
     }
 
-    /* INWESTYCJE & MAJĄTEK */
-    function tradeCrypto() {
-        if (player.money < cryptoPrice) { alert("Masz za mało pieniędzy!"); return; }
-        player.money -= cryptoPrice;
-        player.investments.crypto++;
-        addLog(`🪙 Kupiono 1 krypto za $${cryptoPrice}.`);
-        updateUI(); openModal('assets');
-    }
-
-    function tradeStock() {
-        if (player.money < stockPrice) { alert("Masz za mało pieniędzy!"); return; }
-        player.money -= stockPrice;
-        player.investments.stocks++;
-        addLog(`📈 Kupiono 1 akcję za $${stockPrice}.`);
-        updateUI(); openModal('assets');
-    }
-
-    function buyHouseMenu() {
+    function openHouses() {
         const content = document.getElementById('modal-content');
-        content.innerHTML = `
-            <div class="menu-card" onclick="buyAsset('Mieszkanie w Centrum', 120000, 'house')"><span>🏢 Mieszkanie w Centrum ($120,000)</span></div>
-            <div class="menu-card" onclick="buyAsset('Luksusowa Willa', 650000, 'house')"><span>🏰 Luksusowa Willa ($650,000)</span></div>
-        `;
+        let html = "";
+        HOUSE_DATABASE.forEach(h => {
+            html += `<div class="menu-card" onclick="buyAsset('${h.name}', ${h.price}, 'house')"><span>🏠 ${h.name}</span> <span>$${h.price}</span></div>`;
+        });
+        content.innerHTML = html;
     }
 
-    function buyCarMenu() {
+    function openCars() {
         const content = document.getElementById('modal-content');
-        content.innerHTML = `
-            <div class="menu-card" onclick="buyAsset('Używany Sedan', 15000, 'car')"><span>🚗 Używany Sedan ($15,000)</span></div>
-            <div class="menu-card" onclick="buyAsset('Sportowe Superauto', 220000, 'car')"><span>🏎️ Sportowe Superauto ($220,000)</span></div>
-        `;
+        let html = "";
+        CAR_DATABASE.forEach(c => {
+            html += `<div class="menu-card" onclick="buyAsset('${c.name}', ${c.price}, 'car')"><span>🏎️ ${c.name}</span> <span>$${c.price}</span></div>`;
+        });
+        content.innerHTML = html;
     }
 
     function buyAsset(name, price, type) {
-        if (player.money < price) { alert("Nie masz tyle gotówki!"); return; }
+        if (player.money < price) {
+            alert("Nie masz wystarczająco dużo pieniędzy!");
+            return;
+        }
         player.money -= price;
         if (type === 'house') player.assets.houses.push(name);
         if (type === 'car') player.assets.cars.push(name);
-        addLog(`🛍️ Kupiono: **${name}**!`);
-        updateUI(); closeModal();
+        addLog(`🛍️ Kupiono: **${name}** za $${price}!`);
+        updateUI();
+        closeModal();
     }
 
-    /* RELACJE */
-    function interactRel(who) {
-        player.stats.happy = Math.min(100, player.stats.happy + 6);
-        addLog(`💬 Spędziłeś wspaniały czas z: ${who}. Szczęście w górę!`);
-        updateUI(); closeModal();
+    function showInventory() {
+        const content = document.getElementById('modal-content');
+        let html = "<h4>Domy:</h4>";
+        if (player.assets.houses.length === 0) html += "<p>Brak domów</p>";
+        else player.assets.houses.forEach(h => html += `<p>🏠 ${h}</p>`);
+
+        html += "<br><h4>Samochody:</h4>";
+        if (player.assets.cars.length === 0) html += "<p>Brak samochodów</p>";
+        else player.assets.cars.forEach(c => html += `<p>🏎️ ${c}</p>`);
+
+        content.innerHTML = html;
+    }
+
+    function goGym() {
+        if (!useEnergy(20)) return;
+        player.stats.looks = Math.min(100, player.stats.looks + 6);
+        player.stats.health = Math.min(100, player.stats.health + 4);
+        addLog(`🏋️ Trening na siłowni podniósł Zdrowie i Wygląd.`);
+        updateUI();
+        closeModal();
+    }
+
+    function goDoctor() {
+        if (player.money < 250) {
+            alert("Brak $250!");
+            return;
+        }
+        player.money -= 250;
+        player.stats.health = Math.min(100, player.stats.health + 15);
+        addLog(`🩺 Vizyta u lekarza polepszyła Twoje zdrowie!`);
+        updateUI();
+        closeModal();
+    }
+
+    function goPlasticSurgery() {
+        if (player.money < 8000) {
+            alert("Brak $8,000!");
+            return;
+        }
+        player.money -= 8000;
+        player.stats.looks = Math.min(100, player.stats.looks + 25);
+        addLog(`💉 Operacja plastyczna podniosła Twój Wygląd!`);
+        updateUI();
+        closeModal();
+    }
+
+    function spendFamilyTime() {
+        player.stats.happy = Math.min(100, player.stats.happy + 10);
+        addLog(`👨‍👩‍👦 Spędziłeś Miły czas z rodziną.`);
+        updateUI();
+        closeModal();
     }
 
     function haveChild() {
-        if (player.age < 18) { alert("Musisz mieć min. 18 lat!"); return; }
-        let name = "Dziecko " + (player.children.length + 1);
-        player.children.push(name);
-        addLog(`👶 Urodziło Ci się dziecko: **${name}**!`);
-        updateUI(); closeModal();
-    }
-
-    /* SOCIAL MEDIA & HEALTH */
-    function openSocialMenu() {
-        const content = document.getElementById('modal-content');
-        content.innerHTML = `
-            <div class="menu-card" onclick="doSocial('YouTube')"><span>▶️ Wrzuć film na YouTube (+Zasięgi)</span></div>
-            <div class="menu-card" onclick="doSocial('TikTok')"><span>🎵 Nagraj Taniec na TikToku (+Zasięgi)</span></div>
-            <div class="menu-card" onclick="doSocial('Twitch')"><span>🟪 Odpal Stream na Twitchu (+Zasięgi)</span></div>
-        `;
-    }
-
-    function doSocial(platform) {
-        if (player.age < 11) { alert("Jesteś za młody na Social Media!"); return; }
-        let gained = rand(50, 600);
-        addLog(`📱 Opublikowałeś treści na **${platform}** i zdobyłeś +${gained} nowych obserwujących!`);
-        updateUI(); closeModal();
-    }
-
-    function openSportsMenu() {
-        const content = document.getElementById('modal-content');
-        content.innerHTML = `
-            <div class="menu-card" onclick="doSport('Piłka Nożna')"><span>⚽ Trening Piłki Nożnej (+Zdrowie)</span></div>
-            <div class="menu-card" onclick="doSport('Siłownia')"><span>🏋️ Wyciskanie na Siłowni (+Wygląd/Zdrowie)</span></div>
-        `;
-    }
-
-    function doSport(sport) {
-        player.stats.health = Math.min(100, player.stats.health + 8);
-        player.stats.looks = Math.min(100, player.stats.looks + 4);
-        addLog(`🏆 Aktywność fizyczna (${sport}) poprawiła Twoje zdrowie i wygląd!`);
-        updateUI(); closeModal();
-    }
-
-    function openHealthMenu() {
-        const content = document.getElementById('modal-content');
-        content.innerHTML = `
-            <div class="menu-card" onclick="fixHealth('Lekarz', 400, 15, 'health')"><span>🩺 Wizyta u Lekarza ($400) -> +Zdrowie</span></div>
-            <div class="menu-card" onclick="fixHealth('Chirurg Plastyczny', 12000, 25, 'looks')"><span>💉 Operacja Plastyczna ($12,000) -> +Wygląd</span></div>
-        `;
-    }
-
-    function fixHealth(name, cost, boost, stat) {
-        if (player.money < cost) { alert("Brak gotówki!"); return; }
-        player.money -= cost;
-        player.stats[stat] = Math.min(100, player.stats[stat] + boost);
-        addLog(`🏥 **${name}** – zabieg zakończony sukcesem!`);
-        updateUI(); closeModal();
-    }
-
-    function buyPetMenu() {
-        const content = document.getElementById('modal-content');
-        content.innerHTML = `
-            <div class="menu-card" onclick="buyPet('Pies')"><span>🐶 Adoptuj Psa ($250)</span></div>
-            <div class="menu-card" onclick="buyPet('Kot')"><span>🐱 Adoptuj Kota ($200)</span></div>
-        `;
-    }
-
-    function buyPet(pet) {
-        if (player.money < 200) { alert("Brak pieniędzy!"); return; }
-        player.money -= 200;
-        player.pets.push(pet);
-        player.stats.happy = Math.min(100, player.stats.happy + 15);
-        addLog(`🐾 Adoptowałeś nowego pupila: **${pet}**!`);
-        updateUI(); closeModal();
-    }
-
-    function playLottery() {
-        if (player.money < 10) { alert("Brak $10!"); return; }
-        player.money -= 10;
-        if (Math.random() < 0.03) {
-            player.money += 100000;
-            player.stats.happy = 100;
-            addLog(`🎉 WYGRAŁEŚ NA LOTERII! +$100,000!`);
-        } else {
-            addLog(`🎟️ Niestety, los okazał się pusty.`);
+        if (player.age < 18) {
+            alert("Wiek min. 18 lat!");
+            return;
         }
-        updateUI(); closeModal();
+        let cName = "Dziecko " + (player.children.length + 1);
+        player.children.push(cName);
+        addLog(`👶 Urodziło Ci się dziecko: **${cName}**!`);
+        updateUI();
+        closeModal();
+    }
+
+    function showChildren() {
+        const content = document.getElementById('modal-content');
+        if (player.children.length === 0) {
+            content.innerHTML = "<p>Nie masz jeszcze dzieci.</p>";
+        } else {
+            let html = "";
+            player.children.forEach(c => html += `<div class="menu-card"><span>👶 ${c}</span></div>`);
+            content.innerHTML = html;
+        }
     }
 </script>
 </body>
