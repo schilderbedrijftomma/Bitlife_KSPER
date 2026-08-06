@@ -288,12 +288,12 @@
 
     <div class="form-group">
       <label>Imię:</label>
-      <input type="text" id="input-firstname" value="Felix">
+      <input type="text" id="input-firstname" placeholder="Wpisz imię..." value="Felix">
     </div>
 
     <div class="form-group">
       <label>Nazwisko:</label>
-      <input type="text" id="input-lastname" value="Moore">
+      <input type="text" id="input-lastname" placeholder="Wpisz nazwisko..." value="Moore">
     </div>
 
     <div class="form-group">
@@ -318,8 +318,7 @@
 
     <div class="form-group">
       <label>Kraj zamieszkania:</label>
-      <select id="input-country">
-        </select>
+      <select id="input-country"></select>
     </div>
 
     <button class="start-btn" onclick="startGame()">Rozpocznij Życie 🚀</button>
@@ -338,7 +337,6 @@
     </div>
 
     <div class="main-content">
-      
       <div id="view-main" class="view-panel active">
         <h3 id="age-display" style="margin-bottom: 10px; color: var(--accent-orange);">Wiek: 0 lat</h3>
         <div class="log-box" id="log-box"></div>
@@ -377,7 +375,6 @@
           <div class="stat-bar"><div class="stat-fill" id="stat-looks"></div></div>
         </div>
       </div>
-
     </div>
 
     <div class="navbar">
@@ -413,24 +410,34 @@
       </div>
     </div>
   </div>
-
 </div>
 
 <script>
   // Pełna lista państw świata
   const countries = [
-    "Polska", "Afganistan", "Albania", "Algieria", "Andora", "Angola", "Argentyna", "Armenia", "Australia", "Austria",
-    "Azerbejdżan", "Bahamy", "Bahrajn", "Bangladesz", "Belgia", "Belize", "Benin", "Bhutan", "Białoruś", "Boliwia",
-    "Bośnia i Hercegowina", "Brazylia", "Bułgaria", "Chile", "Chiny", "Chorwacja", "Cypr", "Czad", "Czarnogóra",
-    "Czechy", "Dania", "Egipt", "Ekwador", "Estonia", "Etiopia", "Finlandia", "Francja", "Gabon", "Grecja", "Gruzja",
-    "Gwatemala", "Hiszpania", "Holandia", "Indie", "Indonezja", "Irak", "Iran", "Irlandia", "Islandia", "Izrael",
-    "Japonia", "Jordania", "Kanada", "Katar", "Kazachstan", "Kenia", "Kolumbia", "Korea Południowa", "Kuba", "Kuwejt",
-    "Litwa", "Luksemburg", "Łotwa", "Macedonia Północna", "Madagaskar", "Malezja", "Maroko", "Meksyk", "Mołdawia",
-    "Monako", "Mongolia", "Niemcy", "Nigeria", "Norwegia", "Nowa Zelandia", "Oman", "Pakistan", "Panama", "Paragwaj",
-    "Peru", "Portugalia", "RPA", "Rosja", "Rumunia", "San Marino", "Senegal", "Serbia", "Singapur", "Słowacja",
-    "Słowenia", "Somalia", "Sri Lanka", "Stany Zjednoczone", "Szwajcaria", "Szwecja", "Tajlandia", "Tunezja", "Turcja",
-    "Ukraina", "Urugwaj", "Uzbekistan", "Watykan", "Węgry", "Wielka Brytania", "Wietnam", "Włochy", "Wybrzeże Kości Słoniowej",
-    "Zjednoczone Emiraty Arabskie", "Zimbabwe"
+    "Polska", "Afganistan", "Albania", "Algieria", "Andora", "Angola", "Antigua i Barbuda", "Arabia Saudyjska",
+    "Argentyna", "Armenia", "Australia", "Austria", "Azerbejdżan", "Bahamy", "Bahrajn", "Bangladesz", "Barbados",
+    "Belgia", "Belize", "Benin", "Bhutan", "Białoruś", "Boliwia", "Bośnia i Hercegowina", "Botswana", "Brazylia",
+    "Brunei", "Bułgaria", "Burkina Faso", "Burundi", "Chile", "Chiny", "Chorwacja", "Cypr", "Czad", "Czarnogóra",
+    "Czechy", "Dania", "Dominika", "Dominikana", "Dżibuti", "Egipt", "Ekwador", "Erytrea", "Estonia", "Eswatini",
+    "Etiopia", "Fidżi", "Filipiny", "Finlandia", "Francja", "Gabon", "Gambia", "Ghana", "Grecja", "Grenada",
+    "Gruzja", "Gwatemala", "Gwinea", "Gwinea Bissau", "Gwinea Równikowa", "Gujana", "Haiti", "Hiszpania",
+    "Holandia", "Honduras", "Indie", "Indonezja", "Irak", "Iran", "Irlandia", "Islandia", "Izrael", "Jamajka",
+    "Japonia", "Jemen", "Jordania", "Kambodża", "Kamerun", "Kanada", "Katar", "Kazachstan", "Kenia", "Kirgistan",
+    "Kiribati", "Kolumbia", "Komory", "Kongo", "Korea Południowa", "Korea Północna", "Kostaryka", "Kuba", "Kuwejt",
+    "Laos", "Lesotho", "Liban", "Liberia", "Libia", "Liechtenstein", "Litwa", "Luksemburg", "Łotwa",
+    "Macedonia Północna", "Madagaskar", "Majotta", "Malawi", "Malediwy", "Malezja", "Mali", "Malta", "Maroko",
+    "Mauretania", "Mauritius", "Meksyk", "Mikronezja", "Mołdawia", "Monako", "Mongolia", "Mozambik", "Mjanma",
+    "Namibia", "Nauru", "Nepal", "Niemcy", "Niger", "Nigeria", "Nikaragua", "Norwegia", "Nowa Zelandia", "Oman",
+    "Pakistan", "Palau", "Panama", "Papua-Nowa Gwinea", "Paragwaj", "Peru", "Portugalia", "RPA", "Republika Środkowoafrykańska",
+    "Republika Zielonego Przylądka", "Rosja", "Rumunia", "Rwanda", "Saint Kitts i Nevis", "Saint Lucia",
+    "Saint Vincent i Grenadyny", "Salwador", "Samoa", "San Marino", "Senegal", "Serbia", "Seszele", "Sierra Leone",
+    "Singapur", "Słowacja", "Słowenia", "Somalia", "Sri Lanka", "Stany Zjednoczone", "Sudan", "Sudan Południowy",
+    "Surinam", "Szwajcaria", "Szwecja", "Syria", "Tadżykistan", "Tajlandia", "Tanzania", "Timor Wschodni", "Togo",
+    "Tonga", "Trynidad i Tobago", "Tunezja", "Turcja", "Turkmenistan", "Tuvalu", "Uganda", "Ukraina", "Urugwaj",
+    "Uzbekistan", "Vanuatu", "Watykan", "Wenezuela", "Węgry", "Wielka Brytania", "Wietnam", "Włochy",
+    "Wybrzeże Kości Słoniowej", "Wyspy Marshalla", "Wyspy Salomona", "Wyspy Świętego Tomasza i Książęca",
+    "Zambia", "Zimbabwe", "Zjednoczone Emiraty Arabskie"
   ];
 
   // Wypełnianie listy krajów w menu tworzenia postaci
@@ -448,7 +455,6 @@
     document.getElementById('custom-avatar-preview').innerText = skin;
   }
 
-  // Obiekt gracza
   let player = {
     firstName: "",
     lastName: "",
@@ -457,20 +463,27 @@
     country: "",
     age: 0,
     money: 0,
-    job: "Infant",
+    job: "Niemowlę",
+    salary: 0,
     stats: { happy: 80, health: 95, smart: 60, looks: 50 },
     family: [],
     inventory: []
   };
 
+  const availableJobs = [
+    { title: "Kasjer 🛒", salary: 24000 },
+    { title: "Programista 💻", salary: 75000 },
+    { title: "Kierowca 🚚", salary: 36000 },
+    { title: "Menedżer 📊", salary: 90000 }
+  ];
+
   function startGame() {
-    player.firstName = document.getElementById('input-firstname').value || "Felix";
-    player.lastName = document.getElementById('input-lastname').value || "Moore";
+    player.firstName = document.getElementById('input-firstname').value.trim() || "Felix";
+    player.lastName = document.getElementById('input-lastname').value.trim() || "Moore";
     player.gender = document.getElementById('input-gender').value;
     player.skin = document.getElementById('input-skin').value;
     player.country = document.getElementById('input-country').value;
 
-    // Generowanie rodziny
     player.family = [
       { name: `Ojciec ${player.lastName}`, role: "Ojciec", age: 30, rel: 90, icon: "👨" },
       { name: `Matka ${player.lastName}`, role: "Matka", age: 28, rel: 95, icon: "👩" },
@@ -483,15 +496,15 @@
     document.getElementById('char-name').innerText = `${player.firstName} ${player.lastName}`;
 
     addLog(`Urodziłeś/aś się w kraju: <b>${player.country}</b>.`);
-    addLog(`Twoje imię i nazwisko to ${player.firstName} ${player.lastName}.`);
+    addLog(`Twoje imię i nazwisko to <b>${player.firstName} ${player.lastName}</b>.`);
 
     updateUI();
   }
 
   function getAvatarIcon() {
-    if(player.age < 3) return player.skin; // Niemowlę
-    if(player.age < 18) return player.gender === "male" ? "👦" : "👧"; // Dziecko/Młodzież
-    return player.gender === "male" ? "👨" : "👩"; // Dorosły
+    if(player.age < 3) return player.skin;
+    if(player.age < 18) return player.gender === "male" ? "👦" : "👧";
+    return player.gender === "male" ? "👨" : "👩";
   }
 
   function updateUI() {
@@ -501,19 +514,15 @@
 
     if(player.age < 3) player.job = "Niemowlę";
     else if(player.age < 6) player.job = "Maluch";
-    else if(player.age < 18) {
-      if(player.job === "Niemowlę" || player.job === "Maluch") player.job = "Uczeń 📚";
-    } else {
-      if(player.job === "Uczeń 📚") player.job = "Bezrobotny";
-    }
+    else if(player.age < 18) player.job = "Uczeń 📚";
+    else if(player.job === "Uczeń 📚" || player.job === "Niemowlę" || player.job === "Maluch") player.job = "Bezrobotny";
     
     document.getElementById('char-status').innerText = player.job;
 
-    // Paski statystyk
-    document.getElementById('stat-happy').style.width = player.stats.happy + '%';
-    document.getElementById('stat-health').style.width = player.stats.health + '%';
-    document.getElementById('stat-smart').style.width = player.stats.smart + '%';
-    document.getElementById('stat-looks').style.width = player.stats.looks + '%';
+    document.getElementById('stat-happy').style.width = Math.max(0, Math.min(100, player.stats.happy)) + '%';
+    document.getElementById('stat-health').style.width = Math.max(0, Math.min(100, player.stats.health)) + '%';
+    document.getElementById('stat-smart').style.width = Math.max(0, Math.min(100, player.stats.smart)) + '%';
+    document.getElementById('stat-looks').style.width = Math.max(0, Math.min(100, player.stats.looks)) + '%';
 
     renderFamily();
     renderActivities();
@@ -529,11 +538,15 @@
     player.age++;
     player.family.forEach(f => f.age++);
 
+    if (player.salary > 0) {
+      player.money += player.salary;
+      addLog(`Otrzymałeś wynagrodzenie z pracy (${player.job}): +$${player.salary.toLocaleString()}`);
+    }
+
     if(player.age === 6) addLog("Rozpocząłeś naukę w Szkole Podstawowej.");
     if(player.age === 15) addLog("Rozpocząłeś naukę w Liceum.");
-    if(player.age === 18) addLog("Stałęś się pełnoletni! Odblokowano studia, pracę i majtek.");
+    if(player.age === 18) addLog("Stałeś się pełnoletni! Odblokowano studia, pracę i majątek.");
 
-    // Losowe wydarzenie
     if(player.age === 3) {
       showEventModal(
         "Kłótnia", "👦", "Kłótnia z bratem",
@@ -573,6 +586,19 @@
     document.getElementById('event-modal').classList.add('active');
   }
 
+  function openJobMarket() {
+    const options = availableJobs.map(j => ({
+      text: `${j.title} ($${j.salary.toLocaleString()}/rok)`,
+      action: () => {
+        player.job = j.title;
+        player.salary = j.salary;
+        addLog(`Podjąłeś pracę jako ${j.title}.`);
+      }
+    }));
+
+    showEventModal("Praca", "💼", "Wybierz Pracę", "Dostępne oferty pracy:", options);
+  }
+
   function switchTab(tabName, btn) {
     document.querySelectorAll('.view-panel').forEach(el => el.classList.remove('active'));
     document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
@@ -609,7 +635,8 @@
       { name: "🧘 Medytacja & Joga", icon: "🧘‍♀️", req: 12, action: () => { player.stats.happy = Math.min(100, player.stats.happy + 8); addLog("Zrelaksowałeś się podczas medytacji."); } },
       { name: "🩺 Idź do Lekarza", icon: "👨‍⚕️", req: 0, action: () => { player.stats.health = 100; addLog("Lekarz potwierdził idealny stan zdrowia."); } },
       { name: "🏎️ Zrób Prawo Jazdy", icon: "🚘", req: 16, action: () => { addLog("Zdałeś egzamin na prawo jazdy!"); } },
-      { name: "🎓 Idź na Studia", icon: "🏫", req: 18, action: () => { player.job = "Inżynier"; player.money += 60000; addLog("Ukończyłeś studia i zostałeś Inżynierem!"); } },
+      { name: "💼 Szukaj Pracy", icon: "🏢", req: 18, action: () => openJobMarket() },
+      { name: "🎓 Idź na Studia", icon: "🏫", req: 18, action: () => { player.job = "Inżynier"; player.salary = 60000; addLog("Ukończyłeś studia i zostałeś Inżynierem!"); } },
       { name: "🦹 Drobne Przestępstwo", icon: "🎭", req: 14, action: () => { 
           if(Math.random() > 0.5) { player.money += 300; addLog("Udało Ci się zrobić przekręt! (+$300)"); }
           else { player.stats.happy -= 15; addLog("Przyłapano Cię na wybryku!"); }
