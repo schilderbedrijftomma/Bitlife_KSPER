@@ -3,84 +3,340 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BitLife Ultimate Edition</title>
+    <title>BitLife Unlimited Edition</title>
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
-        body { background-color: #0b1426; color: #ffffff; display: flex; justify-content: center; min-height: 100vh; }
-        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            user-select: none;
+        }
+
+        body {
+            background-color: #050a14;
+            color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
         .app-container {
-            width: 100%; max-width: 500px; background-color: #121f38;
-            display: flex; flex-direction: column; height: 100vh; position: relative; overflow: hidden;
+            width: 100%;
+            max-width: 500px;
+            height: 100vh;
+            max-height: 900px;
+            background-color: #0c1628;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
         }
 
         /* HEADER */
-        .header { background: #1a2b4c; padding: 15px; border-bottom: 2px solid #23375e; text-align: center; position: relative; }
-        .char-title { font-size: 20px; font-weight: bold; color: #4aa3df; }
-        .char-subtitle { font-size: 13px; color: #a0b2d6; margin-top: 2px; }
-        .bank-balance { position: absolute; right: 15px; top: 15px; color: #2ecc71; font-weight: bold; font-size: 18px; }
+        .header {
+            background: #152238;
+            padding: 15px;
+            border-bottom: 2px solid #203354;
+            text-align: center;
+            position: relative;
+        }
 
-        /* CREATION SCREEN */
-        .setup-screen { padding: 30px 20px; text-align: center; display: flex; flex-direction: column; gap: 15px; justify-content: center; height: 100%; }
-        .setup-screen h1 { color: #f39c12; font-size: 28px; }
-        .setup-screen input, .setup-screen select { width: 100%; padding: 14px; border-radius: 8px; border: 1px solid #283e6b; background: #1b2c4e; color: white; font-size: 16px; }
-        .btn-start { background: #2ecc71; color: white; border: none; padding: 16px; width: 100%; border-radius: 8px; font-size: 18px; font-weight: bold; cursor: pointer; transition: 0.2s; }
-        .btn-start:hover { background: #27ae60; }
+        .char-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #3598db;
+        }
+
+        .char-subtitle {
+            font-size: 13px;
+            color: #8da4c4;
+            margin-top: 3px;
+        }
+
+        .bank-balance {
+            position: absolute;
+            right: 15px;
+            top: 15px;
+            color: #2ecc71;
+            font-weight: bold;
+            font-size: 17px;
+        }
+
+        /* SETUP SCREEN */
+        .setup-screen {
+            padding: 25px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            overflow-y: auto;
+            height: 100%;
+            justify-content: center;
+        }
+
+        .setup-screen h1 {
+            color: #f39c12;
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .setup-screen label {
+            text-align: left;
+            font-size: 12px;
+            color: #8da4c4;
+            margin-top: 4px;
+            font-weight: bold;
+        }
+
+        .setup-screen input, .setup-screen select {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #203354;
+            background: #152238;
+            color: white;
+            font-size: 15px;
+            outline: none;
+        }
+
+        .btn-start {
+            background: #2ecc71;
+            color: white;
+            border: none;
+            padding: 16px;
+            width: 100%;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: 0.2s;
+        }
+
+        .btn-start:hover {
+            background: #27ae60;
+        }
 
         /* EVENT LOG */
-        .log-container { flex: 1; padding: 15px; overflow-y: auto; display: flex; flex-direction: column-reverse; gap: 8px; font-size: 14px; background: #0c1628; }
-        .log-item { background: #16243f; padding: 10px 12px; border-radius: 6px; border-left: 4px solid #3498db; line-height: 1.4; }
-        .log-item b { color: #f1c40f; }
+        .log-container {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column-reverse;
+            gap: 10px;
+            font-size: 13.5px;
+            background: #08101d;
+        }
+
+        .log-item {
+            background: #111d30;
+            padding: 12px 14px;
+            border-radius: 8px;
+            border-left: 4px solid #3498db;
+            line-height: 1.45;
+        }
+
+        .log-item b {
+            color: #f1c40f;
+        }
 
         /* STATS BARS */
-        .stats-container { background: #16243f; padding: 12px 15px; border-top: 1px solid #23375e; }
-        .stat-row { display: flex; align-items: center; margin-bottom: 6px; font-size: 12px; font-weight: bold; }
-        .stat-name { width: 80px; }
-        .stat-bar-bg { flex: 1; background: #0b1426; height: 12px; border-radius: 6px; overflow: hidden; margin: 0 8px; }
-        .stat-bar-fill { height: 100%; background: #2ecc71; transition: width 0.3s; }
-        .stat-val { width: 35px; text-align: right; }
+        .stats-container {
+            background: #111d30;
+            padding: 12px 15px;
+            border-top: 1px solid #203354;
+        }
 
-        /* ACTION MENU BOTTOM */
-        .bottom-nav { display: grid; grid-template-columns: repeat(5, 1fr); background: #1a2b4c; border-top: 2px solid #23375e; position: relative; height: 70px; }
-        .nav-btn { background: none; border: none; color: white; font-size: 10px; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; gap: 4px; }
-        .nav-btn .icon { font-size: 18px; }
+        .stat-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 6px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .stat-name {
+            width: 80px;
+        }
+
+        .stat-bar-bg {
+            flex: 1;
+            background: #050a14;
+            height: 11px;
+            border-radius: 6px;
+            overflow: hidden;
+            margin: 0 10px;
+        }
+
+        .stat-bar-fill {
+            height: 100%;
+            background: #2ecc71;
+            transition: width 0.3s;
+        }
+
+        .stat-val {
+            width: 35px;
+            text-align: right;
+        }
+
+        /* NAV BOTTOM */
+        .bottom-nav {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            background: #152238;
+            border-top: 2px solid #203354;
+            position: relative;
+            height: 70px;
+        }
+
+        .nav-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            gap: 4px;
+        }
+
+        .nav-btn .icon {
+            font-size: 18px;
+        }
+
         .age-circle {
-            position: absolute; top: -25px; left: 50%; transform: translateX(-50%);
-            width: 60px; height: 60px; border-radius: 50%; background: #2ecc71;
-            border: 4px solid #121f38; color: white; font-weight: bold; font-size: 24px;
-            display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+            position: absolute;
+            top: -24px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 58px;
+            height: 58px;
+            border-radius: 50%;
+            background: #2ecc71;
+            border: 4px solid #0c1628;
+            color: white;
+            font-weight: bold;
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.6);
             transition: transform 0.1s;
         }
-        .age-circle:active { transform: translateX(-50%) scale(0.95); }
 
-        /* MODAL / SUBMENUS */
-        .modal { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(11, 20, 38, 0.96); display: none; flex-direction: column; z-index: 100; }
-        .modal-header { background: #1a2b4c; padding: 15px; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #23375e; }
-        .modal-body { padding: 15px; overflow-y: auto; flex: 1; display: flex; flex-direction: column; gap: 10px; }
-        .menu-card { background: #1b2c4e; padding: 14px; border-radius: 8px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; border: 1px solid #283e6b; }
-        .menu-card:hover { background: #23375e; }
-        .close-btn { background: #e74c3c; border: none; color: white; padding: 6px 12px; border-radius: 4px; font-weight: bold; cursor: pointer; }
+        .age-circle:active {
+            transform: translateX(-50%) scale(0.92);
+        }
+
+        /* MODALS */
+        .modal {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(5, 10, 20, 0.96);
+            display: none;
+            flex-direction: column;
+            z-index: 100;
+        }
+
+        .modal-header {
+            background: #152238;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #203354;
+        }
+
+        .modal-body {
+            padding: 15px;
+            overflow-y: auto;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .menu-card {
+            background: #111d30;
+            padding: 14px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            border: 1px solid #203354;
+            font-size: 14px;
+            transition: 0.15s;
+        }
+
+        .menu-card:hover {
+            background: #182945;
+            border-color: #3598db;
+        }
+
+        .close-btn {
+            background: #e74c3c;
+            border: none;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: bold;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
 
 <div class="app-container">
     <div id="setup-screen" class="setup-screen">
-        <h1>BitLife Online 👑</h1>
-        <input type="text" id="p-name" placeholder="Imię" value="Adam">
-        <input type="text" id="p-surname" placeholder="Nazwisko" value="Nowak">
+        <h1>BitLife Pro 👑</h1>
+        <label>Imię i Nazwisko</label>
+        <input type="text" id="p-name" placeholder="Imię" value="Jan">
+        <input type="text" id="p-surname" placeholder="Nazwisko" value="Kowalski">
+        
+        <label>Kraj i Miasto Urodzenia</label>
         <select id="p-country">
-            <option value="Polska">🇵🇱 Polska</option>
-            <option value="USA">🇺🇸 USA</option>
-            <option value="Wielka Brytania">🇬🇧 Wielka Brytania</option>
-            <option value="Niemcy">🇩🇪 Niemcy</option>
-            <option value="Japonia">🇯🇵 Japonia</option>
+            <option value="Polska (Warszawa)">🇵🇱 Polska (Warszawa)</option>
+            <option value="USA (Nowy Jork)">🇺🇸 USA (Nowy Jork)</option>
+            <option value="Wielka Brytania (Londyn)">🇬🇧 Wielka Brytania (Londyn)</option>
+            <option value="Niemcy (Berlin)">🇩🇪 Niemcy (Berlin)</option>
+            <option value="Japonia (Tokio)">🇯🇵 Japonia (Tokio)</option>
         </select>
-        <button class="btn-start" onclick="initGame()">Rozpocznij Życie ✨</button>
+
+        <label>Orientacja</label>
+        <select id="p-orientation">
+            <option value="Heteroseksualizm">Heteroseksualizm</option>
+            <option value="Homoseksualizm">Homoseksualizm</option>
+            <option value="Biseksualizm">Biseksualizm</option>
+        </select>
+
+        <label>Specjalny Talent</label>
+        <select id="p-talent">
+            <option value="Muzyka">🎵 Muzyka</option>
+            <option value="Sport">⚽ Sport</option>
+            <option value="Aktorstwo">🎭 Aktorstwo</option>
+            <option value="Biznes">💼 Biznes</option>
+            <option value="Mądrość">🧠 Mądrość</option>
+        </select>
+
+        <button class="btn-start" onclick="initGame()">Rozpocznij Nowe Życie ✨</button>
     </div>
 
     <div id="game-screen" style="display:none; flex-direction:column; height:100%;">
         <div class="header">
-            <div class="char-title" id="ui-name">Adam Nowak</div>
+            <div class="char-title" id="ui-name">Jan Kowalski</div>
             <div class="char-subtitle" id="ui-status">Wiek: 0 | Niemowlę</div>
             <div class="bank-balance" id="ui-money">$0</div>
         </div>
@@ -95,11 +351,11 @@
         </div>
 
         <div class="bottom-nav">
-            <button class="nav-btn" onclick="openModal('school-job')"><span class="icon">💼</span>Edukacja/Praca</button>
-            <button class="nav-btn" onclick="openModal('rel')"><span class="icon">👨‍👩‍👦</span>Relacje</button>
+            <button class="nav-btn" onclick="openModal('career')"><span class="icon">💼</span>Kariera/Edukacja</button>
+            <button class="nav-btn" onclick="openModal('assets')"><span class="icon">🏠</span>Majątek/Giełda</button>
             <div class="age-circle" onclick="ageUp()">+</div>
-            <button class="nav-btn" onclick="openModal('social')"><span class="icon">📱</span>Social Media</button>
-            <button class="nav-btn" onclick="openModal('activities')"><span class="icon">⚽</span>Aktywności</button>
+            <button class="nav-btn" onclick="openModal('rel')"><span class="icon">👨‍👩‍👦</span>Relacje/Dzieci</button>
+            <button class="nav-btn" onclick="openModal('lifestyle')"><span class="icon">⚽</span>Styl Życia</button>
         </div>
     </div>
 
@@ -113,39 +369,55 @@
 </div>
 
 <script>
+    // ZMIENNE GRY
     let player = {
-        name: "", surname: "", age: 0, money: 0, country: "Polska",
+        name: "", surname: "", age: 0, money: 0, country: "", orientation: "", talent: "",
         stats: { happy: 80, health: 90, smarts: 50, looks: 60 },
         education: "Brak", job: "Bezrobotny", salary: 0,
         socials: { youtube: 0, tiktok: 0, twitch: 0, instagram: 0 },
-        sportsClub: "Brak", pets: [],
-        family: { father: "", mother: "", sibling: "" }
+        investments: { stocks: 0, crypto: 0 },
+        assets: { houses: [], cars: [], jets: [] },
+        children: [], pets: [], sportsClub: "Brak",
+        family: { father: "", mother: "" },
+        royal: false
     };
 
-    const firstNamesMale = ["Jan", "Adam", "Piotr", "Michał", "Kamil", "Mateusz", "Kacper", "Jakub"];
-    const firstNamesFemale = ["Anna", "Maria", "Katarzyna", "Ewa", "Karolina", "Wiktoria", "Julia", "Zofia"];
-    const petTypes = ["Pies", "Kot", "Chomik", "Papuga", "Wąż", "Jaszczurka"];
+    let cryptoPrice = 100;
+    let stockPrice = 50;
+
+    const maleNames = ["Jan", "Adam", "Piotr", "Michał", "Kamil", "Mateusz", "Kacper", "Jakub", "Szymon", "Filip"];
+    const femaleNames = ["Anna", "Maria", "Katarzyna", "Ewa", "Karolina", "Wiktoria", "Julia", "Zofia", "Oliwia", "Maja"];
 
     function rand(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
 
     function initGame() {
-        player.name = document.getElementById('p-name').value || "Adam";
-        player.surname = document.getElementById('p-surname').value || "Nowak";
+        player.name = document.getElementById('p-name').value || "Jan";
+        player.surname = document.getElementById('p-surname').value || "Kowalski";
         player.country = document.getElementById('p-country').value;
-        
+        player.orientation = document.getElementById('p-orientation').value;
+        player.talent = document.getElementById('p-talent').value;
+
         player.stats.happy = rand(50, 100);
         player.stats.health = rand(60, 100);
-        player.stats.smarts = rand(20, 95);
+        player.stats.smarts = rand(30, 95);
         player.stats.looks = rand(20, 90);
 
-        player.family.father = `${firstNamesMale[rand(0, firstNamesMale.length-1)]} ${player.surname} (Wiek: ${rand(22, 45)})`;
-        player.family.mother = `${firstNamesFemale[rand(0, firstNamesFemale.length-1)]} ${player.surname} (Wiek: ${rand(20, 42)})`;
+        player.family.father = `${maleNames[rand(0, maleNames.length-1)]} ${player.surname} (Wiek: ${rand(22, 45)})`;
+        player.family.mother = `${femaleNames[rand(0, femaleNames.length-1)]} ${player.surname} (Wiek: ${rand(20, 42)})`;
+
+        if (Math.random() < 0.03) {
+            player.royal = true;
+            player.job = "Książę / Księżniczka";
+            player.money = 250000;
+        }
 
         document.getElementById('setup-screen').style.display = 'none';
         document.getElementById('game-screen').style.display = 'flex';
 
-        addLog(`Urodziłeś się jako <b>${player.name} ${player.surname}</b> w kraju: ${player.country}!`);
+        addLog(`Urodziłeś się w miejscowości <b>${player.country}</b>.`);
         addLog(`👨‍👩‍👦 Ojciec: ${player.family.father} | Matka: ${player.family.mother}`);
+        addLog(`Twój specjalny talent to: <b>${player.talent}</b>.`);
+        if (player.royal) addLog(`👑 URODZIŁEŚ SIĘ W RODZINIE KRÓLEWSKIEJ!`);
         updateUI();
     }
 
@@ -167,51 +439,78 @@
 
     function ageUp() {
         player.age++;
-        
-        // Zdarzenia Edukacyjne
-        if (player.age === 7) { player.education = "Uczeń Szkoły Podstawowej"; addLog("🎒 Rozpoczynasz naukę w Szkołe Podstawowej!"); }
-        if (player.age === 15) { player.education = "Uczeń Liceum"; addLog("🏫 Awansowałeś do Liceum!"); }
-        if (player.age === 19 && player.education !== "Wykształcony") { player.education = "Student Uniwersytetu"; addLog("🎓 Dostałeś się na Uniwersytet!"); }
-        if (player.age === 24 && player.education === "Student Uniwersytetu") { player.education = "Wykształcony Wyższe"; addLog("👨‍🎓 Ukończyłeś Uniwersytet!"); }
 
-        // Wynagrodzenie z pracy
-        if (player.job !== "Bezrobotny") {
+        // Edukacja
+        if (player.age === 7) { player.education = "Uczeń Szkoły Podstawowej"; addLog("🎒 Rozpoczynasz edukację w szkole podstawowej!"); }
+        if (player.age === 15) { player.education = "Uczeń Liceum"; addLog("🏫 Awansujesz do Liceum!"); }
+        if (player.age === 19 && player.education !== "Wykształcenie Wyższe") { player.education = "Student Uniwersytetu"; addLog("🎓 Rozpoczynasz studia na Uniwersytecie!"); }
+        if (player.age === 24 && player.education === "Student Uniwersytetu") { player.education = "Wykształcenie Wyższe"; addLog("👨‍🎓 Ukończyłeś Uniwersytet!"); }
+
+        // Rynek finansowy
+        cryptoPrice = Math.max(10, Math.floor(cryptoPrice + (Math.random() - 0.45) * 60));
+        stockPrice = Math.max(5, Math.floor(stockPrice + (Math.random() - 0.48) * 20));
+
+        // Pensja
+        if (player.salary > 0) {
             player.money += player.salary;
-            addLog(`💰 Otrzymałeś roczną pensję (${player.job}): +$${player.salary}`);
+            addLog(`💰 Otrzymałeś roczne wynagrodzenie (${player.job}): +$${player.salary}`);
         }
 
-        // Wydatki na zwierzęta
+        // Wydatki na utrzymanie
         if (player.pets.length > 0) {
-            let petCost = player.pets.length * 150;
+            let petCost = player.pets.length * 200;
             player.money = Math.max(0, player.money - petCost);
             addLog(`🐾 Wydałeś $${petCost} na utrzymanie swoich zwierząt.`);
         }
 
-        // Losowa szansa na wydarzenie roczne
-        triggerRandomYearEvent();
+        // Zdarzenia losowe
+        triggerEvents();
+
+        // Śmierć ze starości lub braku zdrowia
+        if (player.age > rand(75, 100) || player.stats.health <= 0) {
+            alert(`Twoja postać zmarła w wieku ${player.age} lat.`);
+            if (player.children.length > 0) {
+                if (confirm("Czy chcesz grać dalej jako swoje dziecko?")) {
+                    passToNextGen();
+                    return;
+                }
+            }
+            location.reload();
+            return;
+        }
 
         updateUI();
     }
 
-    function triggerRandomYearEvent() {
+    function triggerEvents() {
         let r = Math.random();
-        if (r < 0.15) {
-            let found = rand(15, 300);
+        if (r < 0.12) {
+            let found = rand(20, 400);
             player.money += found;
             addLog(`💵 Znalazłeś zagubione pieniądze na ulicy: +$${found}!`);
-        } else if (r < 0.25) {
+        } else if (r < 0.22) {
             player.stats.health = Math.max(0, player.stats.health - rand(5, 20));
-            addLog(`🤒 Zachorowałeś na grypę! Twoje zdrowie spadło.`);
-        } else if (r < 0.35 && player.age > 12) {
-            let viralFollowers = rand(200, 3000);
-            player.socials.tiktok += viralFollowers;
-            addLog(`🔥 Twój stary film stał się viralem! Zyskałeś +${viralFollowers} obserwujących na TikToku.`);
-        } else if (r < 0.42 && player.age > 18) {
-            addLog(`🎟️ Kupujesz los na loterii... niestety nic nie wygrałeś.`);
+            addLog(`🤒 Złapałeś infekcję! Twoje zdrowie spadło.`);
+        } else if (r < 0.32 && player.age > 12) {
+            let viral = rand(500, 5000);
+            player.socials.tiktok += viral;
+            addLog(`🔥 Twój film stał się hitem na TikToku! Zyskałeś +${viral} obserwujących.`);
         }
     }
 
-    /* MODAL GENERATOR */
+    function passToNextGen() {
+        player.age = 18;
+        player.name = player.children[0];
+        player.children = [];
+        player.job = "Bezrobotny";
+        player.salary = 0;
+        player.stats.health = 100;
+        player.stats.happy = 85;
+        addLog(`🌅 Rozpoczynasz nowe pokolenie jako **${player.name}**! Przejmujesz cały zgromadzony majątek.`);
+        updateUI();
+    }
+
+    /* MODAL CONTROL */
     function openModal(type) {
         const modal = document.getElementById('modal');
         const title = document.getElementById('modal-title');
@@ -219,182 +518,227 @@
         content.innerHTML = "";
         modal.style.display = "flex";
 
-        if (type === 'social') {
-            title.innerText = "📱 Social Media";
-            content.innerHTML = `
-                <div class="menu-card" onclick="openSubSocial('youtube')"><span>▶️ YouTube</span> <span>${player.socials.youtube} subów</span></div>
-                <div class="menu-card" onclick="openSubSocial('tiktok')"><span>🎵 TikTok</span> <span>${player.socials.tiktok} obserowacji</span></div>
-                <div class="menu-card" onclick="openSubSocial('twitch')"><span>🟪 Twitch</span> <span>${player.socials.twitch} widzów</span></div>
-                <div class="menu-card" onclick="openSubSocial('instagram')"><span>📸 Instagram</span> <span>${player.socials.instagram} obserwujących</span></div>
-            `;
-        } else if (type === 'activities') {
-            title.innerText = "⚽ Aktywności & Hobby";
-            content.innerHTML = `
-                <div class="menu-card" onclick="openSportsMenu()"><span>🏆 Dołącz do klubu sportowego</span></div>
-                <div class="menu-card" onclick="goGym()"><span>🏋️ Trening na Siłowni (+Zdrowie/Wygląd)</span></div>
-                <div class="menu-card" onclick="buyPetMenu()"><span>🐶 Sklep ze Zwierzętami</span></div>
-                <div class="menu-card" onclick="playLottery()"><span>🎟️ Kup Los na Loterii ($10)</span></div>
-            `;
-        } else if (type === 'school-job') {
-            title.innerText = "💼 Edukacja & Praca";
+        if (type === 'career') {
+            title.innerText = "💼 Edukacja, Praca & Kariera";
             content.innerHTML = `
                 <div class="menu-card" onclick="studyHard()"><span>📚 Ucz się pilnie (+Mądrość)</span></div>
                 <div class="menu-card" onclick="openGigsMenu()"><span>🔨 Prace Dorywcze (Dla młodych)</span></div>
-                <div class="menu-card" onclick="openJobsMenu()"><span>💼 Szukaj Pełnoetatowej Pracy</span></div>
+                <div class="menu-card" onclick="openSpecialCareers()"><span>⭐ Kariery Specjalne (Aktor, Muzyk, Sport)</span></div>
+                <div class="menu-card" onclick="openFullJobs()"><span>💼 Zwykłe Prace Pełnoetatowe</span></div>
+            `;
+        } else if (type === 'assets') {
+            title.innerText = "🏠 Majątek, Giełda & Sklep";
+            content.innerHTML = `
+                <div class="menu-card" onclick="tradeStock()"><span>📈 Akcje Giełdowe (Cena: $${stockPrice})</span> <span>Posiadasz: ${player.investments.stocks}</span></div>
+                <div class="menu-card" onclick="tradeCrypto()"><span>🪙 Kryptowaluty (Cena: $${cryptoPrice})</span> <span>Posiadasz: ${player.investments.crypto}</span></div>
+                <div class="menu-card" onclick="buyHouseMenu()"><span>🏠 Kup Nieruchomość</span></div>
+                <div class="menu-card" onclick="buyCarMenu()"><span>🏎️ Kup Pojazd</span></div>
             `;
         } else if (type === 'rel') {
-            title.innerText = "👨‍👩‍👦 Relacje";
+            title.innerText = "👨‍👩‍👦 Relacje, Rodzina & Dzieci";
             content.innerHTML = `
                 <div class="menu-card" onclick="interactRel('Ojciec')"><span>👨 Ojciec: ${player.family.father}</span></div>
                 <div class="menu-card" onclick="interactRel('Matka')"><span>👩 Matka: ${player.family.mother}</span></div>
+                <div class="menu-card" onclick="haveChild()"><span>👶 Miej Dziecko (Min. 18 lat)</span> <span>Dzieci: ${player.children.length}</span></div>
+            `;
+        } else if (type === 'lifestyle') {
+            title.innerText = "⚽ Styl Życia, Social Media & Zdrowie";
+            content.innerHTML = `
+                <div class="menu-card" onclick="openSocialMenu()"><span>📱 Social Media (YouTube, TikTok, Twitch)</span></div>
+                <div class="menu-card" onclick="openSportsMenu()"><span>🏆 Sekcje Sportowe & Trening</span></div>
+                <div class="menu-card" onclick="openHealthMenu()"><span>🩺 Lekarze & Chirurgia Plastyczna</span></div>
+                <div class="menu-card" onclick="buyPetMenu()"><span>🐶 Sklep ze Zwierzętami</span></div>
+                <div class="menu-card" onclick="playLottery()"><span>🎟️ Kup Los na Loterii ($10)</span></div>
             `;
         }
     }
 
     function closeModal() { document.getElementById('modal').style.display = "none"; }
 
-    /* SOCIAL MEDIA SUB-MENU */
-    function openSubSocial(platform) {
-        if (player.age < 11) { alert("Jesteś za młody na Social Media!"); return; }
-        const content = document.getElementById('modal-content');
-        if (platform === 'youtube') {
-            content.innerHTML = `
-                <div class="menu-card" onclick="postSocial('youtube', 'vlog')"><span>📹 Nagraj Vloga</span></div>
-                <div class="menu-card" onclick="postSocial('youtube', 'gaming')"><span>🎮 Nagraj Gameplay</span></div>
-            `;
-        } else if (platform === 'tiktok') {
-            content.innerHTML = `
-                <div class="menu-card" onclick="postSocial('tiktok', 'dance')"><span>💃 Nagraj Taniec</span></div>
-                <div class="menu-card" onclick="postSocial('tiktok', 'comedy')"><span>😂 Nagraj Śmieszny Filmik</span></div>
-            `;
-        } else if (platform === 'twitch') {
-            content.innerHTML = `
-                <div class="menu-card" onclick="postSocial('twitch', 'stream')"><span>🔴 Odpal Stream na Żywo</span></div>
-            `;
-        } else if (platform === 'instagram') {
-            content.innerHTML = `
-                <div class="menu-card" onclick="postSocial('instagram', 'photo')"><span>📸 Wstaw Zdjęcie</span></div>
-            `;
-        }
-    }
-
-    function postSocial(platform, act) {
-        let gained = rand(20, 400);
-        if (platform === 'youtube') player.socials.youtube += gained;
-        if (platform === 'tiktok') player.socials.tiktok += gained * 2;
-        if (platform === 'twitch') player.socials.twitch += Math.floor(gained / 2);
-        if (platform === 'instagram') player.socials.instagram += gained;
-
-        player.stats.happy = Math.min(100, player.stats.happy + 2);
-        addLog(`📱 Opublikowałeś treści na **${platform.toUpperCase()}**! Zyskałeś nowe zasięgi.`);
-        updateUI();
-        closeModal();
-    }
-
-    /* SPORTS MENU */
-    function openSportsMenu() {
-        const content = document.getElementById('modal-content');
-        const sports = ["⚽ Piłka Nożna", "🏀 Koszykówka", "🏊 Pływanie", "🥋 Sztuki Walki", "🎾 Tenis", "Volleyball 🏐"];
-        content.innerHTML = sports.map(s => `<div class="menu-card" onclick="joinSport('${s}')"><span>${s}</span></div>`).join('');
-    }
-
-    function joinSport(s) {
-        player.sportsClub = s;
-        player.stats.health = Math.min(100, player.stats.health + 10);
-        addLog(`🏆 Dołączyłeś do sekcji **${s}**!`);
-        updateUI();
-        closeModal();
-    }
-
-    function goGym() {
-        player.stats.health = Math.min(100, player.stats.health + 6);
-        player.stats.looks = Math.min(100, player.stats.looks + 4);
-        addLog(`🏋️ Wyciskałeś ciężary na siłowni! Zdrowie i Wygląd w górę.`);
-        updateUI();
-        closeModal();
-    }
-
-    /* PETS & LOTTERY */
-    function buyPetMenu() {
-        const content = document.getElementById('modal-content');
-        content.innerHTML = petTypes.map(p => `<div class="menu-card" onclick="buyPet('${p}')"><span>Adoptuj: ${p} ($200)</span></div>`).join('');
-    }
-
-    function buyPet(pet) {
-        if (player.money < 200) { alert("Nie masz wystarczająco pieniędzy!"); return; }
-        player.money -= 200;
-        player.pets.push(pet);
-        player.stats.happy = Math.min(100, player.stats.happy + 15);
-        addLog(`🐾 Kupiłeś nowego zwierzaka: **${pet}**!`);
-        updateUI();
-        closeModal();
-    }
-
-    function playLottery() {
-        if (player.money < 10) { alert("Nie masz $10!"); return; }
-        player.money -= 10;
-        if (Math.random() < 0.02) {
-            let win = 50000;
-            player.money += win;
-            player.stats.happy = 100;
-            addLog(`🎉 WYGRAŁEŚ NA LOTERII! +$${win}!`);
-        } else {
-            addLog(`🎟️ Niestety, twój los był pusty.`);
-        }
-        updateUI();
-        closeModal();
-    }
-
     /* EDUKACJA I PRACA */
     function studyHard() {
         player.stats.smarts = Math.min(100, player.stats.smarts + 8);
-        addLog(`📚 Nauka opłaca się! Mądrość wzrosła.`);
-        updateUI();
-        closeModal();
+        addLog(`📚 Ciężko się uczyłeś. Twoja mądrość wzrosła!`);
+        updateUI(); closeModal();
     }
 
     function openGigsMenu() {
         const content = document.getElementById('modal-content');
         content.innerHTML = `
-            <div class="menu-card" onclick="doGig('Koszenie trawnika', 40)"><span>🌱 Koszenie trawnika ($40)</span></div>
-            <div class="menu-card" onclick="doGig('Wyprowadzanie psa', 25)"><span>🐕 Wyprowadzanie psa ($25)</span></div>
-            <div class="menu-card" onclick="doGig('Korepetycje', 60)"><span>✏️ Korepetycje ($60)</span></div>
+            <div class="menu-card" onclick="doGig('Koszenie trawników', 45)"><span>🌱 Koszenie trawników ($45)</span></div>
+            <div class="menu-card" onclick="doGig('Wyprowadzanie psów', 30)"><span>🐕 Wyprowadzanie psów ($30)</span></div>
+            <div class="menu-card" onclick="doGig('Korepetycje', 70)"><span>✏️ Korepetycje ($70)</span></div>
         `;
     }
 
     function doGig(name, pay) {
         player.money += pay;
-        addLog(`🔨 Wykonałeś pracę dorywczą: **${name}** i zarobiłeś +$${pay}.`);
-        updateUI();
-        closeModal();
+        addLog(`🔨 Wykonałeś pracę dorywczą: **${name}** (+$${pay}).`);
+        updateUI(); closeModal();
     }
 
-    function openJobsMenu() {
-        if (player.age < 18) { alert("Musisz mieć min. 18 lat na pełny etat!"); return; }
+    function openSpecialCareers() {
+        if (player.age < 18) { alert("Musisz mieć min. 18 lat!"); return; }
         const content = document.getElementById('modal-content');
-        const jobsList = [
-            { title: "Młodszy Programista", salary: 12000 },
-            { title: "Kucharz", salary: 8000 },
-            { title: "Streamer / Twórca", salary: 15000 },
-            { title: "Aktor Filmowy", salary: 35000 },
-            { title: "Inżynier", salary: 18000 }
-        ];
-        content.innerHTML = jobsList.map(j => `<div class="menu-card" onclick="applyJob('${j.title}', ${j.salary})"><span>${j.title} (Rocznie: $${j.salary})</span></div>`).join('');
+        content.innerHTML = `
+            <div class="menu-card" onclick="startSpecialJob('Aktor Hollywood', 200000)"><span>🎭 Aktor Hollywood ($200,000/rok)</span></div>
+            <div class="menu-card" onclick="startSpecialJob('Gwiazda Muzyki Pop', 250000)"><span>🎵 Gwiazda Muzyki Pop ($250,000/rok)</span></div>
+            <div class="menu-card" onclick="startSpecialJob('Profesjonalny Sportowiec', 180000)"><span>⚽ Profesjonalny Piłkarz ($180,000/rok)</span></div>
+            <div class="menu-card" onclick="startSpecialJob('Prezes Biznesu (CEO)', 350000)"><span>💼 Prezes Biznesu (CEO) ($350,000/rok)</span></div>
+        `;
     }
 
-    function applyJob(title, salary) {
+    function openFullJobs() {
+        if (player.age < 18) { alert("Musisz mieć min. 18 lat!"); return; }
+        const content = document.getElementById('modal-content');
+        content.innerHTML = `
+            <div class="menu-card" onclick="startSpecialJob('Młodszy Programista', 45000)"><span>💻 Młodszy Programista ($45,000/rok)</span></div>
+            <div class="menu-card" onclick="startSpecialJob('Lekarz', 90000)"><span>🩺 Lekarz ($90,000/rok)</span></div>
+            <div class="menu-card" onclick="startSpecialJob('Prawnik', 85000)"><span>⚖️ Prawnik ($85,000/rok)</span></div>
+            <div class="menu-card" onclick="startSpecialJob('Kucharz', 35000)"><span>👨‍🍳 Kucharz ($35,000/rok)</span></div>
+        `;
+    }
+
+    function startSpecialJob(title, pay) {
         player.job = title;
-        player.salary = salary;
-        addLog(`💼 Dostałeś nową pracę jako **${title}**! Zarobki: $${salary}/rok.`);
-        updateUI();
-        closeModal();
+        player.salary = pay;
+        addLog(`🎉 Zostałeś zatrudniony jako **${title}** z roczną pensją $${pay}!`);
+        updateUI(); closeModal();
     }
 
+    /* INWESTYCJE & MAJĄTEK */
+    function tradeCrypto() {
+        if (player.money < cryptoPrice) { alert("Masz za mało pieniędzy!"); return; }
+        player.money -= cryptoPrice;
+        player.investments.crypto++;
+        addLog(`🪙 Kupiono 1 krypto za $${cryptoPrice}.`);
+        updateUI(); openModal('assets');
+    }
+
+    function tradeStock() {
+        if (player.money < stockPrice) { alert("Masz za mało pieniędzy!"); return; }
+        player.money -= stockPrice;
+        player.investments.stocks++;
+        addLog(`📈 Kupiono 1 akcję za $${stockPrice}.`);
+        updateUI(); openModal('assets');
+    }
+
+    function buyHouseMenu() {
+        const content = document.getElementById('modal-content');
+        content.innerHTML = `
+            <div class="menu-card" onclick="buyAsset('Mieszkanie w Centrum', 120000, 'house')"><span>🏢 Mieszkanie w Centrum ($120,000)</span></div>
+            <div class="menu-card" onclick="buyAsset('Luksusowa Willa', 650000, 'house')"><span>🏰 Luksusowa Willa ($650,000)</span></div>
+        `;
+    }
+
+    function buyCarMenu() {
+        const content = document.getElementById('modal-content');
+        content.innerHTML = `
+            <div class="menu-card" onclick="buyAsset('Używany Sedan', 15000, 'car')"><span>🚗 Używany Sedan ($15,000)</span></div>
+            <div class="menu-card" onclick="buyAsset('Sportowe Superauto', 220000, 'car')"><span>🏎️ Sportowe Superauto ($220,000)</span></div>
+        `;
+    }
+
+    function buyAsset(name, price, type) {
+        if (player.money < price) { alert("Nie masz tyle gotówki!"); return; }
+        player.money -= price;
+        if (type === 'house') player.assets.houses.push(name);
+        if (type === 'car') player.assets.cars.push(name);
+        addLog(`🛍️ Kupiono: **${name}**!`);
+        updateUI(); closeModal();
+    }
+
+    /* RELACJE */
     function interactRel(who) {
         player.stats.happy = Math.min(100, player.stats.happy + 6);
-        addLog(`💬 Spędziłeś super czas z osobą: ${who}. Szczęście wzrosło!`);
-        updateUI();
-        closeModal();
+        addLog(`💬 Spędziłeś wspaniały czas z: ${who}. Szczęście w górę!`);
+        updateUI(); closeModal();
+    }
+
+    function haveChild() {
+        if (player.age < 18) { alert("Musisz mieć min. 18 lat!"); return; }
+        let name = "Dziecko " + (player.children.length + 1);
+        player.children.push(name);
+        addLog(`👶 Urodziło Ci się dziecko: **${name}**!`);
+        updateUI(); closeModal();
+    }
+
+    /* SOCIAL MEDIA & HEALTH */
+    function openSocialMenu() {
+        const content = document.getElementById('modal-content');
+        content.innerHTML = `
+            <div class="menu-card" onclick="doSocial('YouTube')"><span>▶️ Wrzuć film na YouTube (+Zasięgi)</span></div>
+            <div class="menu-card" onclick="doSocial('TikTok')"><span>🎵 Nagraj Taniec na TikToku (+Zasięgi)</span></div>
+            <div class="menu-card" onclick="doSocial('Twitch')"><span>🟪 Odpal Stream na Twitchu (+Zasięgi)</span></div>
+        `;
+    }
+
+    function doSocial(platform) {
+        if (player.age < 11) { alert("Jesteś za młody na Social Media!"); return; }
+        let gained = rand(50, 600);
+        addLog(`📱 Opublikowałeś treści na **${platform}** i zdobyłeś +${gained} nowych obserwujących!`);
+        updateUI(); closeModal();
+    }
+
+    function openSportsMenu() {
+        const content = document.getElementById('modal-content');
+        content.innerHTML = `
+            <div class="menu-card" onclick="doSport('Piłka Nożna')"><span>⚽ Trening Piłki Nożnej (+Zdrowie)</span></div>
+            <div class="menu-card" onclick="doSport('Siłownia')"><span>🏋️ Wyciskanie na Siłowni (+Wygląd/Zdrowie)</span></div>
+        `;
+    }
+
+    function doSport(sport) {
+        player.stats.health = Math.min(100, player.stats.health + 8);
+        player.stats.looks = Math.min(100, player.stats.looks + 4);
+        addLog(`🏆 Aktywność fizyczna (${sport}) poprawiła Twoje zdrowie i wygląd!`);
+        updateUI(); closeModal();
+    }
+
+    function openHealthMenu() {
+        const content = document.getElementById('modal-content');
+        content.innerHTML = `
+            <div class="menu-card" onclick="fixHealth('Lekarz', 400, 15, 'health')"><span>🩺 Wizyta u Lekarza ($400) -> +Zdrowie</span></div>
+            <div class="menu-card" onclick="fixHealth('Chirurg Plastyczny', 12000, 25, 'looks')"><span>💉 Operacja Plastyczna ($12,000) -> +Wygląd</span></div>
+        `;
+    }
+
+    function fixHealth(name, cost, boost, stat) {
+        if (player.money < cost) { alert("Brak gotówki!"); return; }
+        player.money -= cost;
+        player.stats[stat] = Math.min(100, player.stats[stat] + boost);
+        addLog(`🏥 **${name}** – zabieg zakończony sukcesem!`);
+        updateUI(); closeModal();
+    }
+
+    function buyPetMenu() {
+        const content = document.getElementById('modal-content');
+        content.innerHTML = `
+            <div class="menu-card" onclick="buyPet('Pies')"><span>🐶 Adoptuj Psa ($250)</span></div>
+            <div class="menu-card" onclick="buyPet('Kot')"><span>🐱 Adoptuj Kota ($200)</span></div>
+        `;
+    }
+
+    function buyPet(pet) {
+        if (player.money < 200) { alert("Brak pieniędzy!"); return; }
+        player.money -= 200;
+        player.pets.push(pet);
+        player.stats.happy = Math.min(100, player.stats.happy + 15);
+        addLog(`🐾 Adoptowałeś nowego pupila: **${pet}**!`);
+        updateUI(); closeModal();
+    }
+
+    function playLottery() {
+        if (player.money < 10) { alert("Brak $10!"); return; }
+        player.money -= 10;
+        if (Math.random() < 0.03) {
+            player.money += 100000;
+            player.stats.happy = 100;
+            addLog(`🎉 WYGRAŁEŚ NA LOTERII! +$100,000!`);
+        } else {
+            addLog(`🎟️ Niestety, los okazał się pusty.`);
+        }
+        updateUI(); closeModal();
     }
 </script>
 </body>
