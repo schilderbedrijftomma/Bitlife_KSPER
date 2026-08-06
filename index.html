@@ -41,6 +41,66 @@
       box-shadow: 0 2px 10px rgba(0,0,0,0.3);
     }
 
+    /* Ekran tworzenia postaci */
+    #creator-screen {
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      overflow-y: auto;
+      height: 100%;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .form-group label {
+      font-size: 0.9rem;
+      color: #94a3b8;
+      font-weight: bold;
+    }
+
+    .form-group input, .form-group select {
+      background-color: var(--card-bg);
+      border: 1px solid #2a3c50;
+      color: white;
+      padding: 10px;
+      border-radius: 8px;
+      font-size: 1rem;
+    }
+
+    .avatar-preview {
+      font-size: 4rem;
+      text-align: center;
+      margin: 10px 0;
+      background: var(--card-bg);
+      padding: 15px;
+      border-radius: 12px;
+      border: 1px solid #2a3c50;
+    }
+
+    .start-btn {
+      background: linear-gradient(90deg, #22c55e, #16a34a);
+      color: white;
+      border: none;
+      padding: 15px;
+      font-weight: bold;
+      font-size: 1.1rem;
+      border-radius: 10px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    /* Główny ekran gry */
+    #game-screen {
+      display: none;
+      flex-direction: column;
+      height: 100%;
+    }
+
     .profile-bar {
       background-color: #0d1722;
       padding: 12px 15px;
@@ -99,7 +159,6 @@
       align-items: center;
       cursor: pointer;
       border: 1px solid #2a3c50;
-      transition: all 0.2s;
     }
     .list-item:hover { background-color: #2a3c50; }
     .disabled { opacity: 0.4; cursor: not-allowed; }
@@ -171,9 +230,8 @@
       align-items: center;
       justify-content: center;
     }
-    .age-btn:active { transform: translateY(-13px) scale(0.95); }
 
-    /* Modal Popups (Wydarzenia) */
+    /* Modale */
     .modal-overlay {
       position: absolute;
       top: 0; left: 0; right: 0; bottom: 0;
@@ -194,7 +252,6 @@
       max-width: 360px;
       border: 6px solid #ef4444;
       overflow: hidden;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
       text-align: center;
     }
 
@@ -204,15 +261,10 @@
       font-size: 1.5rem;
       font-weight: 900;
       padding: 10px;
-      text-transform: uppercase;
     }
 
     .modal-body { padding: 20px; }
-    .modal-icon { font-size: 3rem; margin-bottom: 10px; }
-    .modal-title { font-size: 1.3rem; font-weight: bold; margin-bottom: 10px; color: #0f172a; }
-    .modal-desc { font-size: 0.95rem; color: #475569; margin-bottom: 20px; line-height: 1.4; }
-
-    .modal-options { display: flex; flex-direction: column; gap: 8px; }
+    .modal-options { display: flex; flex-direction: column; gap: 8px; margin-top: 15px; }
     .option-btn {
       background-color: var(--accent-blue);
       color: white;
@@ -220,11 +272,8 @@
       padding: 12px;
       border-radius: 25px;
       font-weight: bold;
-      font-size: 0.95rem;
       cursor: pointer;
-      transition: background 0.2s;
     }
-    .option-btn:hover { background-color: #0369a1; }
   </style>
 </head>
 <body>
@@ -232,101 +281,135 @@
 <div class="game-container">
   <div class="header">E-LIFE SIMULATION</div>
 
-  <div class="profile-bar">
-    <div class="profile-info">
-      <span class="avatar" id="avatar">👶</span>
-      <div>
-        <div id="char-name" style="font-weight: bold; font-size: 1.1rem;">Felix Moore</div>
-        <div id="char-status" style="font-size: 0.8rem; color: #94a3b8;">Niemowlę</div>
-      </div>
+  <div id="creator-screen">
+    <h2 style="text-align: center; color: var(--accent-orange);">Stwórz Nowe Życie</h2>
+    
+    <div class="avatar-preview" id="custom-avatar-preview">👶</div>
+
+    <div class="form-group">
+      <label>Imię:</label>
+      <input type="text" id="input-firstname" value="Felix">
     </div>
-    <div class="money" id="money-display">$0</div>
+
+    <div class="form-group">
+      <label>Nazwisko:</label>
+      <input type="text" id="input-lastname" value="Moore">
+    </div>
+
+    <div class="form-group">
+      <label>Płeć:</label>
+      <select id="input-gender" onchange="updateAvatarPreview()">
+        <option value="male">Mężczyzna 👦</option>
+        <option value="female">Kobieta 👧</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>Odcień skóry / Styl Awatara:</label>
+      <select id="input-skin" onchange="updateAvatarPreview()">
+        <option value="👶">Jasny 👶</option>
+        <option value="👶🏻">Jasna karnacja 👶🏻</option>
+        <option value="👶🏼">Średnia karnacja 👶🏼</option>
+        <option value="👶🏽">Oliwkowa karnacja 👶🏽</option>
+        <option value="👶🏾">Ciemna karnacja 👶🏾</option>
+        <option value="👶🏿">Głęboki brąz 👶🏿</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>Kraj zamieszkania:</label>
+      <select id="input-country">
+        </select>
+    </div>
+
+    <button class="start-btn" onclick="startGame()">Rozpocznij Życie 🚀</button>
   </div>
 
-  <div class="main-content">
-    
-    <div id="view-main" class="view-panel active">
-      <h3 id="age-display" style="margin-bottom: 10px; color: var(--accent-orange);">Age: 0 years</h3>
-      <div class="log-box" id="log-box">
-        Urodziłeś się jako chłopiec w Winnipeg, Kanada.<br>
-        Twoje urodziny to 7 stycznia. Twój znak zodiaku to Koziorożec.<br><br>
-        Nazywasz się Felix Moore.<br>
-        Twój ojciec to Lucas Moore, pisarz (lat 30).<br>
-        Twoja matka to Jennifer Bouchard, recepcjonistka (lat 28).<br>
-        Masz starszego przyrodniego brata o imieniu Mike Kennedy (lat 2).
-      </div>
-    </div>
-
-    <div id="view-relationships" class="view-panel">
-      <div class="panel-header">RELATIONSHIPS</div>
-      <div id="family-list">
+  <div id="game-screen">
+    <div class="profile-bar">
+      <div class="profile-info">
+        <span class="avatar" id="avatar">👶</span>
+        <div>
+          <div id="char-name" style="font-weight: bold; font-size: 1.1rem;">-</div>
+          <div id="char-status" style="font-size: 0.8rem; color: #94a3b8;">Niemowlę</div>
         </div>
+      </div>
+      <div class="money" id="money-display">$0</div>
     </div>
 
-    <div id="view-activities" class="view-panel">
-      <div class="panel-header">ACTIVITIES</div>
-      <div id="activities-list">
+    <div class="main-content">
+      
+      <div id="view-main" class="view-panel active">
+        <h3 id="age-display" style="margin-bottom: 10px; color: var(--accent-orange);">Wiek: 0 lat</h3>
+        <div class="log-box" id="log-box"></div>
+      </div>
+
+      <div id="view-relationships" class="view-panel">
+        <div class="panel-header">RELACJE</div>
+        <div id="family-list"></div>
+      </div>
+
+      <div id="view-activities" class="view-panel">
+        <div class="panel-header">AKTYWNOŚCI</div>
+        <div id="activities-list"></div>
+      </div>
+
+      <div id="view-assets" class="view-panel">
+        <div class="panel-header">MAJĄTEK</div>
+        <div id="assets-list"></div>
+      </div>
+
+      <div class="stats-container">
+        <div class="stat-row">
+          <span>Szczęście 😄</span>
+          <div class="stat-bar"><div class="stat-fill" id="stat-happy"></div></div>
         </div>
-    </div>
-
-    <div id="view-assets" class="view-panel">
-      <div class="panel-header">ASSETS</div>
-      <div id="assets-list">
+        <div class="stat-row">
+          <span>Zdrowie ❤️</span>
+          <div class="stat-bar"><div class="stat-fill" id="stat-health"></div></div>
         </div>
+        <div class="stat-row">
+          <span>Mądrość 💡</span>
+          <div class="stat-bar"><div class="stat-fill" id="stat-smart"></div></div>
+        </div>
+        <div class="stat-row">
+          <span>Wygląd 🌤️</span>
+          <div class="stat-bar"><div class="stat-fill" id="stat-looks"></div></div>
+        </div>
+      </div>
+
     </div>
 
-    <div class="stats-container">
-      <div class="stat-row">
-        <span>Happiness 😄</span>
-        <div class="stat-bar"><div class="stat-fill" id="stat-happy" style="width: 67%;"></div></div>
-      </div>
-      <div class="stat-row">
-        <span>Health ❤️</span>
-        <div class="stat-bar"><div class="stat-fill" id="stat-health" style="width: 96%;"></div></div>
-      </div>
-      <div class="stat-row">
-        <span>Smarts 💡</span>
-        <div class="stat-bar"><div class="stat-fill" id="stat-smart" style="width: 100%;"></div></div>
-      </div>
-      <div class="stat-row">
-        <span>Looks 🌤️</span>
-        <div class="stat-bar"><div class="stat-fill" id="stat-looks" style="width: 48%;"></div></div>
-      </div>
+    <div class="navbar">
+      <button class="nav-btn active" onclick="switchTab('main', this)">
+        <span class="icon">📜</span>Log
+      </button>
+      <button class="nav-btn" onclick="switchTab('assets', this)">
+        <span class="icon">🏠</span>Majątek
+      </button>
+      
+      <button class="age-btn" onclick="ageUp()">
+        <span style="font-size: 1.4rem;">+</span>
+        <span style="font-size: 0.7rem;">Wiek</span>
+      </button>
+
+      <button class="nav-btn" onclick="switchTab('relationships', this)">
+        <span class="icon">❤️</span>Relacje
+      </button>
+      <button class="nav-btn" onclick="switchTab('activities', this)">
+        <span class="icon">💬</span>Akcje
+      </button>
     </div>
-
-  </div>
-
-  <div class="navbar">
-    <button class="nav-btn active" onclick="switchTab('main', this)">
-      <span class="icon">📜</span>Log
-    </button>
-    <button class="nav-btn" onclick="switchTab('assets', this)">
-      <span class="icon">🏠</span>Assets
-    </button>
-    
-    <button class="age-btn" onclick="ageUp()">
-      <span style="font-size: 1.4rem;">+</span>
-      <span style="font-size: 0.7rem;">Age</span>
-    </button>
-
-    <button class="nav-btn" onclick="switchTab('relationships', this)">
-      <span class="icon">❤️</span>Relationships
-    </button>
-    <button class="nav-btn" onclick="switchTab('activities', this)">
-      <span class="icon">💬</span>Activities
-    </button>
   </div>
 
   <div class="modal-overlay" id="event-modal">
     <div class="modal-card">
-      <div class="modal-header" id="modal-header-title">Brother</div>
+      <div class="modal-header" id="modal-header-title">Zdarzenie</div>
       <div class="modal-body">
-        <div class="modal-icon" id="modal-icon">👦</div>
-        <div class="modal-title" id="modal-title">Quarrel</div>
-        <div class="modal-desc" id="modal-desc">You and your half brother, Mike, are squabbling about your favorite food.<br><br><b>What will you do?</b></div>
-        
-        <div class="modal-options" id="modal-options">
-          </div>
+        <div style="font-size: 3rem;" id="modal-icon">👦</div>
+        <div style="font-size: 1.2rem; font-weight: bold; margin: 10px 0;" id="modal-title">Tytuł</div>
+        <div style="font-size: 0.95rem; color: #475569;" id="modal-desc">Opis</div>
+        <div class="modal-options" id="modal-options"></div>
       </div>
     </div>
   </div>
@@ -334,43 +417,99 @@
 </div>
 
 <script>
-  // Dane Postaci
-  const player = {
-    name: "Felix Moore",
+  // Pełna lista państw świata
+  const countries = [
+    "Polska", "Afganistan", "Albania", "Algieria", "Andora", "Angola", "Argentyna", "Armenia", "Australia", "Austria",
+    "Azerbejdżan", "Bahamy", "Bahrajn", "Bangladesz", "Belgia", "Belize", "Benin", "Bhutan", "Białoruś", "Boliwia",
+    "Bośnia i Hercegowina", "Brazylia", "Bułgaria", "Chile", "Chiny", "Chorwacja", "Cypr", "Czad", "Czarnogóra",
+    "Czechy", "Dania", "Egipt", "Ekwador", "Estonia", "Etiopia", "Finlandia", "Francja", "Gabon", "Grecja", "Gruzja",
+    "Gwatemala", "Hiszpania", "Holandia", "Indie", "Indonezja", "Irak", "Iran", "Irlandia", "Islandia", "Izrael",
+    "Japonia", "Jordania", "Kanada", "Katar", "Kazachstan", "Kenia", "Kolumbia", "Korea Południowa", "Kuba", "Kuwejt",
+    "Litwa", "Luksemburg", "Łotwa", "Macedonia Północna", "Madagaskar", "Malezja", "Maroko", "Meksyk", "Mołdawia",
+    "Monako", "Mongolia", "Niemcy", "Nigeria", "Norwegia", "Nowa Zelandia", "Oman", "Pakistan", "Panama", "Paragwaj",
+    "Peru", "Portugalia", "RPA", "Rosja", "Rumunia", "San Marino", "Senegal", "Serbia", "Singapur", "Słowacja",
+    "Słowenia", "Somalia", "Sri Lanka", "Stany Zjednoczone", "Szwajcaria", "Szwecja", "Tajlandia", "Tunezja", "Turcja",
+    "Ukraina", "Urugwaj", "Uzbekistan", "Watykan", "Węgry", "Wielka Brytania", "Wietnam", "Włochy", "Wybrzeże Kości Słoniowej",
+    "Zjednoczone Emiraty Arabskie", "Zimbabwe"
+  ];
+
+  // Wypełnianie listy krajów w menu tworzenia postaci
+  const countrySelect = document.getElementById('input-country');
+  countries.forEach(c => {
+    const opt = document.createElement('option');
+    opt.value = c;
+    opt.innerText = c;
+    if(c === "Polska") opt.selected = true;
+    countrySelect.appendChild(opt);
+  });
+
+  function updateAvatarPreview() {
+    const skin = document.getElementById('input-skin').value;
+    document.getElementById('custom-avatar-preview').innerText = skin;
+  }
+
+  // Obiekt gracza
+  let player = {
+    firstName: "",
+    lastName: "",
+    gender: "male",
+    skin: "👶",
+    country: "",
     age: 0,
     money: 0,
     job: "Infant",
-    stats: { happy: 67, health: 96, smart: 100, looks: 48 },
-    family: [
-      { name: "Lucas Moore", role: "Father", age: 30, rel: 90, icon: "👨" },
-      { name: "Jennifer Bouchard", role: "Mother", age: 28, rel: 95, icon: "👩" },
-      { name: "Mike Kennedy", role: "Half Brother", age: 2, rel: 60, icon: "👦" },
-      { name: "Caroline Walker", role: "Half Sister", age: 0, rel: 70, icon: "👶" }
-    ],
+    stats: { happy: 80, health: 95, smart: 60, looks: 50 },
+    family: [],
     inventory: []
   };
 
+  function startGame() {
+    player.firstName = document.getElementById('input-firstname').value || "Felix";
+    player.lastName = document.getElementById('input-lastname').value || "Moore";
+    player.gender = document.getElementById('input-gender').value;
+    player.skin = document.getElementById('input-skin').value;
+    player.country = document.getElementById('input-country').value;
+
+    // Generowanie rodziny
+    player.family = [
+      { name: `Ojciec ${player.lastName}`, role: "Ojciec", age: 30, rel: 90, icon: "👨" },
+      { name: `Matka ${player.lastName}`, role: "Matka", age: 28, rel: 95, icon: "👩" },
+      { name: "Brat Przyrodni", role: "Brat Przyrodni", age: 3, rel: 65, icon: "👦" }
+    ];
+
+    document.getElementById('creator-screen').style.display = "none";
+    document.getElementById('game-screen').style.display = "flex";
+
+    document.getElementById('char-name').innerText = `${player.firstName} ${player.lastName}`;
+
+    addLog(`Urodziłeś/aś się w kraju: <b>${player.country}</b>.`);
+    addLog(`Twoje imię i nazwisko to ${player.firstName} ${player.lastName}.`);
+
+    updateUI();
+  }
+
+  function getAvatarIcon() {
+    if(player.age < 3) return player.skin; // Niemowlę
+    if(player.age < 18) return player.gender === "male" ? "👦" : "👧"; // Dziecko/Młodzież
+    return player.gender === "male" ? "👨" : "👩"; // Dorosły
+  }
+
   function updateUI() {
-    document.getElementById('age-display').innerText = `Age: ${player.age} years`;
+    document.getElementById('age-display').innerText = `Wiek: ${player.age} lat`;
     document.getElementById('money-display').innerText = `$${player.money.toLocaleString()}`;
-    
-    // Status i ikona
-    if(player.age < 3) {
-      player.job = "Infant";
-      document.getElementById('avatar').innerText = "👶";
-    } else if(player.age < 6) {
-      player.job = "Toddler";
-      document.getElementById('avatar').innerText = "🧒";
-    } else if(player.age < 18) {
-      if(player.job === "Infant" || player.job === "Toddler") player.job = "Student 📚";
-      document.getElementById('avatar').innerText = "👦";
+    document.getElementById('avatar').innerText = getAvatarIcon();
+
+    if(player.age < 3) player.job = "Niemowlę";
+    else if(player.age < 6) player.job = "Maluch";
+    else if(player.age < 18) {
+      if(player.job === "Niemowlę" || player.job === "Maluch") player.job = "Uczeń 📚";
     } else {
-      if(player.job === "Student 📚") player.job = "Unemployed";
-      document.getElementById('avatar').innerText = "👨";
+      if(player.job === "Uczeń 📚") player.job = "Bezrobotny";
     }
+    
     document.getElementById('char-status').innerText = player.job;
 
-    // Statystyki
+    // Paski statystyk
     document.getElementById('stat-happy').style.width = player.stats.happy + '%';
     document.getElementById('stat-health').style.width = player.stats.health + '%';
     document.getElementById('stat-smart').style.width = player.stats.smart + '%';
@@ -388,35 +527,21 @@
 
   function ageUp() {
     player.age++;
-    
-    // Starzenie się rodziny
     player.family.forEach(f => f.age++);
 
-    // Postarzenie i losowe dochody/wydarzenia
-    if(player.age === 6) addLog("Started Primary School.");
-    if(player.age === 15) addLog("Started High School.");
-    if(player.age === 18) addLog("You are now an adult! Unlocked jobs, university, and assets.");
+    if(player.age === 6) addLog("Rozpocząłeś naukę w Szkole Podstawowej.");
+    if(player.age === 15) addLog("Rozpocząłeś naukę w Liceum.");
+    if(player.age === 18) addLog("Stałęś się pełnoletni! Odblokowano studia, pracę i majtek.");
 
-    // Losowe zdarzenie w wieku 2 lat (Dokładnie jak na zdjęciu nr 2!)
-    if(player.age === 2) {
+    // Losowe wydarzenie
+    if(player.age === 3) {
       showEventModal(
-        "Brother", "👦", "Quarrel", 
-        "You and your half brother, Mike, are squabbling about your favorite food.<br><br><b>What will you do?</b>",
+        "Kłótnia", "👦", "Kłótnia z bratem",
+        "Twój przyrodni brat zabrał Twoją ulubioną zabawkę! Co zrobisz?",
         [
-          { text: "Assault him", action: () => { player.stats.happy -= 10; addLog("You attacked Mike! Your mother scolded you."); } },
-          { text: "Apologize to him", action: () => { player.stats.happy += 5; addLog("You apologized to Mike. You are peaceful again."); } },
-          { text: "Insult him", action: () => { addLog("You called Mike a bad name!"); } },
-          { text: "Complain to mother", action: () => { addLog("You complained to your mother."); } }
-        ]
-      );
-    } else if(Math.random() < 0.3 && player.age > 4) {
-      // Losowy event co jakiś czas
-      showEventModal(
-        "Random Event", "❓", "Opportunity", 
-        "Znajdujesz na ziemi portfel ze $100!",
-        [
-          { text: "Zatrzymaj pieniądze", action: () => { player.money += 100; addLog("Zatrzymałeś znalezione $100."); } },
-          { text: "Oddaj na policję", action: () => { player.stats.happy += 10; addLog("Oddałeś portfel. Czujesz satysfakcję!"); } }
+          { text: "Uderz go", action: () => { player.stats.happy -= 5; addLog("Uderzyłeś brata! Mama dała Ci karę."); } },
+          { text: "Przeproś i odpuść", action: () => { addLog("Zostawiłeś zabawkę bratu."); } },
+          { text: "Naskarż mamie", action: () => { player.stats.happy += 5; addLog("Mama oddała Ci zabawkę."); } }
         ]
       );
     }
@@ -467,7 +592,7 @@
           <span style="font-size:1.5rem">${f.icon}</span>
           <div>
             <b>${f.name}</b> (${f.role})
-            <div style="font-size:0.75rem; color:#94a3b8">Age: ${f.age}</div>
+            <div style="font-size:0.75rem; color:#94a3b8">Wiek: ${f.age}</div>
           </div>
         </div>
         <div class="rel-bar"><div class="rel-fill" style="width: ${f.rel}%;"></div></div>
@@ -481,17 +606,16 @@
     container.innerHTML = "";
 
     const acts = [
-      { name: "🧘 Mind & Body", icon: "🧘‍♀️", req: 12, action: () => { player.stats.happy += 5; addLog("Zrozumiałeś sens medytacji."); } },
-      { name: "🩺 Visit Doctor", icon: "👨‍⚕️", req: 0, action: () => { player.stats.health = 100; addLog("Lekarz wyleczył wszystkie Twoje infekcje."); } },
-      { name: "🏎️ License (Driving)", icon: "🚘", req: 16, action: () => { addLog("Zdałeś prawo jazdy!"); } },
-      { name: "🎓 University / Career", icon: "🏫", req: 18, action: () => { player.job = "Doctor"; player.money += 100000; addLog("Zostałeś lekarzem! Zarabiasz świetne pieniądze."); } },
-      { name: "🦹 Crime", icon: "🎭", req: 14, action: () => { 
-          if(Math.random() > 0.5) { player.money += 500; addLog("Udało Ci się ukraść portfel! (+$500)"); }
-          else { player.stats.happy -= 20; addLog("Zostałeś złapany na drobnym przestępstwie!"); }
+      { name: "🧘 Medytacja & Joga", icon: "🧘‍♀️", req: 12, action: () => { player.stats.happy = Math.min(100, player.stats.happy + 8); addLog("Zrelaksowałeś się podczas medytacji."); } },
+      { name: "🩺 Idź do Lekarza", icon: "👨‍⚕️", req: 0, action: () => { player.stats.health = 100; addLog("Lekarz potwierdził idealny stan zdrowia."); } },
+      { name: "🏎️ Zrób Prawo Jazdy", icon: "🚘", req: 16, action: () => { addLog("Zdałeś egzamin na prawo jazdy!"); } },
+      { name: "🎓 Idź na Studia", icon: "🏫", req: 18, action: () => { player.job = "Inżynier"; player.money += 60000; addLog("Ukończyłeś studia i zostałeś Inżynierem!"); } },
+      { name: "🦹 Drobne Przestępstwo", icon: "🎭", req: 14, action: () => { 
+          if(Math.random() > 0.5) { player.money += 300; addLog("Udało Ci się zrobić przekręt! (+$300)"); }
+          else { player.stats.happy -= 15; addLog("Przyłapano Cię na wybryku!"); }
         } 
       },
-      { name: "💃 Nightlife / Party", icon: "🍸", req: 18, action: () => { player.stats.happy = Math.min(100, player.stats.happy + 15); addLog("Bawiłeś się świetnie w klubie!"); } },
-      { name: "🐶 Get a Pet", icon: "🐕", req: 8, action: () => { player.stats.happy += 10; addLog("Kupiłeś psa!"); } }
+      { name: "💃 Klub & Imprezy", icon: "🍸", req: 18, action: () => { player.stats.happy = Math.min(100, player.stats.happy + 10); addLog("Wyszalałeś się na imprezie."); } }
     ];
 
     acts.forEach(act => {
@@ -512,10 +636,9 @@
     container.innerHTML = "";
 
     const items = [
-      { name: "📱 iPhone", price: 1000, req: 12, icon: "📱" },
-      { name: "🏎️ Fast Sports Car", price: 65000, req: 18, icon: "🚘" },
-      { name: "🏡 Suburban Home", price: 250000, req: 18, icon: "🏠" },
-      { name: "💎 Diamond Ring", price: 5000, req: 18, icon: "💎" }
+      { name: "📱 Smartfon", price: 1000, req: 12, icon: "📱" },
+      { name: "🏎️ Samochód Sportowy", price: 50000, req: 18, icon: "🚘" },
+      { name: "🏠 Własne Mieszkanie", price: 150000, req: 18, icon: "🏠" }
     ];
 
     items.forEach(item => {
@@ -533,16 +656,13 @@
             addLog(`Kupiłeś: ${item.name}!`);
             updateUI();
           } else {
-            alert("Nie masz wystarczająco pieniędzy!");
+            alert("Nie masz tyle pieniędzy!");
           }
         };
       }
       container.appendChild(div);
     });
   }
-
-  // Inicjalizacja
-  updateUI();
 </script>
 </body>
 </html>
