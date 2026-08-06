@@ -12,7 +12,6 @@
       --accent-orange: #f97316;
       --accent-green: #22c55e;
       --accent-blue: #0284c7;
-      --accent-yellow: #facc15;
       --text-main: #f8fafc;
     }
 
@@ -125,34 +124,15 @@
       gap: 15px;
     }
 
-    /* BitLife Style Log Box */
     .log-box {
       background-color: var(--card-bg);
       border-radius: 10px;
-      padding: 15px;
+      padding: 12px;
       font-size: 0.95rem;
-      line-height: 1.6;
-      max-height: 380px;
+      line-height: 1.5;
+      max-height: 280px;
       overflow-y: auto;
       border: 1px solid #2a3c50;
-    }
-
-    .log-age-header {
-      color: var(--accent-yellow);
-      font-weight: bold;
-      font-size: 1.15rem;
-      margin-top: 12px;
-      margin-bottom: 4px;
-    }
-
-    .log-age-header:first-child {
-      margin-top: 0;
-    }
-
-    .log-entry {
-      color: #f1f5f9;
-      margin-bottom: 4px;
-      padding-left: 2px;
     }
 
     /* Views */
@@ -372,6 +352,7 @@
 
     <div class="main-content">
       <div id="view-main" class="view-panel active">
+        <h3 id="age-display" style="margin-bottom: 10px; color: var(--accent-orange);">Age: 0 years</h3>
         <div class="log-box" id="log-box"></div>
       </div>
 
@@ -608,6 +589,7 @@
   }
 
   function updateUI() {
+    document.getElementById('age-display').innerText = `Age: ${player.age} years`;
     document.getElementById('money-display').innerText = `$${player.money.toLocaleString()}`;
     document.getElementById('avatar').innerText = getAvatarIcon();
 
@@ -630,39 +612,17 @@
     renderAssets();
   }
 
-  // BitLife Style Log Functionality
   function addLog(text) {
     const logBox = document.getElementById('log-box');
-    const ageHeaderId = `log-age-group-${player.age}`;
-    let group = document.getElementById(ageHeaderId);
-
-    if (!group) {
-      group = document.createElement('div');
-      group.id = ageHeaderId;
-      
-      const header = document.createElement('div');
-      header.className = 'log-age-header';
-      header.innerText = `Age: ${player.age} ${player.age === 1 ? 'year' : 'years'}`;
-      
-      group.appendChild(header);
-      logBox.insertBefore(group, logBox.firstChild);
-    }
-
-    const entry = document.createElement('div');
-    entry.className = 'log-entry';
-    entry.innerHTML = text;
-    group.appendChild(entry);
-  }
-
-  function goToLogTab() {
-    const mainBtn = document.getElementById('nav-btn-main');
-    switchTab('main', mainBtn);
+    logBox.innerHTML = `<div>• ${text}</div>` + logBox.innerHTML;
   }
 
   function ageUp() {
     if(player.isDead) return;
 
-    goToLogTab();
+    // Automatically switch back to Log tab when Aging Up
+    const mainBtn = document.getElementById('nav-btn-main');
+    switchTab('main', mainBtn);
 
     player.age++;
     player.family.forEach(f => f.age++);
@@ -739,71 +699,6 @@
     document.getElementById('event-modal').classList.add('active');
   }
 
-  function openDoctorMenu() {
-    const options = [
-      {
-        text: "General Checkup (Free)",
-        action: () => {
-          player.stats.health = Math.min(100, player.stats.health + 20);
-          addLog("You went for a general health checkup and feel great!");
-          goToLogTab();
-        }
-      },
-      {
-        text: "Therapy Session ($100)",
-        action: () => {
-          if(player.money >= 100) {
-            player.money -= 100;
-            player.stats.happy = Math.min(100, player.stats.happy + 25);
-            addLog("You had a great therapy session. (+Happiness)");
-          } else {
-            addLog("You can't afford therapy ($100)!");
-          }
-          goToLogTab();
-        }
-      },
-      {
-        text: "Plastic Surgery ($2,500)",
-        action: () => {
-          if(player.money >= 2500) {
-            player.money -= 2500;
-            player.stats.looks = Math.min(100, player.stats.looks + 30);
-            addLog("Plastic surgery was a success! You look stunning.");
-          } else {
-            addLog("You need $2,500 for plastic surgery!");
-          }
-          goToLogTab();
-        }
-      },
-      { text: "Cancel ❌", isClose: true, action: () => {} }
-    ];
-    showEventModal("HEALTHCARE", "👨‍⚕️", "Doctor Options", "Choose a healthcare service:", options);
-  }
-
-  function openUniversityMenu() {
-    const degrees = [
-      { name: "Computer Science", job: "Software Developer 💻", salary: 85000 },
-      { name: "Medicine", job: "Doctor / Surgeon 🩺", salary: 140000 },
-      { name: "Law", job: "Attorney / Lawyer ⚖️", salary: 110000 },
-      { name: "Business", job: "Corporate Executive 📊", salary: 95000 },
-      { name: "Fine Arts", job: "Artist / Designer 🎨", salary: 50000 }
-    ];
-
-    const options = degrees.map(deg => ({
-      text: `${deg.name} Major`,
-      action: () => {
-        player.job = deg.job;
-        player.salary = deg.salary;
-        player.stats.smart = Math.min(100, player.stats.smart + 20);
-        addLog(`You graduated with a degree in <b>${deg.name}</b> and got hired as a <b>${deg.job}</b>! ($${deg.salary.toLocaleString()}/yr)`);
-        goToLogTab();
-      }
-    }));
-    options.push({ text: "Cancel ❌", isClose: true, action: () => {} });
-
-    showEventModal("EDUCATION", "🎓", "Select Your Major", "Choose your field of study at University:", options);
-  }
-
   function openJobMarket() {
     const options = availableJobs.map(j => ({
       text: `${j.title} ($${j.salary.toLocaleString()}/yr)`,
@@ -811,98 +706,11 @@
         player.job = j.title;
         player.salary = j.salary;
         addLog(`You got a job as a ${j.title}.`);
-        goToLogTab();
       }
     }));
-    options.push({ text: "Cancel ❌", isClose: true, action: () => {} });
+    options.push({ text: "Cancel", isClose: true, action: () => {} });
 
     showEventModal("Careers", "💼", "Apply for a Job", "Available job offers:", options);
-  }
-
-  function openFitnessMenu() {
-    const options = [
-      {
-        text: "Gym Workout 🏋️",
-        action: () => {
-          player.stats.health = Math.min(100, player.stats.health + 10);
-          player.stats.looks = Math.min(100, player.stats.looks + 5);
-          addLog("You had a great workout at the gym! (+Health, +Looks)");
-          goToLogTab();
-        }
-      },
-      {
-        text: "Yoga & Meditation 🧘‍♀️",
-        action: () => {
-          player.stats.happy = Math.min(100, player.stats.happy + 10);
-          player.stats.health = Math.min(100, player.stats.health + 5);
-          addLog("Yoga helped you relax and de-stress.");
-          goToLogTab();
-        }
-      },
-      {
-        text: "Run a Marathon 🏃",
-        action: () => {
-          player.stats.health = Math.min(100, player.stats.health + 15);
-          player.stats.happy = Math.min(100, player.stats.happy + 5);
-          addLog("You completed a full 42km marathon!");
-          goToLogTab();
-        }
-      },
-      { text: "Cancel ❌", isClose: true, action: () => {} }
-    ];
-    showEventModal("FITNESS", "💪", "Stay Active", "Choose your physical activity:", options);
-  }
-
-  function openCrimeMenu() {
-    const options = [
-      {
-        text: "Pickpocket ($100 - $300)",
-        action: () => {
-          if(Math.random() > 0.3) {
-            const gain = Math.floor(Math.random() * 200) + 100;
-            player.money += gain;
-            addLog(`You pickpocketed someone and got <b>+$${gain}</b>!`);
-          } else {
-            player.stats.happy -= 10;
-            addLog("You got caught pickpocketing and paid a fine!");
-          }
-          goToLogTab();
-        }
-      },
-      {
-        text: "Illegal Gambling 🎲",
-        action: () => {
-          if(player.money >= 100) {
-            player.money -= 100;
-            if(Math.random() > 0.45) {
-              player.money += 350;
-              addLog("You won big at illegal poker! (+$350)");
-            } else {
-              addLog("You lost your $100 bet at gambling.");
-            }
-          } else {
-            addLog("You need at least $100 to gamble!");
-          }
-          goToLogTab();
-        }
-      },
-      {
-        text: "Rob a Bank Vault 🏦",
-        action: () => {
-          if(Math.random() > 0.8) {
-            player.money += 25000;
-            addLog("JACKPOT! You pulled off a successful bank robbery! (+$25,000)");
-          } else {
-            player.stats.health -= 25;
-            player.stats.happy -= 25;
-            addLog("The robbery went wrong! You got injured fleeing the police.");
-          }
-          goToLogTab();
-        }
-      },
-      { text: "Cancel ❌", isClose: true, action: () => {} }
-    ];
-    showEventModal("CRIME & RISKS", "🦹", "Underground World", "Take a risky crime chance:", options);
   }
 
   function switchTab(tabName, btn) {
@@ -938,24 +746,17 @@
     container.innerHTML = "";
 
     const acts = [
-      { name: "🩺 Doctor & Healthcare", icon: "👨‍⚕️", req: 0, action: () => openDoctorMenu() },
-      { name: "💪 Gym & Sports", icon: "🏋️", req: 12, action: () => openFitnessMenu() },
-      { name: "🎓 University & Degrees", icon: "🏫", req: 18, action: () => openUniversityMenu() },
+      { name: "🧘 Meditation & Yoga", icon: "🧘‍♀️", req: 12, action: () => { player.stats.happy = Math.min(100, player.stats.happy + 8); addLog("You felt relaxed after meditating."); } },
+      { name: "🩺 Visit Doctor", icon: "👨‍⚕️", req: 0, action: () => { player.stats.health = 100; addLog("The doctor confirmed you are in perfect health."); } },
+      { name: "🏎️ Driver's License", icon: "🚘", req: 16, action: () => { addLog("You passed your driving test!"); } },
       { name: "💼 Find a Job", icon: "🏢", req: 18, action: () => openJobMarket() },
-      { name: "🏎️ Driver's License", icon: "🚘", req: 16, action: () => { addLog("You passed your driving test and got a license!"); goToLogTab(); } },
-      { name: "💃 Party & Nightlife", icon: "🍸", req: 18, action: () => { player.stats.happy = Math.min(100, player.stats.happy + 15); addLog("You went to a nightclub and partied all night!"); goToLogTab(); } },
-      { name: "✈️ Luxury Vacation ($500)", icon: "🏝️", req: 18, action: () => {
-          if(player.money >= 500) {
-            player.money -= 500;
-            player.stats.happy = Math.min(100, player.stats.happy + 25);
-            addLog("You enjoyed a tropical vacation in Hawaii!");
-          } else {
-            addLog("You don't have $500 for a vacation!");
-          }
-          goToLogTab();
-        }
+      { name: "🎓 Go to University", icon: "🏫", req: 18, action: () => { player.job = "Engineer"; player.salary = 60000; addLog("You graduated and became an Engineer!"); } },
+      { name: "🦹 Petty Crime", icon: "🎭", req: 14, action: () => { 
+          if(Math.random() > 0.5) { player.money += 300; addLog("You pulled off a scam! (+$300)"); }
+          else { player.stats.happy -= 15; addLog("You got caught doing mischief!"); }
+        } 
       },
-      { name: "🦹 Crime & Illegal Actions", icon: "🎭", req: 14, action: () => openCrimeMenu() }
+      { name: "💃 Nightclub & Party", icon: "🍸", req: 18, action: () => { player.stats.happy = Math.min(100, player.stats.happy + 10); addLog("You had a wild night partying!"); } }
     ];
 
     acts.forEach(act => {
@@ -978,6 +779,7 @@
     ownedContainer.innerHTML = "";
     shopContainer.innerHTML = "";
 
+    // Render Owned Assets
     if(player.inventory.length === 0) {
       ownedContainer.innerHTML = `<div style="font-size:0.85rem; color:#64748b; padding: 5px;">You don't own any assets yet.</div>`;
     } else {
@@ -992,6 +794,7 @@
       });
     }
 
+    // Render Available Shop Assets
     availableAssetsList.forEach(item => {
       const isLocked = player.age < item.req || player.isDead;
       const div = document.createElement('div');
@@ -1006,7 +809,6 @@
             player.money -= item.price;
             player.inventory.push(item);
             addLog(`You purchased: ${item.name} for $${item.price.toLocaleString()}!`);
-            goToLogTab();
             updateUI();
           } else {
             alert("You don't have enough money for this!");
