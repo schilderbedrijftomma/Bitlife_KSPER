@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -451,9 +450,12 @@
 
 <script>
   const countries = [
-    "United States", "United Kingdom", "Netherlands", "Canada", "Australia", "Germany", "France", "Japan",
-    "Brazil", "Italy", "Spain", "Mexico", "South Korea", "Sweden", "Norway", "Denmark",
-    "Switzerland", "Argentina", "Belgium", "Greece", "India", "Indonesia", "Ireland", "Portugal"
+    "United States", "United Kingdom", "Poland", "Canada", "Australia", "Germany", "France", "Japan",
+    "Brazil", "Italy", "Spain", "Mexico", "South Korea", "Netherlands", "Sweden", "Norway", "Denmark",
+    "Finland", "Switzerland", "Argentina", "Chile", "Colombia", "Egypt", "Greece", "India", "Indonesia",
+    "Ireland", "Israel", "Jamaica", "Kenya", "Malaysia", "New Zealand", "Nigeria", "Pakistan", "Peru",
+    "Philippines", "Portugal", "Saudi Arabia", "Singapore", "South Africa", "Thailand", "Turkey", "Ukraine",
+    "United Arab Emirates", "Vietnam"
   ];
 
   const yearlyEvents = [
@@ -472,7 +474,8 @@
   const petTypes = [
     { type: "Dog", icon: "🐶", names: ["Buddy", "Max", "Charlie", "Bella", "Luna"] },
     { type: "Cat", icon: "🐱", names: ["Oliver", "Milo", "Leo", "Lucy", "Nala"] },
-    { type: "Parrot", icon: "🦜", names: ["Coco", "Kiwi", "Mango", "Rio"] }
+    { type: "Parrot", icon: "🦜", names: ["Coco", "Kiwi", "Mango", "Rio"] },
+    { type: "Hamster", icon: "🐹", names: ["Peanut", "Cookie", "Gizmo", "Nibbles"] }
   ];
 
   const availableAssetsList = [
@@ -484,7 +487,8 @@
     { id: 'used_car', name: "Used Sedan", price: 6000, req: 18, icon: "🚗" },
     { id: 'sports_car', name: "Luxury Sports Car", price: 85000, req: 18, icon: "🏎️" },
     { id: 'house_small', name: "Cozy Apartment", price: 180000, req: 18, icon: "🏢" },
-    { id: 'house_villa', name: "Modern Villa with Pool", price: 750000, req: 18, icon: "🏡" }
+    { id: 'house_villa', name: "Modern Villa with Pool", price: 750000, req: 18, icon: "🏡" },
+    { id: 'yacht', name: "Luxury Yacht", price: 2500000, req: 18, icon: "🛥️" }
   ];
 
   const firstNamesListMale = ["James", "John", "Robert", "Michael", "William", "David", "Richard", "Joseph"];
@@ -495,7 +499,7 @@
     const opt = document.createElement('option');
     opt.value = c;
     opt.innerText = c;
-    if(c === "Netherlands") opt.selected = true;
+    if(c === "United States") opt.selected = true;
     countrySelect.appendChild(opt);
   });
 
@@ -548,14 +552,40 @@
     const motherName = firstNamesListFemale[Math.floor(Math.random() * firstNamesListFemale.length)];
 
     player.family = [
-      { id: 1, name: `${fatherName} ${player.lastName}`, role: "Father", age: 30, rel: 90, icon: "👨" },
-      { id: 2, name: `${motherName} ${player.lastName}`, role: "Mother", age: 28, rel: 95, icon: "👩" }
+      { id: 1, name: `${fatherName} ${player.lastName}`, role: "Father", age: 30, rel: 90, icon: "👨", isPet: false },
+      { id: 2, name: `${motherName} ${player.lastName}`, role: "Mother", age: 28, rel: 95, icon: "👩", isPet: false }
     ];
+
+    if (Math.random() > 0.4) {
+      const isBrother = Math.random() > 0.5;
+      const sibName = isBrother ? 
+        firstNamesListMale[Math.floor(Math.random() * firstNamesListMale.length)] :
+        firstNamesListFemale[Math.floor(Math.random() * firstNamesListFemale.length)];
+      
+      player.family.push({
+        id: 3,
+        name: `${sibName} ${player.lastName}`,
+        role: isBrother ? "Brother" : "Sister",
+        age: Math.floor(Math.random() * 5) + 1,
+        rel: 75,
+        icon: isBrother ? "👦" : "👧",
+        isPet: false
+      });
+    }
 
     if (Math.random() > 0.5) {
       const pet = petTypes[Math.floor(Math.random() * petTypes.length)];
       const petName = pet.names[Math.floor(Math.random() * pet.names.length)];
-      player.family.push({ id: 3, name: petName, role: `Family ${pet.type}`, age: 2, rel: 90, icon: pet.icon });
+      
+      player.family.push({
+        id: 4,
+        name: petName,
+        role: `Family ${pet.type}`,
+        age: Math.floor(Math.random() * 4) + 1,
+        rel: 90,
+        icon: pet.icon,
+        isPet: true
+      });
     }
 
     document.getElementById('creator-screen').style.display = "none";
@@ -600,6 +630,7 @@
     renderAssets();
   }
 
+  // BitLife Style Log Functionality
   function addLog(text) {
     const logBox = document.getElementById('log-box');
     const ageHeaderId = `log-age-group-${player.age}`;
@@ -808,6 +839,15 @@
           goToLogTab();
         }
       },
+      {
+        text: "Run a Marathon 🏃",
+        action: () => {
+          player.stats.health = Math.min(100, player.stats.health + 15);
+          player.stats.happy = Math.min(100, player.stats.happy + 5);
+          addLog("You completed a full 42km marathon!");
+          goToLogTab();
+        }
+      },
       { text: "Cancel ❌", isClose: true, action: () => {} }
     ];
     showEventModal("FITNESS", "💪", "Stay Active", "Choose your physical activity:", options);
@@ -842,6 +882,20 @@
             }
           } else {
             addLog("You need at least $100 to gamble!");
+          }
+          goToLogTab();
+        }
+      },
+      {
+        text: "Rob a Bank Vault 🏦",
+        action: () => {
+          if(Math.random() > 0.8) {
+            player.money += 25000;
+            addLog("JACKPOT! You pulled off a successful bank robbery! (+$25,000)");
+          } else {
+            player.stats.health -= 25;
+            player.stats.happy -= 25;
+            addLog("The robbery went wrong! You got injured fleeing the police.");
           }
           goToLogTab();
         }
@@ -889,6 +943,7 @@
       { name: "🎓 University & Degrees", icon: "🏫", req: 18, action: () => openUniversityMenu() },
       { name: "💼 Find a Job", icon: "🏢", req: 18, action: () => openJobMarket() },
       { name: "🏎️ Driver's License", icon: "🚘", req: 16, action: () => { addLog("You passed your driving test and got a license!"); goToLogTab(); } },
+      { name: "💃 Party & Nightlife", icon: "🍸", req: 18, action: () => { player.stats.happy = Math.min(100, player.stats.happy + 15); addLog("You went to a nightclub and partied all night!"); goToLogTab(); } },
       { name: "✈️ Luxury Vacation ($500)", icon: "🏝️", req: 18, action: () => {
           if(player.money >= 500) {
             player.money -= 500;
