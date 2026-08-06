@@ -149,6 +149,14 @@
       text-transform: uppercase;
     }
 
+    .sub-section-header {
+      font-size: 0.9rem;
+      color: #f97316;
+      margin: 12px 0 6px 0;
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+
     .list-item {
       background-color: var(--card-bg);
       padding: 12px 15px;
@@ -248,30 +256,34 @@
       color: #1e293b;
       border-radius: 20px;
       width: 100%;
-      max-width: 360px;
+      max-width: 380px;
       border: 6px solid #ef4444;
       overflow: hidden;
       text-align: center;
+      max-height: 90vh;
+      display: flex;
+      flex-direction: column;
     }
 
     .modal-header {
       background-color: #ef4444;
       color: white;
-      font-size: 1.5rem;
+      font-size: 1.3rem;
       font-weight: 900;
       padding: 10px;
     }
 
-    .modal-body { padding: 20px; }
-    .modal-options { display: flex; flex-direction: column; gap: 8px; margin-top: 15px; }
+    .modal-body { padding: 15px; overflow-y: auto; }
+    .modal-options { display: flex; flex-direction: column; gap: 8px; margin-top: 10px; }
     .option-btn {
       background-color: var(--accent-blue);
       color: white;
       border: none;
-      padding: 12px;
-      border-radius: 25px;
+      padding: 10px;
+      border-radius: 20px;
       font-weight: bold;
       cursor: pointer;
+      font-size: 0.9rem;
     }
     .option-btn.close {
       background-color: #64748b;
@@ -355,8 +367,11 @@
       </div>
 
       <div id="view-assets" class="view-panel">
-        <div class="panel-header">ASSETS</div>
-        <div id="assets-list"></div>
+        <div class="panel-header">ASSETS & PROPERTY</div>
+        <div class="sub-section-header">📦 My Belongings</div>
+        <div id="owned-assets-list"></div>
+        <div class="sub-section-header">🛍️ Shopping Center</div>
+        <div id="assets-shop-list"></div>
       </div>
     </div>
 
@@ -405,9 +420,9 @@
     <div class="modal-card">
       <div class="modal-header" id="modal-header-title">Event</div>
       <div class="modal-body">
-        <div style="font-size: 3rem;" id="modal-icon">👦</div>
-        <div style="font-size: 1.2rem; font-weight: bold; margin: 10px 0;" id="modal-title">Title</div>
-        <div style="font-size: 0.95rem; color: #475569;" id="modal-desc">Description</div>
+        <div style="font-size: 2.5rem;" id="modal-icon">👦</div>
+        <div style="font-size: 1.1rem; font-weight: bold; margin: 8px 0;" id="modal-title">Title</div>
+        <div style="font-size: 0.9rem; color: #475569;" id="modal-desc">Description</div>
         <div class="modal-options" id="modal-options"></div>
       </div>
     </div>
@@ -442,6 +457,19 @@
     { type: "Cat", icon: "🐱", names: ["Oliver", "Milo", "Leo", "Lucy", "Nala"] },
     { type: "Parrot", icon: "🦜", names: ["Coco", "Kiwi", "Mango", "Rio"] },
     { type: "Hamster", icon: "🐹", names: ["Peanut", "Cookie", "Gizmo", "Nibbles"] }
+  ];
+
+  const availableAssetsList = [
+    { id: 'toy', name: "Action Figure / Doll", price: 50, req: 3, icon: "🧸" },
+    { id: 'console', name: "Gaming Console", price: 500, req: 10, icon: "🎮" },
+    { id: 'phone', name: "Latest Smartphone", price: 1200, req: 12, icon: "📱" },
+    { id: 'pc', name: "Pro Gaming PC", price: 3000, req: 14, icon: "🖥️" },
+    { id: 'scooter', name: "Electric Scooter", price: 800, req: 14, icon: "🛴" },
+    { id: 'used_car', name: "Used Sedan", price: 6000, req: 18, icon: "🚗" },
+    { id: 'sports_car', name: "Luxury Sports Car", price: 85000, req: 18, icon: "🏎️" },
+    { id: 'house_small', name: "Cozy Apartment", price: 180000, req: 18, icon: "🏢" },
+    { id: 'house_villa', name: "Modern Villa with Pool", price: 750000, req: 18, icon: "🏡" },
+    { id: 'yacht', name: "Luxury Yacht", price: 2500000, req: 18, icon: "🛥️" }
   ];
 
   const firstNamesListMale = ["James", "John", "Robert", "Michael", "William", "David", "Richard", "Joseph"];
@@ -509,7 +537,6 @@
       { id: 2, name: `${motherName} ${player.lastName}`, role: "Mother", age: 28, rel: 95, icon: "👩", isPet: false }
     ];
 
-    // Sibling chance (60%)
     if (Math.random() > 0.4) {
       const isBrother = Math.random() > 0.5;
       const sibName = isBrother ? 
@@ -527,7 +554,6 @@
       });
     }
 
-    // Pet chance (50%)
     if (Math.random() > 0.5) {
       const pet = petTypes[Math.floor(Math.random() * petTypes.length)];
       const petName = pet.names[Math.floor(Math.random() * pet.names.length)];
@@ -597,18 +623,15 @@
     player.age++;
     player.family.forEach(f => f.age++);
 
-    // Health drops slightly with old age
     if(player.age > 65) {
       player.stats.health -= Math.floor(Math.random() * 8) + 2;
     }
 
-    // Death check
     if(player.stats.health <= 0 || player.age >= 100 || (player.age > 75 && Math.random() < 0.15)) {
       handleDeath();
       return;
     }
 
-    // Random yearly event log
     const randomYearLog = yearlyEvents[Math.floor(Math.random() * yearlyEvents.length)];
     addLog(randomYearLog);
 
@@ -675,65 +698,125 @@
   function openRelationMenu(member) {
     if(player.isDead) return;
 
-    const options = [
-      {
-        text: "Spend Time ⏳",
-        action: () => {
-          player.stats.happy = Math.min(100, player.stats.happy + 10);
-          member.rel = Math.min(100, member.rel + 12);
-          addLog(`You spent quality time with ${member.name}. (+Happiness, +Relationship)`);
-        }
-      },
-      {
-        text: "Ask for Money 💰",
-        action: () => {
-          if(member.isPet) {
-            addLog(`${member.name} tilted its head confused. Pets don't have money!`);
-            return;
-          }
+    let options = [];
 
-          if(member.role === "Father" || member.role === "Mother") {
-            if(Math.random() < 0.75) {
-              const amount = Math.floor(Math.random() * 150) + 20;
-              player.money += amount;
-              addLog(`Your ${member.role} gave you $${amount}!`);
+    if(member.isPet) {
+      options = [
+        {
+          text: "Pet & Cuddle 🐾",
+          action: () => {
+            player.stats.happy = Math.min(100, player.stats.happy + 10);
+            member.rel = Math.min(100, member.rel + 15);
+            addLog(`You petted ${member.name}. It purred/wagged happy!`);
+          }
+        },
+        {
+          text: "Take for a Walk 🦮",
+          action: () => {
+            player.stats.happy = Math.min(100, player.stats.happy + 12);
+            player.stats.health = Math.min(100, player.stats.health + 3);
+            member.rel = Math.min(100, member.rel + 10);
+            addLog(`You went on a nice walk with ${member.name}.`);
+          }
+        },
+        {
+          text: "Give a Treat 🦴",
+          action: () => {
+            if(player.money >= 10) {
+              player.money -= 10;
+              member.rel = Math.min(100, member.rel + 20);
+              addLog(`You bought a treat for ${member.name}! (-$10)`);
             } else {
-              addLog(`Your ${member.role} refused to give you money.`);
-            }
-          } else if(member.role === "Brother" || member.role === "Sister") {
-            if(Math.random() < 0.25) {
-              const amount = Math.floor(Math.random() * 20) + 5;
-              player.money += amount;
-              addLog(`Your ${member.role} reluctantly gave you $${amount}.`);
-            } else {
-              addLog(`Your ${member.role} laughed and said no.`);
+              addLog("You don't have $10 for a pet treat!");
             }
           }
         }
-      },
-      {
-        text: "Compliment 💬",
-        action: () => {
-          member.rel = Math.min(100, member.rel + 8);
-          addLog(`You gave ${member.name} a sweet compliment!`);
+      ];
+    } else {
+      options = [
+        {
+          text: "Spend Time ⏳",
+          action: () => {
+            player.stats.happy = Math.min(100, player.stats.happy + 8);
+            member.rel = Math.min(100, member.rel + 10);
+            addLog(`You spent quality time with ${member.name}.`);
+          }
+        },
+        {
+          text: "Compliment 💬",
+          action: () => {
+            member.rel = Math.min(100, member.rel + 6);
+            addLog(`You gave ${member.name} a sweet compliment!`);
+          }
+        },
+        {
+          text: "Deep Conversation 🗣️",
+          action: () => {
+            player.stats.smart = Math.min(100, player.stats.smart + 3);
+            member.rel = Math.min(100, member.rel + 12);
+            addLog(`You had a deep conversation with ${member.name}. (+Smarts)`);
+          }
+        },
+        {
+          text: "Ask for Money 💰",
+          action: () => {
+            if(member.role === "Father" || member.role === "Mother") {
+              if(Math.random() < 0.75) {
+                const amount = Math.floor(Math.random() * 150) + 20;
+                player.money += amount;
+                addLog(`Your ${member.role} gave you $${amount}!`);
+              } else {
+                addLog(`Your ${member.role} refused to give you money.`);
+              }
+            } else if(member.role === "Brother" || member.role === "Sister") {
+              if(Math.random() < 0.25) {
+                const amount = Math.floor(Math.random() * 20) + 5;
+                player.money += amount;
+                addLog(`Your ${member.role} reluctantly gave you $${amount}.`);
+              } else {
+                addLog(`Your ${member.role} laughed and said no.`);
+              }
+            }
+          }
+        },
+        {
+          text: "Give Gift 🎁 (-$50)",
+          action: () => {
+            if(player.money >= 50) {
+              player.money -= 50;
+              member.rel = Math.min(100, member.rel + 25);
+              addLog(`You gave ${member.name} a great gift! (-$50)`);
+            } else {
+              addLog("You need at least $50 to buy a gift!");
+            }
+          }
+        },
+        {
+          text: "Play a Prank 🤪",
+          action: () => {
+            if(Math.random() > 0.4) {
+              player.stats.happy = Math.min(100, player.stats.happy + 10);
+              addLog(`Your prank on ${member.name} was super funny!`);
+            } else {
+              member.rel = Math.max(0, member.rel - 15);
+              addLog(`${member.name} did not like your prank at all...`);
+            }
+          }
+        },
+        {
+          text: "Insult / Argue 🤬",
+          action: () => {
+            member.rel = Math.max(0, member.rel - 20);
+            player.stats.happy = Math.max(0, player.stats.happy - 5);
+            addLog(`You got into a heated argument with ${member.name}.`);
+          }
         }
-      },
-      {
-        text: "Insult / Argue 🤬",
-        action: () => {
-          member.rel = Math.max(0, member.rel - 20);
-          player.stats.happy = Math.max(0, player.stats.happy - 5);
-          addLog(`You got into a heated argument with ${member.name}.`);
-        }
-      },
-      {
-        text: "Close Menu ❌",
-        isClose: true,
-        action: () => {}
-      }
-    ];
+      ];
+    }
 
-    showEventModal("RELATIONSHIP", member.icon, member.name, `Role: <b>${member.role}</b> | Age: ${member.age}`, options);
+    options.push({ text: "Close Menu ❌", isClose: true, action: () => {} });
+
+    showEventModal("RELATIONSHIP ACTIONS", member.icon, member.name, `Role: <b>${member.role}</b> | Age: ${member.age}`, options);
   }
 
   function openJobMarket() {
@@ -811,16 +894,29 @@
   }
 
   function renderAssets() {
-    const container = document.getElementById('assets-list');
-    container.innerHTML = "";
+    const ownedContainer = document.getElementById('owned-assets-list');
+    const shopContainer = document.getElementById('assets-shop-list');
+    
+    ownedContainer.innerHTML = "";
+    shopContainer.innerHTML = "";
 
-    const items = [
-      { name: "📱 Smartphone", price: 1000, req: 12, icon: "📱" },
-      { name: "🏎️ Sports Car", price: 50000, req: 18, icon: "🚘" },
-      { name: "🏠 Apartment", price: 150000, req: 18, icon: "🏠" }
-    ];
+    // Render Owned Assets
+    if(player.inventory.length === 0) {
+      ownedContainer.innerHTML = `<div style="font-size:0.85rem; color:#64748b; padding: 5px;">You don't own any assets yet.</div>`;
+    } else {
+      player.inventory.forEach(item => {
+        const div = document.createElement('div');
+        div.className = "list-item";
+        div.innerHTML = `
+          <span>${item.icon} <b>${item.name}</b></span>
+          <span style="color:#94a3b8; font-size:0.8rem">Owned</span>
+        `;
+        ownedContainer.appendChild(div);
+      });
+    }
 
-    items.forEach(item => {
+    // Render Available Shop Assets
+    availableAssetsList.forEach(item => {
       const isLocked = player.age < item.req || player.isDead;
       const div = document.createElement('div');
       div.className = `list-item ${isLocked ? 'disabled' : ''}`;
@@ -832,14 +928,15 @@
         div.onclick = () => {
           if(player.money >= item.price) {
             player.money -= item.price;
-            addLog(`You bought: ${item.name}!`);
+            player.inventory.push(item);
+            addLog(`You purchased: ${item.name} for $${item.price.toLocaleString()}!`);
             updateUI();
           } else {
-            alert("You don't have enough money!");
+            alert("You don't have enough money for this!");
           }
         };
       }
-      container.appendChild(div);
+      shopContainer.appendChild(div);
     });
   }
 </script>
