@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Własny BitLife Online</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #121212;
+            color: #ffffff;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+        .game-container {
+            width: 100%;
+            max-width: 600px;
+            background-color: #1e1e1e;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+        }
+        h1, h2, h3 { color: #f39c12; text-align: center; margin-top: 0; }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            background: #2a2a2a;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+        .stat-bar { background: #444; border-radius: 5px; height: 12px; overflow: hidden; margin-top: 3px; }
+        .stat-fill { background: #2ecc71; height: 100%; width: 0%; transition: width 0.3s; }
+        .log-box {
+            background: #000;
+            border: 1px solid #333;
+            height: 150px;
+            overflow-y: auto;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+        .log-entry { margin-bottom: 6px; border-bottom: 1px solid #222; padding-bottom: 4px; }
+        .actions-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        button {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        button:hover { background: #2980b9; }
+        button.age-btn {
+            grid-column: span 2;
+            background: #2ecc71;
+            font-size: 18px;
+        }
+        button.age-btn:hover { background: #27ae60; }
+        .family-box { background: #2a2a2a; padding: 10px; border-radius: 8px; margin-bottom: 15px; font-size: 14px; }
+    </style>
+</head>
+<body>
+
+<div class="game-container">
+    <h1>📱 BitLife JS Edition</h1>
+    
+    <div id="creation-screen">
+        <h3>Stwórz swoją postać</h3>
+        <input type="text" id="input-name" placeholder="Twoje imię" style="width: 95%; padding: 10px; margin-bottom: 10px;">
+        <input type="text" id="input-surname" placeholder="Twoje nazwisko" style="width: 95%; padding: 10px; margin-bottom: 10px;">
+        <button onclick="startGame()" style="width: 100%;">Rozpocznij Życie 🚀</button>
+    </div>
+
+    <div id="game-screen" style="display: none;">
+        <h2 id="char-name">Imię Nazwisko</h2>
+        <p style="text-align: center; color: #aaa;" id="char-info">Wiek: 0 | Kraj: Polska | Kasa: 0 PLN</p>
+
+        <div class="stats-grid">
+            <div>Szczęście: <span id="stat-happy-val">0</span>% <div class="stat-bar"><div id="stat-happy" class="stat-fill"></div></div></div>
+            <div>Zdrowie: <span id="stat-health-val">0</span>% <div class="stat-bar"><div id="stat-health" class="stat-fill"></div></div></div>
+            <div>Mądrość: <span id="stat-smart-val">0</span>% <div class="stat-bar"><div id="stat-smart" class="stat-fill"></div></div></div>
+            <div>Wygląd: <span id="stat-looks-val">0</span>% <div class="stat-bar"><div id="stat-looks" class="stat-fill"></div></div></div>
+        </div>
+
+        <div class="family-box">
+            <strong>👨‍👩‍👦 Rodzina:</strong>
+            <div id="family-list"></div>
+        </div>
+
+        <div class="log-box" id="event-log"></div>
+
+        <div class="actions-grid">
+            <button class="age-btn" onclick="ageUp()">➕ Postarz o 1 Rok</button>
+            <button onclick="doActivity('school')">🏫 Szkoła / Edukacja</button>
+            <button onclick="doActivity('work')">💼 Praca i Zarobki</button>
+            <button onclick="doActivity('sports')">⚽ Sport i Hobby</button>
+            <button onclick="doActivity('social')">📸 Social Media (<span id="followers-cnt">0</span>)</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    // ZMIENNE GRY
+    let player = {
+        name: "",
+        surname: "",
+        age: 0,
+        country: "Polska",
+        money: 0,
+        followers: 0,
+        stats: { happy: 50, health: 50, smart: 50, looks: 50 },
+        parents: {},
+        job: "Brak",
+        schoolStage: "Brak"
+    };
+
+    const countries = ["Polska", "USA", "Niemcy", "Japonia", "Wielka Brytania", "Hiszpania"];
+    const maleNames = ["Jan", "Piotr", "Adam", "Michał", "Kamil", "Mateusz"];
+    const femaleNames = ["Anna", "Maria", "Katarzyna", "Ewa", "Karolina", "Wiktoria"];
+
+    function randomInt(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    function startGame() {
+        const nameInput = document.getElementById('input-name').value.trim();
+        const surnameInput = document.getElementById('input-surname').value.trim();
+
+        player.name = nameInput || "Krzysztof";
+        player.surname = surnameInput || "Kowalski";
+        player.country = countries[Math.floor(Math.random() * countries.length)];
+        
+        // Losowanie statystyk startowych
+        player.stats.happy = randomInt(40, 99);
+        player.stats.health = randomInt(50, 99);
+        player.stats.smart = randomInt(20, 90);
+        player.stats.looks = randomInt(20, 90);
+
+        // Losowanie rodziców
+        player.parents = {
+            father: `${maleNames[Math.floor(Math.random() * maleNames.length)]} ${player.surname} (Wiek: ${randomInt(22, 40)})`,
+            mother: `${femaleNames[Math.floor(Math.random() * femaleNames.length)]} ${player.surname} (Wiek: ${randomInt(20, 38)})`
+        };
+
+        document.getElementById('creation-screen').style.display = 'none';
+        document.getElementById('game-screen').style.display = 'block';
+
+        logEvent(`Urodziłeś/aś się w miejscowości w kraju: <b>${player.country}</b>.`);
+        logEvent(`Twoim tatą jest ${player.parents.father}, a mamą ${player.parents.mother}.`);
+        updateUI();
+    }
+
+    function updateUI() {
+        document.getElementById('char-name').innerText = `${player.name} ${player.surname}`;
+        document.getElementById('char-info').innerText = `Wiek: ${player.age} | Kraj: ${player.country} | Kasa: ${player.money} PLN | Praca: ${player.job}`;
+        document.getElementById('followers-cnt').innerText = player.followers;
+
+        // Paski statystyk
+        for (let stat in player.stats) {
+            document.getElementById(`stat-${stat}`).style.width = player.stats[stat] + '%';
+            document.getElementById(`stat-${stat}-val`).innerText = player.stats[stat];
+        }
+
+        // Rodzina
+        document.getElementById('family-list').innerHTML = `
+            • Ojciec: ${player.parents.father}<br>
+            • Matka: ${player.parents.mother}
+        `;
+    }
+
+    function logEvent(text) {
+        const logBox = document.getElementById('event-log');
+        logBox.innerHTML = `<div class="log-entry"><b>[Wiek: ${player.age}]</b> ${text}</div>` + logBox.innerHTML;
+    }
+
+    function ageUp() {
+        player.age++;
+
+        // Zmiany edukacyjne
+        if (player.age === 7) {
+            player.schoolStage = "Szkoła Podstawowa";
+            logEvent("🎒 Rozpoczynasz naukę w Szkole Podstawowej!");
+        } else if (player.age === 15) {
+            player.schoolStage = "Liceum";
+            logEvent("🏫 Awansujesz do Liceum!");
+        } else if (player.age === 19) {
+            player.schoolStage = "Uniwersytet";
+            logEvent("🎓 Rozpoczynasz Studia na Uniwersytecie!");
+        } else if (player.age === 24) {
+            player.schoolStage = "Wykształcony";
+            logEvent("👨‍🎓 Ukończyłeś edukację!");
+        }
+
+        // Pensja jeśli ma pracę
+        if (player.job !== "Brak") {
+            let salary = randomInt(3000, 8000);
+            player.money += salary;
+            logEvent(`💰 Zarobiłeś ${salary} PLN w swojej pracy (${player.job}).`);
+        }
+
+        // Randomowe zdarzenia życiowe
+        triggerRandomEvent();
+        updateUI();
+    }
+
+    function triggerRandomEvent() {
+        const roll = Math.random();
+        if (roll < 0.2) {
+            let found = randomInt(10, 200);
+            player.money += found;
+            logEvent(`💵 Znalazłeś na ulicy ${found} PLN!`);
+        } else if (roll < 0.35) {
+            player.stats.health = Math.max(0, player.stats.health - 10);
+            logEvent("🤧 Przeziębiłeś się! Twoje zdrowie trochę spadło.");
+        } else if (roll < 0.45 && player.age > 12) {
+            let newFollowers = randomInt(5, 50);
+            player.followers += newFollowers;
+            logEvent(`📈 Twój stary filmik stał się viralem! Zyskujesz +${newFollowers} obserwujących.`);
+        }
+    }
+
+    function doActivity(type) {
+        if (type === 'school') {
+            if (player.age < 7) {
+                alert("Jesteś za młody na szkołę!");
+                return;
+            }
+            player.stats.smart = Math.min(100, player.stats.smart + 5);
+            logEvent("📚 Uczyłeś się pilnie. Twoja mądrość wzrosła!");
+        } 
+        else if (type === 'work') {
+            if (player.age < 16) {
+                alert("Musisz mieć min. 16 lat, aby pracować!");
+                return;
+            }
+            if (player.job === "Brak") {
+                const jobs = ["Sprzedawca", "Programista", "Kucharz", "Grafik"];
+                player.job = jobs[Math.floor(Math.random() * jobs.length)];
+                logEvent(`🎉 Dostałeś swoją pierwszą pracę jako **${player.job}**!`);
+            } else {
+                logEvent(`Pracujesz ciężko jako ${player.job}.`);
+            }
+        } 
+        else if (type === 'sports') {
+            player.stats.health = Math.min(100, player.stats.health + 5);
+            player.stats.looks = Math.min(100, player.stats.looks + 2);
+            logEvent("⚽ Poszedłeś na trening sportowy. Zdrowie i wygląd w górę!");
+        } 
+        else if (type === 'social') {
+            if (player.age < 10) {
+                alert("Jesteś za młody na Social Media!");
+                return;
+            }
+            let gained = randomInt(1, 20);
+            player.followers += gained;
+            logEvent(`📸 Dodałeś nowe zdjęcie na Social Media. +${gained} nowych obserwujących!`);
+        }
+        updateUI();
+    }
+</script>
+
+</body>
+</html>
