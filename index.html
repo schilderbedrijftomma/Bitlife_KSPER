@@ -164,7 +164,7 @@
     .disabled { opacity: 0.4; cursor: not-allowed; }
 
     .rel-bar {
-      width: 100px;
+      width: 80px;
       height: 10px;
       background-color: #0d1722;
       border-radius: 5px;
@@ -272,6 +272,9 @@
       border-radius: 25px;
       font-weight: bold;
       cursor: pointer;
+    }
+    .option-btn.close {
+      background-color: #64748b;
     }
   </style>
 </head>
@@ -425,12 +428,12 @@
     "You spent a peaceful year with your family.",
     "You learned something new and felt inspired.",
     "You had a fun day playing in the park.",
-    "You enjoyed watching your favorite cartoons.",
-    "You tried a new food that you really liked.",
+    "You enjoyed watching your favorite shows.",
+    "You tried a new dish that tasted amazing.",
     "You made a new friend in your neighborhood.",
-    "You helped your family with daily chores.",
+    "You helped out around the house.",
     "You went on a small weekend trip.",
-    "You felt healthy and full of energy all year.",
+    "You felt healthy and full of energy.",
     "You spent time reading books and relaxing."
   ];
 
@@ -468,6 +471,7 @@
     money: 0,
     job: "Infant",
     salary: 0,
+    isDead: false,
     stats: { happy: 80, health: 95, smart: 60, looks: 50 },
     family: [],
     inventory: []
@@ -481,52 +485,67 @@
   ];
 
   function startGame() {
-    player.firstName = document.getElementById('input-firstname').value.trim() || "Felix";
-    player.lastName = document.getElementById('input-lastname').value.trim() || "Moore";
-    player.gender = document.getElementById('input-gender').value;
-    player.skin = document.getElementById('input-skin').value;
-    player.country = document.getElementById('input-country').value;
+    player = {
+      firstName: document.getElementById('input-firstname').value.trim() || "Felix",
+      lastName: document.getElementById('input-lastname').value.trim() || "Moore",
+      gender: document.getElementById('input-gender').value,
+      skin: document.getElementById('input-skin').value,
+      country: document.getElementById('input-country').value,
+      age: 0,
+      money: 0,
+      job: "Infant",
+      salary: 0,
+      isDead: false,
+      stats: { happy: 80, health: 95, smart: 60, looks: 50 },
+      family: [],
+      inventory: []
+    };
 
     const fatherName = firstNamesListMale[Math.floor(Math.random() * firstNamesListMale.length)];
     const motherName = firstNamesListFemale[Math.floor(Math.random() * firstNamesListFemale.length)];
 
     player.family = [
-      { name: `${fatherName} ${player.lastName}`, role: "Father", age: 30, rel: 90, icon: "👨" },
-      { name: `${motherName} ${player.lastName}`, role: "Mother", age: 28, rel: 95, icon: "👩" }
+      { id: 1, name: `${fatherName} ${player.lastName}`, role: "Father", age: 30, rel: 90, icon: "👨", isPet: false },
+      { id: 2, name: `${motherName} ${player.lastName}`, role: "Mother", age: 28, rel: 95, icon: "👩", isPet: false }
     ];
 
-    // Random sibling (50% chance)
-    if (Math.random() > 0.5) {
+    // Sibling chance (60%)
+    if (Math.random() > 0.4) {
       const isBrother = Math.random() > 0.5;
       const sibName = isBrother ? 
         firstNamesListMale[Math.floor(Math.random() * firstNamesListMale.length)] :
         firstNamesListFemale[Math.floor(Math.random() * firstNamesListFemale.length)];
       
       player.family.push({
+        id: 3,
         name: `${sibName} ${player.lastName}`,
         role: isBrother ? "Brother" : "Sister",
         age: Math.floor(Math.random() * 5) + 1,
         rel: 75,
-        icon: isBrother ? "👦" : "👧"
+        icon: isBrother ? "👦" : "👧",
+        isPet: false
       });
     }
 
-    // Random family pet (40% chance)
-    if (Math.random() > 0.6) {
+    // Pet chance (50%)
+    if (Math.random() > 0.5) {
       const pet = petTypes[Math.floor(Math.random() * petTypes.length)];
       const petName = pet.names[Math.floor(Math.random() * pet.names.length)];
       
       player.family.push({
+        id: 4,
         name: petName,
         role: `Family ${pet.type}`,
         age: Math.floor(Math.random() * 4) + 1,
         rel: 90,
-        icon: pet.icon
+        icon: pet.icon,
+        isPet: true
       });
     }
 
     document.getElementById('creator-screen').style.display = "none";
     document.getElementById('game-screen').style.display = "flex";
+    document.getElementById('log-box').innerHTML = "";
 
     document.getElementById('char-name').innerText = `${player.firstName} ${player.lastName}`;
 
@@ -537,6 +556,7 @@
   }
 
   function getAvatarIcon() {
+    if(player.isDead) return "🪦";
     if(player.age < 3) return player.skin;
     if(player.age < 18) return player.gender === "male" ? "👦" : "👧";
     return player.gender === "male" ? "👨" : "👩";
@@ -547,10 +567,12 @@
     document.getElementById('money-display').innerText = `$${player.money.toLocaleString()}`;
     document.getElementById('avatar').innerText = getAvatarIcon();
 
-    if(player.age < 3) player.job = "Infant";
-    else if(player.age < 6) player.job = "Toddler";
-    else if(player.age < 18) player.job = "Student 📚";
-    else if(player.job === "Student 📚" || player.job === "Infant" || player.job === "Toddler") player.job = "Unemployed";
+    if(!player.isDead) {
+      if(player.age < 3) player.job = "Infant";
+      else if(player.age < 6) player.job = "Toddler";
+      else if(player.age < 18) player.job = "Student 📚";
+      else if(player.job === "Student 📚" || player.job === "Infant" || player.job === "Toddler") player.job = "Unemployed";
+    }
     
     document.getElementById('char-status').innerText = player.job;
 
@@ -570,10 +592,23 @@
   }
 
   function ageUp() {
+    if(player.isDead) return;
+
     player.age++;
     player.family.forEach(f => f.age++);
 
-    // Random yearly event entry in the log
+    // Health drops slightly with old age
+    if(player.age > 65) {
+      player.stats.health -= Math.floor(Math.random() * 8) + 2;
+    }
+
+    // Death check
+    if(player.stats.health <= 0 || player.age >= 100 || (player.age > 75 && Math.random() < 0.15)) {
+      handleDeath();
+      return;
+    }
+
+    // Random yearly event log
     const randomYearLog = yearlyEvents[Math.floor(Math.random() * yearlyEvents.length)];
     addLog(randomYearLog);
 
@@ -586,19 +621,29 @@
     if(player.age === 15) addLog("You started attending High School.");
     if(player.age === 18) addLog("You turned 18! Jobs, university, and assets are now unlocked.");
 
-    if(player.age === 3) {
-      showEventModal(
-        "Argument", "👦", "Toy Argument",
-        "A relative took your favorite toy! What will you do?",
-        [
-          { text: "Hit them", action: () => { player.stats.happy -= 5; addLog("You hit them and got grounded!"); } },
-          { text: "Let it go", action: () => { addLog("You decided to let them keep the toy."); } },
-          { text: "Tell Mom", action: () => { player.stats.happy += 5; addLog("Mom got your toy back!"); } }
-        ]
-      );
-    }
-
     updateUI();
+  }
+
+  function handleDeath() {
+    player.isDead = true;
+    player.stats.health = 0;
+    player.job = "Deceased 🪦";
+    updateUI();
+
+    showEventModal(
+      "REST IN PEACE", "🪦", "You Have Died",
+      `You died at the age of <b>${player.age}</b>.<br>Total Money Accumulated: <b>$${player.money.toLocaleString()}</b>`,
+      [
+        { 
+          text: "Start a New Life 🔄", 
+          action: () => {
+            document.getElementById('event-modal').classList.remove('active');
+            document.getElementById('game-screen').style.display = "none";
+            document.getElementById('creator-screen').style.display = "flex";
+          } 
+        }
+      ]
+    );
   }
 
   function showEventModal(headerText, icon, title, desc, options) {
@@ -612,17 +657,83 @@
 
     options.forEach(opt => {
       const btn = document.createElement('button');
-      btn.className = "option-btn";
+      btn.className = `option-btn ${opt.isClose ? 'close' : ''}`;
       btn.innerText = opt.text;
       btn.onclick = () => {
         opt.action();
-        document.getElementById('event-modal').classList.remove('active');
+        if(!opt.keepModal) {
+          document.getElementById('event-modal').classList.remove('active');
+        }
         updateUI();
       };
       optContainer.appendChild(btn);
     });
 
     document.getElementById('event-modal').classList.add('active');
+  }
+
+  function openRelationMenu(member) {
+    if(player.isDead) return;
+
+    const options = [
+      {
+        text: "Spend Time ⏳",
+        action: () => {
+          player.stats.happy = Math.min(100, player.stats.happy + 10);
+          member.rel = Math.min(100, member.rel + 12);
+          addLog(`You spent quality time with ${member.name}. (+Happiness, +Relationship)`);
+        }
+      },
+      {
+        text: "Ask for Money 💰",
+        action: () => {
+          if(member.isPet) {
+            addLog(`${member.name} tilted its head confused. Pets don't have money!`);
+            return;
+          }
+
+          if(member.role === "Father" || member.role === "Mother") {
+            if(Math.random() < 0.75) {
+              const amount = Math.floor(Math.random() * 150) + 20;
+              player.money += amount;
+              addLog(`Your ${member.role} gave you $${amount}!`);
+            } else {
+              addLog(`Your ${member.role} refused to give you money.`);
+            }
+          } else if(member.role === "Brother" || member.role === "Sister") {
+            if(Math.random() < 0.25) {
+              const amount = Math.floor(Math.random() * 20) + 5;
+              player.money += amount;
+              addLog(`Your ${member.role} reluctantly gave you $${amount}.`);
+            } else {
+              addLog(`Your ${member.role} laughed and said no.`);
+            }
+          }
+        }
+      },
+      {
+        text: "Compliment 💬",
+        action: () => {
+          member.rel = Math.min(100, member.rel + 8);
+          addLog(`You gave ${member.name} a sweet compliment!`);
+        }
+      },
+      {
+        text: "Insult / Argue 🤬",
+        action: () => {
+          member.rel = Math.max(0, member.rel - 20);
+          player.stats.happy = Math.max(0, player.stats.happy - 5);
+          addLog(`You got into a heated argument with ${member.name}.`);
+        }
+      },
+      {
+        text: "Close Menu ❌",
+        isClose: true,
+        action: () => {}
+      }
+    ];
+
+    showEventModal("RELATIONSHIP", member.icon, member.name, `Role: <b>${member.role}</b> | Age: ${member.age}`, options);
   }
 
   function openJobMarket() {
@@ -634,6 +745,7 @@
         addLog(`You got a job as a ${j.title}.`);
       }
     }));
+    options.push({ text: "Cancel", isClose: true, action: () => {} });
 
     showEventModal("Careers", "💼", "Apply for a Job", "Available job offers:", options);
   }
@@ -652,6 +764,7 @@
     player.family.forEach(f => {
       const div = document.createElement('div');
       div.className = "list-item";
+      div.onclick = () => openRelationMenu(f);
       div.innerHTML = `
         <div style="display:flex; align-items:center; gap:10px;">
           <span style="font-size:1.5rem">${f.icon}</span>
@@ -685,12 +798,12 @@
     ];
 
     acts.forEach(act => {
-      const isLocked = player.age < act.req;
+      const isLocked = player.age < act.req || player.isDead;
       const div = document.createElement('div');
       div.className = `list-item ${isLocked ? 'disabled' : ''}`;
       div.innerHTML = `
         <span>${act.icon} <b>${act.name}</b></span>
-        <span>${isLocked ? `Age ${act.req}+` : '➡️'}</span>
+        <span>${isLocked ? (player.isDead ? 'Dead' : `Age ${act.req}+`) : '➡️'}</span>
       `;
       if(!isLocked) div.onclick = () => { act.action(); updateUI(); };
       container.appendChild(div);
@@ -708,7 +821,7 @@
     ];
 
     items.forEach(item => {
-      const isLocked = player.age < item.req;
+      const isLocked = player.age < item.req || player.isDead;
       const div = document.createElement('div');
       div.className = `list-item ${isLocked ? 'disabled' : ''}`;
       div.innerHTML = `
