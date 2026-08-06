@@ -376,7 +376,7 @@
     </div>
 
     <div class="navbar">
-      <button class="nav-btn active" onclick="switchTab('main', this)">
+      <button class="nav-btn active" id="nav-btn-main" onclick="switchTab('main', this)">
         <span class="icon">📜</span>Log
       </button>
       <button class="nav-btn" onclick="switchTab('assets', this)">
@@ -620,6 +620,10 @@
   function ageUp() {
     if(player.isDead) return;
 
+    // Automatically switch back to Log tab when Aging Up
+    const mainBtn = document.getElementById('nav-btn-main');
+    switchTab('main', mainBtn);
+
     player.age++;
     player.family.forEach(f => f.age++);
 
@@ -695,130 +699,6 @@
     document.getElementById('event-modal').classList.add('active');
   }
 
-  function openRelationMenu(member) {
-    if(player.isDead) return;
-
-    let options = [];
-
-    if(member.isPet) {
-      options = [
-        {
-          text: "Pet & Cuddle 🐾",
-          action: () => {
-            player.stats.happy = Math.min(100, player.stats.happy + 10);
-            member.rel = Math.min(100, member.rel + 15);
-            addLog(`You petted ${member.name}. It purred/wagged happy!`);
-          }
-        },
-        {
-          text: "Take for a Walk 🦮",
-          action: () => {
-            player.stats.happy = Math.min(100, player.stats.happy + 12);
-            player.stats.health = Math.min(100, player.stats.health + 3);
-            member.rel = Math.min(100, member.rel + 10);
-            addLog(`You went on a nice walk with ${member.name}.`);
-          }
-        },
-        {
-          text: "Give a Treat 🦴",
-          action: () => {
-            if(player.money >= 10) {
-              player.money -= 10;
-              member.rel = Math.min(100, member.rel + 20);
-              addLog(`You bought a treat for ${member.name}! (-$10)`);
-            } else {
-              addLog("You don't have $10 for a pet treat!");
-            }
-          }
-        }
-      ];
-    } else {
-      options = [
-        {
-          text: "Spend Time ⏳",
-          action: () => {
-            player.stats.happy = Math.min(100, player.stats.happy + 8);
-            member.rel = Math.min(100, member.rel + 10);
-            addLog(`You spent quality time with ${member.name}.`);
-          }
-        },
-        {
-          text: "Compliment 💬",
-          action: () => {
-            member.rel = Math.min(100, member.rel + 6);
-            addLog(`You gave ${member.name} a sweet compliment!`);
-          }
-        },
-        {
-          text: "Deep Conversation 🗣️",
-          action: () => {
-            player.stats.smart = Math.min(100, player.stats.smart + 3);
-            member.rel = Math.min(100, member.rel + 12);
-            addLog(`You had a deep conversation with ${member.name}. (+Smarts)`);
-          }
-        },
-        {
-          text: "Ask for Money 💰",
-          action: () => {
-            if(member.role === "Father" || member.role === "Mother") {
-              if(Math.random() < 0.75) {
-                const amount = Math.floor(Math.random() * 150) + 20;
-                player.money += amount;
-                addLog(`Your ${member.role} gave you $${amount}!`);
-              } else {
-                addLog(`Your ${member.role} refused to give you money.`);
-              }
-            } else if(member.role === "Brother" || member.role === "Sister") {
-              if(Math.random() < 0.25) {
-                const amount = Math.floor(Math.random() * 20) + 5;
-                player.money += amount;
-                addLog(`Your ${member.role} reluctantly gave you $${amount}.`);
-              } else {
-                addLog(`Your ${member.role} laughed and said no.`);
-              }
-            }
-          }
-        },
-        {
-          text: "Give Gift 🎁 (-$50)",
-          action: () => {
-            if(player.money >= 50) {
-              player.money -= 50;
-              member.rel = Math.min(100, member.rel + 25);
-              addLog(`You gave ${member.name} a great gift! (-$50)`);
-            } else {
-              addLog("You need at least $50 to buy a gift!");
-            }
-          }
-        },
-        {
-          text: "Play a Prank 🤪",
-          action: () => {
-            if(Math.random() > 0.4) {
-              player.stats.happy = Math.min(100, player.stats.happy + 10);
-              addLog(`Your prank on ${member.name} was super funny!`);
-            } else {
-              member.rel = Math.max(0, member.rel - 15);
-              addLog(`${member.name} did not like your prank at all...`);
-            }
-          }
-        },
-        {
-          text: "Insult / Argue 🤬",
-          action: () => {
-            member.rel = Math.max(0, member.rel - 20);
-            player.stats.happy = Math.max(0, player.stats.happy - 5);
-            addLog(`You got into a heated argument with ${member.name}.`);
-          }
-        }
-      ];
-    }
-
-    options.push({ text: "Close Menu ❌", isClose: true, action: () => {} });
-
-    showEventModal("RELATIONSHIP ACTIONS", member.icon, member.name, `Role: <b>${member.role}</b> | Age: ${member.age}`, options);
-  }
-
   function openJobMarket() {
     const options = availableJobs.map(j => ({
       text: `${j.title} ($${j.salary.toLocaleString()}/yr)`,
@@ -847,7 +727,6 @@
     player.family.forEach(f => {
       const div = document.createElement('div');
       div.className = "list-item";
-      div.onclick = () => openRelationMenu(f);
       div.innerHTML = `
         <div style="display:flex; align-items:center; gap:10px;">
           <span style="font-size:1.5rem">${f.icon}</span>
