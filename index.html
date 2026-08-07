@@ -346,6 +346,11 @@
         <div class="log-box" id="log-box"></div>
       </div>
 
+      <div id="view-career" class="view-panel">
+        <div class="panel-header" id="career-panel-header">SCHOOL / WORK</div>
+        <div id="career-panel-content"></div>
+      </div>
+
       <div id="view-relationships" class="view-panel">
         <div class="panel-header">RELATIONSHIPS & PETS</div>
         <div id="family-list"></div>
@@ -369,10 +374,12 @@
       <button class="nav-btn active" id="nav-btn-main" onclick="switchTab('main', this)">
         <span class="icon">📜</span>Log
       </button>
-      <button class="nav-btn" onclick="switchTab('assets', this)">
-        <span class="icon">🏠</span>Assets
+
+      <button class="nav-btn" id="nav-btn-career" onclick="switchTab('career', this)">
+        <span class="icon" id="dynamic-nav-icon">🏫</span>
+        <span id="dynamic-nav-label">School</span>
       </button>
-      
+
       <button class="age-btn" onclick="ageUp()">
         <span style="font-size: 1.2rem;">+</span>
         <span style="font-size: 0.65rem;">Age</span>
@@ -424,7 +431,6 @@
     "I made a new friend today."
   ];
 
-  // OPLEIDINGEN MET STUDIEDUUR EN KOSTEN
   const educationDegrees = [
     { id: 'trade', title: "Trade School (Mechanic / Technician) 🔧", duration: 1, cost: 2000, desc: "Duur: 1 Jaar • Kosten: $2,000 / jaar" },
     { id: 'business', title: "Business Administration Major 📊", duration: 3, cost: 8000, desc: "Duur: 3 Jaar • Kosten: $8,000 / jaar" },
@@ -433,7 +439,6 @@
     { id: 'medicine', title: "Medical School (Doctorate) 🩺", duration: 6, cost: 25000, desc: "Duur: 6 Jaar • Kosten: $25,000 / jaar" }
   ];
 
-  // BANEN MET VEREISTE DIPLOMA'S
   const availableJobs = [
     { title: "Cashier 🛒", salary: 24000, reqDegree: null },
     { title: "Repair Technician / Mechanic 🛠️", salary: 48000, reqDegree: "trade" },
@@ -481,9 +486,9 @@
       salary: 0,
       isDead: false,
       education: {
-        current: null, // Huidige studie
+        current: null,
         yearsLeft: 0,
-        degrees: []   // Behaalde diploma's
+        degrees: []
       },
       stats: { happy: 80, health: 95, smart: 60, looks: 50 },
       family: [
@@ -508,14 +513,33 @@
     document.getElementById('money-display').innerText = `$${player.money.toLocaleString()}`;
     document.getElementById('avatar').innerText = player.isDead ? "🪦" : (player.age < 3 ? player.skin : (player.gender === "male" ? "👦" : "👧"));
 
+    // Bepaal de status en update de Nav-knop
+    let navIcon = "👶";
+    let navLabel = "Baby";
+
     if(!player.isDead) {
-      if(player.age < 3) player.job = "Infant";
-      else if(player.age >= 6 && player.age < 12) player.job = "Primary School Student 🎒";
-      else if(player.age >= 12 && player.age < 18) player.job = "High School Student 📚";
-      else if(player.education.current) player.job = `Student (${player.education.current.title}) 🎓`;
-      else if(!player.job || player.job.includes("Student") || player.job === "Infant") player.job = "Unemployed";
+      if(player.age < 6) {
+        player.job = "Infant";
+        navIcon = "👶"; navLabel = "Baby";
+      } else if(player.age >= 6 && player.age < 12) {
+        player.job = "Primary School Student 🎒";
+        navIcon = "🎒"; navLabel = "School";
+      } else if(player.age >= 12 && player.age < 18) {
+        player.job = "High School Student 📚";
+        navIcon = "🏫"; navLabel = "School";
+      } else if(player.education.current) {
+        player.job = `Student (${player.education.current.title}) 🎓`;
+        navIcon = "🎓"; navLabel = "Uni";
+      } else if(player.salary > 0) {
+        navIcon = "💼"; navLabel = "Job";
+      } else {
+        player.job = "Unemployed";
+        navIcon = "💼"; navLabel = "Jobs";
+      }
     }
-    
+
+    document.getElementById('dynamic-nav-icon').innerText = navIcon;
+    document.getElementById('dynamic-nav-label').innerText = navLabel;
     document.getElementById('char-status').innerText = player.job;
 
     ['happy', 'health', 'smart', 'looks'].forEach(s => {
@@ -525,6 +549,7 @@
     renderFamily();
     renderActivities();
     renderAssets();
+    renderCareerPanel();
   }
 
   function addLog(text) {
@@ -567,11 +592,9 @@
       return;
     }
 
-    // Automatische meldingen op schoolleeftijden
     if(player.age === 6) addLog("I started attending Primary School.");
     if(player.age === 12) addLog("I started attending High School.");
 
-    // Studie Voortgang
     if(player.education.current) {
       player.education.yearsLeft--;
       if(player.money >= player.education.current.cost) {
@@ -591,7 +614,6 @@
       }
     }
 
-    // High School Afgerond? Pop-up op je 18e
     if(player.age === 18) {
       addLog("🎓 I graduated from High School!");
       setTimeout(() => openEducationMenu(true), 300);
@@ -630,6 +652,114 @@
     });
 
     document.getElementById('event-modal').classList.add('active');
+  }
+
+  // INTERACTIEF CAREER / SCHOOL PANEL
+  function renderCareerPanel() {
+    const header = document.getElementById('career-panel-header');
+    const content = document.getElementById('career-panel-content');
+
+    if(player.age < 6) {
+      header.innerText = "INFANCY";
+      content.innerHTML = `<div class="list-item"><span>👶 Too young for school or work!</span></div>`;
+    } else if(player.age >= 6 && player.age < 18) {
+      const schoolName = player.age < 12 ? "Primary School 🎒" : "High School 🏫";
+      header.innerText = schoolName;
+      content.innerHTML = `
+        <div class="list-item" onclick="studyHard()">
+          <span>📚 Study Hard</span><span>➡️</span>
+        </div>
+        <div class="list-item" onclick="talkClassmates()">
+          <span>💬 Talk to Classmates</span><span>➡️</span>
+        </div>
+        <div class="list-item" onclick="skipClass()">
+          <span>🏃 Skip Class / Slack Off</span><span>➡️</span>
+        </div>
+      `;
+    } else if(player.education.current) {
+      header.innerText = "UNIVERSITY / COLLEGE";
+      content.innerHTML = `
+        <div class="list-item"><b>Degree:</b> ${player.education.current.title}</div>
+        <div class="list-item"><b>Years Remaining:</b> ${player.education.yearsLeft} Year(s)</div>
+        <div class="list-item" onclick="studyHard()">
+          <span>📚 Study Hard</span><span>➡️</span>
+        </div>
+        <div class="list-item" onclick="partyUni()">
+          <span>🎉 Go to Campus Party</span><span>➡️</span>
+        </div>
+        <div class="list-item" onclick="dropOutUni()">
+          <span>❌ Drop Out of University</span><span>➡️</span>
+        </div>
+      `;
+    } else if(player.salary > 0) {
+      header.innerText = "JOB & CAREER";
+      content.innerHTML = `
+        <div class="list-item"><b>Position:</b> ${player.job}</div>
+        <div class="list-item"><b>Salary:</b> $${player.salary.toLocaleString()} / year</div>
+        <div class="list-item" onclick="workHarder()">
+          <span>⚡ Work Harder</span><span>➡️</span>
+        </div>
+        <div class="list-item" onclick="quitJob()">
+          <span>🚪 Quit Job</span><span>➡️</span>
+        </div>
+      `;
+    } else {
+      header.innerText = "UNEMPLOYED";
+      content.innerHTML = `
+        <div class="list-item" onclick="openJobMarket()">
+          <span>💼 Find a Job</span><span>➡️</span>
+        </div>
+        <div class="list-item" onclick="openEducationMenu(false)">
+          <span>🎓 Go to University / Trade School</span><span>➡️</span>
+        </div>
+      `;
+    }
+  }
+
+  // SCHOOL & WORK ACTIES
+  function studyHard() {
+    player.stats.smart = Math.min(100, player.stats.smart + 8);
+    addLog("I studied hard and improved my grades!");
+    goToLogTab();
+  }
+
+  function talkClassmates() {
+    player.stats.happy = Math.min(100, player.stats.happy + 10);
+    addLog("I hung out with my classmates and had fun.");
+    goToLogTab();
+  }
+
+  function skipClass() {
+    player.stats.happy = Math.min(100, player.stats.happy + 8);
+    player.stats.smart = Math.max(0, player.stats.smart - 5);
+    addLog("I skipped class to chill out.");
+    goToLogTab();
+  }
+
+  function partyUni() {
+    player.stats.happy = Math.min(100, player.stats.happy + 15);
+    player.stats.health = Math.max(0, player.stats.health - 5);
+    addLog("I went to a crazy campus party!");
+    goToLogTab();
+  }
+
+  function dropOutUni() {
+    player.education.current = null;
+    addLog("I dropped out of university.");
+    goToLogTab();
+  }
+
+  function workHarder() {
+    player.stats.happy = Math.max(0, player.stats.happy - 5);
+    addLog("I worked extra hours to impress my boss.");
+    goToLogTab();
+  }
+
+  function quitJob() {
+    player.job = "Unemployed";
+    player.salary = 0;
+    addLog("I quit my job!");
+    goToLogTab();
   }
 
   function interactWithPerson(person) {
@@ -673,10 +803,9 @@
     ]);
   }
 
-  // NIEUW UTGEBREID SCHOOL SYSTEEM
   function openEducationMenu(isAutoPopup = false) {
     if(player.education.current) {
-      alert(`You are currently studying ${player.education.current.title} (${player.education.yearsLeft} years remaining)!`);
+      alert(`You are currently studying ${player.education.current.title}!`);
       return;
     }
 
@@ -686,7 +815,7 @@
       action: () => {
         player.education.current = deg;
         player.education.yearsLeft = deg.duration;
-        player.salary = 0; // Geen salaris tijdens voltijd studie
+        player.salary = 0;
         addLog(`Enrolled in ${deg.title}. Expected duration: ${deg.duration} year(s).`);
         goToLogTab();
       }
@@ -704,7 +833,6 @@
     showEventModal("EDUCATION", "🎓", title, desc, options);
   }
 
-  // UITGEBREIDE CARRIÈRE OPTIES
   function openJobMarket() {
     if(player.education.current) {
       alert("You cannot get a full-time job while studying!");
@@ -732,7 +860,7 @@
     });
 
     options.push({ text: "Cancel ❌", isClose: true, action: () => {} });
-    showEventModal("CAREERS", "💼", "Job Market", "Apply for a position (Higher qualifications = Better Pay):", options);
+    showEventModal("CAREERS", "💼", "Job Market", "Apply for a position:", options);
   }
 
   function switchTab(tabName, btn) {
