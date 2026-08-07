@@ -11,24 +11,23 @@
       --accent-red: #e11d48;
       --accent-orange: #f97316;
       --accent-green: #22c55e;
-      --accent-yellow: #ccff00;
+      --accent-yellow: #facc15;
       --accent-blue: #0284c7;
-      --accent-purple: #a855f7;
       --text-main: #ffffff;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
-    body { background-color: #0d1520; color: var(--text-main); display: flex; justify-content: center; min-height: 100vh; }
+    body { background-color: #0d1520; color: var(--text-main); display: flex; justify-content: center; min-height: 100vh; overflow-x: hidden; }
 
     .game-container {
       width: 100%;
-      max-width: 500px; /* Poszerzono ekran gry */
+      max-width: 500px;
       background-color: var(--bg-dark);
       display: flex;
       flex-direction: column;
       height: 100vh;
       position: relative;
-      box-shadow: 0 0 25px rgba(0,0,0,0.8);
+      box-shadow: 0 0 35px rgba(0,0,0,0.9);
       overflow: hidden;
     }
 
@@ -39,7 +38,8 @@
       font-weight: 900;
       font-size: 1.4rem;
       letter-spacing: 1px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+      box-shadow: 0 4px 15px rgba(239, 68, 68, 0.4);
+      z-index: 10;
     }
 
     #creator-screen {
@@ -49,6 +49,7 @@
       gap: 16px;
       overflow-y: auto;
       height: 100%;
+      animation: fadeIn 0.4s ease-out;
     }
 
     .form-group { display: flex; flex-direction: column; gap: 6px; }
@@ -60,6 +61,11 @@
       padding: 12px;
       border-radius: 8px;
       font-size: 1rem;
+      outline: none;
+      transition: border 0.2s;
+    }
+    .form-group input:focus, .form-group select:focus {
+      border-color: var(--accent-orange);
     }
 
     .avatar-preview {
@@ -70,6 +76,7 @@
       padding: 15px;
       border-radius: 12px;
       border: 1px solid #2a3c50;
+      box-shadow: inset 0 0 15px rgba(0,0,0,0.3);
     }
 
     .start-btn {
@@ -82,7 +89,10 @@
       border-radius: 10px;
       cursor: pointer;
       margin-top: 10px;
+      box-shadow: 0 4px 12px rgba(34, 197, 94, 0.4);
+      transition: transform 0.15s, box-shadow 0.15s;
     }
+    .start-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(34, 197, 94, 0.6); }
 
     #game-screen { display: none; flex-direction: column; height: 100%; }
 
@@ -96,8 +106,8 @@
     }
 
     .profile-info { display: flex; align-items: center; gap: 14px; }
-    .avatar { font-size: 2.4rem; }
-    .money { color: var(--accent-green); font-weight: bold; font-size: 1.3rem; }
+    .avatar { font-size: 2.4rem; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5)); }
+    .money { color: var(--accent-green); font-weight: bold; font-size: 1.3rem; text-shadow: 0 0 10px rgba(34, 197, 94, 0.3); }
 
     .main-content {
       flex: 1;
@@ -108,7 +118,7 @@
     }
 
     ::-webkit-scrollbar { width: 6px; }
-    ::-webkit-scrollbar-track { background: #0d1722; border-radius: 10px; }
+    ::-webkit-scrollbar-track { background: #0d1722; }
     ::-webkit-scrollbar-thumb { background: #2a3c50; border-radius: 10px; }
     ::-webkit-scrollbar-thumb:hover { background: var(--accent-orange); }
 
@@ -116,19 +126,19 @@
       background-color: var(--bg-dark);
       border-radius: 10px;
       padding: 5px;
-      font-size: 1.1rem;
+      font-size: 1.05rem;
       line-height: 1.5;
       max-height: 450px;
       overflow-y: auto;
       padding-right: 8px;
     }
 
-    .log-age-group { margin-bottom: 18px; }
-    .log-age-header { color: var(--accent-yellow); font-weight: bold; font-size: 1.25rem; margin-bottom: 6px; }
-    .log-entry { color: #e2e8f0; margin-bottom: 6px; font-size: 1.05rem; }
+    .log-age-group { margin-bottom: 18px; animation: slideIn 0.3s ease-out; }
+    .log-age-header { color: var(--accent-yellow); font-weight: bold; font-size: 1.2rem; margin-bottom: 6px; }
+    .log-entry { color: #e2e8f0; margin-bottom: 6px; font-size: 1rem; }
 
     .view-panel { display: none; }
-    .view-panel.active { display: block; }
+    .view-panel.active { display: block; animation: fadeIn 0.25s ease-out; }
 
     .panel-header-container {
       display: flex;
@@ -138,38 +148,26 @@
       padding: 10px 14px;
       border-radius: 8px;
       margin-bottom: 12px;
+      box-shadow: 0 3px 10px rgba(249, 115, 22, 0.3);
     }
 
-    .panel-header-title {
-      font-weight: bold;
-      text-transform: uppercase;
-      color: white;
-      font-size: 1.05rem;
-    }
+    .panel-header-title { font-weight: bold; text-transform: uppercase; color: white; font-size: 1rem; }
 
     .close-panel-btn {
-      background: rgba(0, 0, 0, 0.25);
+      background: rgba(0, 0, 0, 0.3);
       color: white;
       border: none;
       border-radius: 50%;
-      width: 30px;
-      height: 30px;
+      width: 30px; height: 30px;
       font-weight: bold;
       font-size: 1.1rem;
       cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.2s, transform 0.1s;
     }
-    .close-panel-btn:hover { background: rgba(0, 0, 0, 0.5); }
+    .close-panel-btn:hover { background: rgba(0, 0, 0, 0.6); transform: scale(1.1); }
 
-    .sub-section-header {
-      font-size: 0.95rem;
-      color: #f97316;
-      margin: 14px 0 8px 0;
-      font-weight: bold;
-      text-transform: uppercase;
-    }
+    .sub-section-header { font-size: 0.9rem; color: #f97316; margin: 14px 0 8px 0; font-weight: bold; text-transform: uppercase; }
 
     .list-item {
       background-color: var(--card-bg);
@@ -181,20 +179,14 @@
       align-items: center;
       cursor: pointer;
       border: 1px solid #2a3c50;
-      transition: background-color 0.2s, transform 0.1s;
+      transition: all 0.2s ease;
     }
-    .list-item:hover { background-color: #2a3c50; transform: translateY(-1px); }
+    .list-item:hover { background-color: #2a3c50; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.3); }
+    .list-item:active { transform: translateY(0); }
     .disabled { opacity: 0.4; cursor: not-allowed; }
 
-    .rel-bar {
-      width: 80px;
-      height: 10px;
-      background-color: #0d1722;
-      border-radius: 5px;
-      overflow: hidden;
-      margin-top: 4px;
-    }
-    .rel-fill { height: 100%; background-color: var(--accent-green); }
+    .rel-bar { width: 80px; height: 10px; background-color: #0d1722; border-radius: 5px; overflow: hidden; margin-top: 4px; }
+    .rel-fill { height: 100%; background-color: var(--accent-green); transition: width 0.3s; }
 
     .navbar {
       display: flex;
@@ -209,80 +201,76 @@
       background: none;
       border: none;
       color: #94a3b8;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+      display: flex; flex-direction: column; align-items: center;
       font-size: 0.8rem;
       cursor: pointer;
       gap: 4px;
       flex: 1;
+      transition: color 0.2s, transform 0.15s;
     }
+    .nav-btn:hover { color: #ffffff; transform: translateY(-1px); }
     .nav-btn.active { color: var(--accent-orange); font-weight: bold; }
     .nav-btn .icon { font-size: 1.6rem; }
 
     .age-btn {
-      background: var(--accent-green);
+      background: linear-gradient(135deg, #22c55e, #16a34a);
       color: white;
       border: 4px solid var(--bg-dark);
-      width: 65px;
-      height: 65px;
+      width: 68px; height: 68px;
       border-radius: 50%;
       font-weight: bold;
       cursor: pointer;
-      transform: translateY(-12px);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
-      transition: transform 0.1s;
+      transform: translateY(-14px);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      box-shadow: 0 6px 16px rgba(34, 197, 94, 0.5);
+      transition: transform 0.15s, box-shadow 0.15s;
     }
-    .age-btn:active { transform: translateY(-10px) scale(0.96); }
+    .age-btn:hover { transform: translateY(-16px) scale(1.05); box-shadow: 0 8px 22px rgba(34, 197, 94, 0.7); }
+    .age-btn:active { transform: translateY(-10px) scale(0.95); }
 
     .stats-container {
       background-color: #0d1722;
       padding: 12px 18px;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
+      display: flex; flex-direction: column; gap: 8px;
       border-top: 2px solid #2a3c50;
     }
 
-    .stat-row { display: flex; align-items: center; gap: 12px; font-size: 0.9rem; font-weight: 600; }
+    .stat-row { display: flex; align-items: center; gap: 12px; font-size: 0.85rem; font-weight: 600; }
     .stat-bar { flex: 1; height: 12px; background-color: #1e2d3d; border-radius: 6px; overflow: hidden; }
-    .stat-fill { height: 100%; background-color: var(--accent-green); transition: width 0.3s; }
+    .stat-fill { height: 100%; background-color: var(--accent-green); transition: width 0.4s ease; }
 
     .modal-overlay {
       position: absolute;
       top: 0; left: 0; right: 0; bottom: 0;
       background: rgba(0,0,0,0.85);
       display: none;
-      justify-content: center;
-      align-items: center;
+      justify-content: center; align-items: center;
       padding: 20px;
       z-index: 100;
+      backdrop-filter: blur(4px);
     }
-    .modal-overlay.active { display: flex; }
+    .modal-overlay.active { display: flex; animation: fadeIn 0.2s ease-out; }
 
     .modal-card {
       background-color: #ffffff;
       color: #1e293b;
       border-radius: 20px;
-      width: 100%;
-      max-width: 420px;
-      border: 6px solid #ef4444;
+      width: 100%; max-width: 420px;
+      border: 5px solid #ef4444;
       overflow: hidden;
       text-align: center;
       max-height: 90vh;
-      display: flex;
-      flex-direction: column;
+      display: flex; flex-direction: column;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      animation: popIn 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
 
-    .modal-header { background-color: #ef4444; color: white; font-size: 1.3rem; font-weight: 900; padding: 12px; }
+    .modal-header { background-color: #ef4444; color: white; font-size: 1.25rem; font-weight: 900; padding: 12px; }
     .modal-body { padding: 18px; overflow-y: auto; }
     .modal-options { display: flex; flex-direction: column; gap: 10px; margin-top: 12px; }
+    
     .option-btn {
-      background-color: var(--accent-blue);
+      background: linear-gradient(90deg, #0284c7, #0369a1);
       color: white;
       border: none;
       padding: 14px;
@@ -290,17 +278,35 @@
       font-weight: bold;
       cursor: pointer;
       text-align: left;
-      display: flex;
-      flex-direction: column;
-      gap: 3px;
+      display: flex; flex-direction: column; gap: 3px;
+      box-shadow: 0 3px 8px rgba(2, 132, 199, 0.3);
+      transition: transform 0.15s, box-shadow 0.15s;
     }
-    .option-btn .subtext { font-size: 0.8rem; opacity: 0.85; font-weight: normal; }
-    .option-btn.close { background-color: #64748b; text-align: center; }
+    .option-btn:hover { transform: translateY(-2px); box-shadow: 0 5px 14px rgba(2, 132, 199, 0.5); }
+    .option-btn .subtext { font-size: 0.8rem; opacity: 0.9; font-weight: normal; }
+    .option-btn.close { background: #64748b; text-align: center; box-shadow: none; }
+
+    /* FX Animations & Particles */
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes slideIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes popIn { from { opacity: 0; transform: scale(0.85); } to { opacity: 1; transform: scale(1); } }
+
+    .particle {
+      position: absolute;
+      pointer-events: none;
+      font-size: 1.5rem;
+      animation: floatUp 1s ease-out forwards;
+      z-index: 999;
+    }
+    @keyframes floatUp {
+      0% { opacity: 1; transform: translateY(0) scale(1); }
+      100% { opacity: 0; transform: translateY(-80px) scale(1.4); }
+    }
   </style>
 </head>
 <body>
 
-<div class="game-container">
+<div class="game-container" id="game-container">
   <div class="header">E-LIFE SIMULATOR</div>
 
   <div id="creator-screen">
@@ -341,7 +347,7 @@
       <select id="input-country"></select>
     </div>
 
-    <button class="start-btn" onclick="startGame()">Start Life 🚀</button>
+    <button class="start-btn" onclick="soundFx.click(); startGame();">Start Life 🚀</button>
   </div>
 
   <div id="game-screen">
@@ -367,7 +373,7 @@
       <div id="view-career" class="view-panel">
         <div class="panel-header-container">
           <span class="panel-header-title" id="career-panel-header">SCHOOL / WORK</span>
-          <button class="close-panel-btn" onclick="returnToMainMenu()">✖</button>
+          <button class="close-panel-btn" onclick="soundFx.click(); returnToMainMenu();">✖</button>
         </div>
         <div id="career-panel-content"></div>
       </div>
@@ -375,7 +381,7 @@
       <div id="view-relationships" class="view-panel">
         <div class="panel-header-container">
           <span class="panel-header-title">RELATIONSHIPS & PETS</span>
-          <button class="close-panel-btn" onclick="returnToMainMenu()">✖</button>
+          <button class="close-panel-btn" onclick="soundFx.click(); returnToMainMenu();">✖</button>
         </div>
         <div id="family-list"></div>
       </div>
@@ -383,7 +389,7 @@
       <div id="view-activities" class="view-panel">
         <div class="panel-header-container">
           <span class="panel-header-title">ACTIVITIES</span>
-          <button class="close-panel-btn" onclick="returnToMainMenu()">✖</button>
+          <button class="close-panel-btn" onclick="soundFx.click(); returnToMainMenu();">✖</button>
         </div>
         <div id="activities-list"></div>
       </div>
@@ -391,7 +397,7 @@
       <div id="view-assets" class="view-panel">
         <div class="panel-header-container">
           <span class="panel-header-title">ASSETS & PROPERTY</span>
-          <button class="close-panel-btn" onclick="returnToMainMenu()">✖</button>
+          <button class="close-panel-btn" onclick="soundFx.click(); returnToMainMenu();">✖</button>
         </div>
         <div class="sub-section-header">📦 My Belongings</div>
         <div id="owned-assets-list"></div>
@@ -401,12 +407,12 @@
     </div>
 
     <div class="navbar">
-      <button class="nav-btn" id="nav-btn-career" onclick="switchTab('career', this)">
+      <button class="nav-btn" id="nav-btn-career" onclick="soundFx.click(); switchTab('career', this)">
         <span class="icon" id="dynamic-nav-icon">🎒</span>
         <span id="dynamic-nav-label">School</span>
       </button>
 
-      <button class="nav-btn" id="nav-btn-assets" onclick="switchTab('assets', this)">
+      <button class="nav-btn" id="nav-btn-assets" onclick="soundFx.click(); switchTab('assets', this)">
         <span class="icon">🏠</span>Assets
       </button>
 
@@ -415,11 +421,11 @@
         <span style="font-size: 0.7rem;">Age</span>
       </button>
 
-      <button class="nav-btn" id="nav-btn-relationships" onclick="switchTab('relationships', this)">
+      <button class="nav-btn" id="nav-btn-relationships" onclick="soundFx.click(); switchTab('relationships', this)">
         <span class="icon">❤️</span>Rel.
       </button>
 
-      <button class="nav-btn" id="nav-btn-activities" onclick="switchTab('activities', this)">
+      <button class="nav-btn" id="nav-btn-activities" onclick="soundFx.click(); switchTab('activities', this)">
         <span class="icon">💬</span>Actions
       </button>
     </div>
@@ -446,6 +452,74 @@
 </div>
 
 <script>
+  // Web Audio Synthesizer (Geluidseffecten)
+  const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  
+  const soundFx = {
+    click: () => {
+      try {
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(400, audioCtx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(100, audioCtx.currentTime + 0.05);
+        gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+        gain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.05);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.05);
+      } catch(e){}
+    },
+    ageUp: () => {
+      try {
+        const notes = [261.63, 329.63, 392.00, 523.25];
+        notes.forEach((freq, idx) => {
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.value = freq;
+          gain.gain.setValueAtTime(0.12, audioCtx.currentTime + idx * 0.06);
+          gain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + idx * 0.06 + 0.12);
+          osc.connect(gain);
+          gain.connect(audioCtx.destination);
+          osc.start(audioCtx.currentTime + idx * 0.06);
+          osc.stop(audioCtx.currentTime + idx * 0.06 + 0.12);
+        });
+      } catch(e){}
+    },
+    success: () => {
+      try {
+        const notes = [440, 554.37, 659.25, 880];
+        notes.forEach((freq, idx) => {
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+          osc.type = 'sine';
+          osc.frequency.value = freq;
+          gain.gain.setValueAtTime(0.15, audioCtx.currentTime + idx * 0.08);
+          gain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + idx * 0.08 + 0.2);
+          osc.connect(gain);
+          gain.connect(audioCtx.destination);
+          osc.start(audioCtx.currentTime + idx * 0.08);
+          osc.stop(audioCtx.currentTime + idx * 0.08 + 0.2);
+        });
+      } catch(e){}
+    }
+  };
+
+  function spawnParticles(emoji, count = 6) {
+    const container = document.getElementById('game-container');
+    for(let i = 0; i < count; i++) {
+      const p = document.createElement('div');
+      p.className = 'particle';
+      p.innerText = emoji;
+      p.style.left = (Math.random() * 80 + 10) + '%';
+      p.style.top = (Math.random() * 40 + 40) + '%';
+      container.appendChild(p);
+      setTimeout(() => p.remove(), 1000);
+    }
+  }
+
   const countries = [
     "United States", "United Kingdom", "Netherlands", "Canada", "Australia", "Germany", "France", "Japan",
     "Brazil", "Italy", "Spain", "Mexico", "South Korea", "Sweden", "Norway", "Denmark"
@@ -462,57 +536,58 @@
     "I made a new friend today."
   ];
 
+  // Vernieuwd sport-systeem met duidelijke sterren-ratings (inclusief 4.5 sterren!)
   const sportsData = {
     football: {
       name: "Football ⚽",
       primary: [
-        { name: "Little Kickers (Youth League)", stars: "⭐", reqSkill: 0 },
-        { name: "Junior Strikers Elite", stars: "⭐⭐⭐", reqSkill: 20 }
+        { name: "Little Kickers Local League", stars: "⭐⭐✨ (2.5)", reqSkill: 0 },
+        { name: "Junior Strikers Elite Academy", stars: "⭐⭐⭐⭐ (4.0)", reqSkill: 20 }
       ],
       high: [
-        { name: "Freshmen Benchwarmers", stars: "⭐", reqSkill: 10 },
-        { name: "High School Varsity FC", stars: "⭐⭐", reqSkill: 30 },
-        { name: "Regional Youth Cup Champs", stars: "⭐⭐⭐⭐", reqSkill: 55 },
-        { name: "National Youth Academy 🥇", stars: "⭐⭐⭐⭐⭐", reqSkill: 80 }
+        { name: "Freshmen Benchwarmers", stars: "⭐⭐ (2.0)", reqSkill: 10 },
+        { name: "High School Varsity FC", stars: "⭐⭐⭐✨ (3.5)", reqSkill: 30 },
+        { name: "Regional Youth Cup Champions", stars: "⭐⭐⭐⭐✨ (4.5)", reqSkill: 55 },
+        { name: "National Youth Academy 🥇", stars: "⭐⭐⭐⭐⭐ (5.0)", reqSkill: 80 }
       ]
     },
     basketball: {
       name: "Basketball 🏀",
       primary: [
-        { name: "Mini Hoopers", stars: "⭐", reqSkill: 0 },
-        { name: "Junior Dunkers", stars: "⭐⭐", reqSkill: 15 }
+        { name: "Mini Hoopers League", stars: "⭐⭐ (2.0)", reqSkill: 0 },
+        { name: "Junior Dunkers Elite", stars: "⭐⭐⭐✨ (3.5)", reqSkill: 15 }
       ],
       high: [
-        { name: "Rookie Ballers", stars: "⭐", reqSkill: 10 },
-        { name: "Varsity Eagles 🦅", stars: "⭐⭐⭐", reqSkill: 35 },
-        { name: "State Championship Squad", stars: "⭐⭐⭐⭐", reqSkill: 60 },
-        { name: "All-American Prep League 🔥", stars: "⭐⭐⭐⭐⭐", reqSkill: 85 }
+        { name: "Rookie Ballers Squad", stars: "⭐⭐ (2.0)", reqSkill: 10 },
+        { name: "Varsity Eagles 🦅", stars: "⭐⭐⭐⭐ (4.0)", reqSkill: 35 },
+        { name: "State Championship Squad", stars: "⭐⭐⭐⭐✨ (4.5)", reqSkill: 60 },
+        { name: "All-American Prep League 🔥", stars: "⭐⭐⭐⭐⭐ (5.0)", reqSkill: 85 }
       ]
     },
     hockey: {
       name: "Hockey 🏒",
       primary: [
-        { name: "Ice Pups", stars: "⭐", reqSkill: 0 },
-        { name: "Junior Bladers", stars: "⭐⭐⭐", reqSkill: 20 }
+        { name: "Ice Pups Club", stars: "⭐⭐✨ (2.5)", reqSkill: 0 },
+        { name: "Junior Bladers Elite", stars: "⭐⭐⭐⭐ (4.0)", reqSkill: 20 }
       ],
       high: [
-        { name: "High School Skaters", stars: "⭐", reqSkill: 10 },
-        { name: "Varsity Ice Rangers", stars: "⭐⭐", reqSkill: 30 },
-        { name: "Regional Ice Kings 👑", stars: "⭐⭐⭐⭐", reqSkill: 55 },
-        { name: "Elite NHL Prospects 🧊", stars: "⭐⭐⭐⭐⭐", reqSkill: 80 }
+        { name: "High School Skaters", stars: "⭐⭐ (2.0)", reqSkill: 10 },
+        { name: "Varsity Ice Rangers", stars: "⭐⭐⭐✨ (3.5)", reqSkill: 30 },
+        { name: "Regional Ice Kings 👑", stars: "⭐⭐⭐⭐✨ (4.5)", reqSkill: 55 },
+        { name: "Elite NHL Prospects 🧊", stars: "⭐⭐⭐⭐⭐ (5.0)", reqSkill: 80 }
       ]
     },
     racing: {
       name: "Motorsport / Karting 🏎️",
       primary: [
-        { name: "Local Go-Kart Club", stars: "⭐", reqSkill: 0 },
-        { name: "Junior Karting Championship", stars: "⭐⭐⭐", reqSkill: 25 }
+        { name: "Local Go-Kart Club", stars: "⭐⭐✨ (2.5)", reqSkill: 0 },
+        { name: "Junior Karting Championship", stars: "⭐⭐⭐⭐ (4.0)", reqSkill: 25 }
       ],
       high: [
-        { name: "Formula 4 Junior Team", stars: "⭐⭐", reqSkill: 20 },
-        { name: "Formula 3 Regional Team", stars: "⭐⭐⭐", reqSkill: 45 },
-        { name: "Formula 2 Academy", stars: "⭐⭐⭐⭐", reqSkill: 70 },
-        { name: "F1 Driver Development Program 🏎️", stars: "⭐⭐⭐⭐⭐", reqSkill: 90 }
+        { name: "Formula 4 Junior Team", stars: "⭐⭐⭐ (3.0)", reqSkill: 20 },
+        { name: "Formula 3 Regional Team", stars: "⭐⭐⭐⭐ (4.0)", reqSkill: 45 },
+        { name: "Formula 2 Academy", stars: "⭐⭐⭐⭐✨ (4.5)", reqSkill: 70 },
+        { name: "F1 Driver Development Program 🏎️", stars: "⭐⭐⭐⭐⭐ (5.0)", reqSkill: 90 }
       ]
     }
   };
@@ -572,13 +647,9 @@
       job: "Infant",
       salary: 0,
       isDead: false,
-      sportsSkill: 10,
+      sportsSkill: 15,
       sportsTeam: null,
-      education: {
-        current: null,
-        yearsLeft: 0,
-        degrees: []
-      },
+      education: { current: null, yearsLeft: 0, degrees: [] },
       stats: { happy: 80, health: 95, smart: 60, looks: 50 },
       family: [
         { id: 1, name: `John ${lName}`, role: "Father", age: 30, rel: 90, icon: "👨", isPet: false },
@@ -656,10 +727,8 @@
       group = document.createElement('div');
       group.id = ageHeaderId;
       group.className = 'log-age-group';
-
       const ageText = player.age === 1 ? '1 year' : `${player.age} years`;
       group.innerHTML = `<div class="log-age-header">Age: ${ageText}</div>`;
-      
       logBox.insertBefore(group, logBox.firstChild);
     }
 
@@ -671,6 +740,9 @@
 
   function ageUp() {
     if(player.isDead) return;
+
+    soundFx.ageUp();
+    spawnParticles("⭐", 5);
 
     player.age++;
     player.family.forEach(f => f.age++);
@@ -701,6 +773,8 @@
       }
 
       if(player.education.yearsLeft <= 0) {
+        soundFx.success();
+        spawnParticles("🎓", 8);
         addLog(`🎓 Graduation! I completed my studies in ${player.education.current.title}!`);
         player.education.degrees.push(player.education.current.id);
         player.education.current = null;
@@ -750,10 +824,10 @@
       btn.className = `option-btn ${opt.isClose ? 'close' : ''}`;
       btn.innerHTML = `<span>${opt.text}</span>` + (opt.subtext ? `<span class="subtext">${opt.subtext}</span>` : '');
       btn.onclick = () => {
+        soundFx.click();
         opt.action();
         document.getElementById('event-modal').classList.remove('active');
         updateUI();
-        returnToMainMenu();
       };
       optContainer.appendChild(btn);
     });
@@ -773,22 +847,22 @@
       header.innerText = schoolName;
       
       let teamInfo = player.sportsTeam 
-        ? `<div class="list-item"><b>🏆 Current Team:</b> ${player.sportsTeam} (Skill: ${player.sportsSkill})</div>` 
+        ? `<div class="list-item"><b>🏆 Current Team:</b> ${player.sportsTeam}</div>` 
         : `<div class="list-item"><b>🏆 Sports Skill:</b> ${player.sportsSkill}/100</div>`;
 
       content.innerHTML = `
         ${teamInfo}
-        <div class="list-item" onclick="studyHard()">
+        <div class="list-item" onclick="soundFx.click(); studyHard()">
           <span>📚 Study Hard</span><span>➡️</span>
         </div>
-        <div class="list-item" onclick="openSportsMenu()">
+        <div class="list-item" onclick="soundFx.click(); openSportsMenu()">
           <span>⚽ Sports Club & Teams</span><span>➡️</span>
         </div>
-        ${player.sportsTeam ? `<div class="list-item" onclick="trainSports()"><span>🏋️ Train Extra for Team (+Skill)</span><span>➡️</span></div>` : ''}
-        <div class="list-item" onclick="talkClassmates()">
+        ${player.sportsTeam ? `<div class="list-item" onclick="soundFx.click(); trainSports()"><span>🏋️ Train Extra for Team (+Skill)</span><span>➡️</span></div>` : ''}
+        <div class="list-item" onclick="soundFx.click(); talkClassmates()">
           <span>💬 Talk to Classmates</span><span>➡️</span>
         </div>
-        <div class="list-item" onclick="skipClass()">
+        <div class="list-item" onclick="soundFx.click(); skipClass()">
           <span>🏃 Skip Class / Slack Off</span><span>➡️</span>
         </div>
       `;
@@ -797,13 +871,13 @@
       content.innerHTML = `
         <div class="list-item"><b>Degree:</b> ${player.education.current.title}</div>
         <div class="list-item"><b>Years Remaining:</b> ${player.education.yearsLeft} Year(s)</div>
-        <div class="list-item" onclick="studyHard()">
+        <div class="list-item" onclick="soundFx.click(); studyHard()">
           <span>📚 Study Hard</span><span>➡️</span>
         </div>
-        <div class="list-item" onclick="partyUni()">
+        <div class="list-item" onclick="soundFx.click(); partyUni()">
           <span>🎉 Go to Campus Party</span><span>➡️</span>
         </div>
-        <div class="list-item" onclick="dropOutUni()">
+        <div class="list-item" onclick="soundFx.click(); dropOutUni()">
           <span>❌ Drop Out of University</span><span>➡️</span>
         </div>
       `;
@@ -812,20 +886,20 @@
       content.innerHTML = `
         <div class="list-item"><b>Position:</b> ${player.job}</div>
         <div class="list-item"><b>Salary:</b> $${player.salary.toLocaleString()} / year</div>
-        <div class="list-item" onclick="workHarder()">
+        <div class="list-item" onclick="soundFx.click(); workHarder()">
           <span>⚡ Work Harder / Train Harder</span><span>➡️</span>
         </div>
-        <div class="list-item" onclick="quitJob()">
+        <div class="list-item" onclick="soundFx.click(); quitJob()">
           <span>🚪 Quit Job / Retire</span><span>➡️</span>
         </div>
       `;
     } else {
       header.innerText = "UNEMPLOYED";
       content.innerHTML = `
-        <div class="list-item" onclick="openJobMarket()">
+        <div class="list-item" onclick="soundFx.click(); openJobMarket()">
           <span>💼 Find a Job / Pro Sports Contract</span><span>➡️</span>
         </div>
-        <div class="list-item" onclick="openEducationMenu(false)">
+        <div class="list-item" onclick="soundFx.click(); openEducationMenu(false)">
           <span>🎓 Go to University / Trade School</span><span>➡️</span>
         </div>
       `;
@@ -852,14 +926,17 @@
     const teamOptions = teams.map(t => {
       const meetsReq = player.sportsSkill >= t.reqSkill;
       return {
-        text: `${t.name} (${t.stars})`,
-        subtext: meetsReq ? `Requirement Met ✅ (Req Skill: ${t.reqSkill})` : `Locked! Need Skill: ${t.reqSkill} ❌`,
+        text: `${t.name}`,
+        subtext: `${t.stars} • ${meetsReq ? 'Requirement Met ✅' : `Skill Needed: ${t.reqSkill} ❌`}`,
         action: () => {
           if(meetsReq) {
+            soundFx.success();
+            spawnParticles("⚽", 6);
             player.sportsTeam = `${t.name} (${sport.name})`;
             player.stats.health = Math.min(100, player.stats.health + 15);
             player.stats.happy = Math.min(100, player.stats.happy + 10);
             addLog(`I tried out and successfully joined ${t.name}!`);
+            returnToMainMenu();
           } else {
             alert(`You need at least ${t.reqSkill} Sports Skill to make this team! Train more first.`);
           }
@@ -869,7 +946,13 @@
 
     teamOptions.push({ text: "Back ⬅️", isClose: true, action: () => openSportsMenu() });
 
-    showEventModal("TEAM SELECTION", "🥇", sport.name, `Select a team to try out for (${isHighSchool ? '4 Teams' : '2 Teams'}):`, teamOptions);
+    showEventModal(
+      "TEAM SELECTION", 
+      "🥇", 
+      sport.name, 
+      `Select a team for ${isHighSchool ? 'High School' : 'Primary School'}:`, 
+      teamOptions
+    );
   }
 
   function trainSports() {
@@ -938,7 +1021,7 @@
       options = [
         { text: "💬 Conversation", action: () => { person.rel = Math.min(100, person.rel + 10); addLog(`I had a nice conversation with my ${person.role}, ${person.name}.`); } },
         { text: "🎁 Give a Gift", action: () => { 
-            if(player.money >= 50) { player.money -= 50; person.rel = Math.min(100, person.rel + 25); addLog(`I bought a gift for ${person.name}.`); } 
+            if(player.money >= 50) { player.money -= 50; person.rel = Math.min(100, person.rel + 25); soundFx.success(); addLog(`I bought a gift for ${person.name}.`); } 
             else { addLog("I didn't have enough money to buy a gift!"); }
           } 
         },
@@ -953,10 +1036,11 @@
 
   function openDoctorMenu() {
     showEventModal("HEALTHCARE", "👨‍⚕️", "Medical Options", "Choose a healthcare service:", [
-      { text: "General Checkup (Free)", action: () => { player.stats.health = 100; addLog("I visited the doctor and feel healthy."); } },
+      { text: "General Checkup (Free)", action: () => { player.stats.health = 100; addLog("I visited the doctor and feel healthy."); returnToMainMenu(); } },
       { text: "Plastic Surgery ($2,500)", action: () => { 
-          if(player.money >= 2500) { player.money -= 2500; player.stats.looks = Math.min(100, player.stats.looks + 30); addLog("Plastic surgery was a success!"); } 
+          if(player.money >= 2500) { player.money -= 2500; player.stats.looks = Math.min(100, player.stats.looks + 30); soundFx.success(); addLog("Plastic surgery was a success!"); } 
           else addLog("I couldn't afford plastic surgery!");
+          returnToMainMenu();
         } 
       },
       { text: "Cancel ❌", isClose: true, action: () => {} }
@@ -973,17 +1057,19 @@
       text: deg.title,
       subtext: deg.desc,
       action: () => {
+        soundFx.success();
         player.education.current = deg;
         player.education.yearsLeft = deg.duration;
         player.salary = 0;
         addLog(`Enrolled in ${deg.title}. Expected duration: ${deg.duration} year(s).`);
+        returnToMainMenu();
       }
     }));
 
     options.push({ 
       text: isAutoPopup ? "Start Working / Become Pro Athlete 💼" : "Cancel ❌", 
       isClose: true, 
-      action: () => { if(isAutoPopup) addLog("I decided not to pursue higher education right now."); } 
+      action: () => { if(isAutoPopup) addLog("I decided not to pursue higher education right now."); returnToMainMenu(); } 
     });
 
     const title = isAutoPopup ? "High School Graduation!" : "Higher Education";
@@ -1007,9 +1093,12 @@
         subtext: hasReq ? "Requirement met ✅" : `Requires: ${reqName} ❌`,
         action: () => {
           if(hasReq) {
+            soundFx.success();
+            spawnParticles("💼", 6);
             player.job = j.title;
             player.salary = j.salary;
             addLog(`I got a job as a ${j.title}!`);
+            returnToMainMenu();
           } else {
             alert(`You need ${reqName} to apply for this position!`);
           }
@@ -1034,7 +1123,7 @@
     player.family.forEach(f => {
       const div = document.createElement('div');
       div.className = "list-item";
-      div.onclick = () => interactWithPerson(f);
+      div.onclick = () => { soundFx.click(); interactWithPerson(f); };
       div.innerHTML = `
         <div style="display:flex; align-items:center; gap:12px;">
           <span style="font-size:1.6rem">${f.icon}</span>
@@ -1062,7 +1151,7 @@
     container.innerHTML = acts.map((act, i) => {
       const isLocked = player.age < act.req || player.isDead;
       return `
-        <div class="list-item ${isLocked ? 'disabled' : ''}" onclick="${!isLocked ? `runAct(${i})` : ''}">
+        <div class="list-item ${isLocked ? 'disabled' : ''}" onclick="${!isLocked ? `soundFx.click(); runAct(${i})` : ''}">
           <span>${act.icon} <b>${act.name}</b></span>
           <span>${isLocked ? `Age ${act.req}+` : '➡️'}</span>
         </div>
@@ -1083,7 +1172,7 @@
     shopContainer.innerHTML = availableAssetsList.map((item, i) => {
       const isLocked = player.age < item.req || player.isDead;
       return `
-        <div class="list-item ${isLocked ? 'disabled' : ''}" onclick="${!isLocked ? `buyAsset(${i})` : ''}">
+        <div class="list-item ${isLocked ? 'disabled' : ''}" onclick="${!isLocked ? `soundFx.click(); buyAsset(${i})` : ''}">
           <span>${item.icon} <b>${item.name}</b></span>
           <span style="color:var(--accent-green)">$${item.price.toLocaleString()}</span>
         </div>
@@ -1093,6 +1182,8 @@
     window.buyAsset = (i) => {
       const item = availableAssetsList[i];
       if(player.money >= item.price) {
+        soundFx.success();
+        spawnParticles("🛍️", 5);
         player.money -= item.price;
         player.inventory.push(item);
         addLog(`I purchased: ${item.name}!`);
