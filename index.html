@@ -106,21 +106,11 @@
       flex-direction: column;
     }
 
-    /* === MOOIE CUSTOM SCHUIFBALK (SCROLLBAR) === */
-    ::-webkit-scrollbar {
-      width: 6px;
-    }
-    ::-webkit-scrollbar-track {
-      background: #0d1722;
-      border-radius: 10px;
-    }
-    ::-webkit-scrollbar-thumb {
-      background: #2a3c50;
-      border-radius: 10px;
-    }
-    ::-webkit-scrollbar-thumb:hover {
-      background: var(--accent-orange);
-    }
+    /* CUSTOM SCHUIFBALK */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #0d1722; border-radius: 10px; }
+    ::-webkit-scrollbar-thumb { background: #2a3c50; border-radius: 10px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--accent-orange); }
 
     .log-box {
       background-color: var(--bg-dark);
@@ -130,7 +120,7 @@
       line-height: 1.45;
       max-height: 420px;
       overflow-y: auto;
-      padding-right: 8px; /* Ruimte voor de schuifbalk */
+      padding-right: 8px;
     }
 
     .log-age-group { margin-bottom: 16px; }
@@ -280,12 +270,17 @@
       background-color: var(--accent-blue);
       color: white;
       border: none;
-      padding: 10px;
-      border-radius: 20px;
+      padding: 12px;
+      border-radius: 12px;
       font-weight: bold;
       cursor: pointer;
+      text-align: left;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
     }
-    .option-btn.close { background-color: #64748b; }
+    .option-btn .subtext { font-size: 0.75rem; opacity: 0.85; font-weight: normal; }
+    .option-btn.close { background-color: #64748b; text-align: center; }
   </style>
 </head>
 <body>
@@ -429,12 +424,23 @@
     "I made a new friend today."
   ];
 
+  // OPLEIDINGEN MET STUDIEDUUR EN KOSTEN
+  const educationDegrees = [
+    { id: 'trade', title: "Trade School (Mechanic / Technician) 🔧", duration: 1, cost: 2000, desc: "Duur: 1 Jaar • Kosten: $2,000 / jaar" },
+    { id: 'business', title: "Business Administration Major 📊", duration: 3, cost: 8000, desc: "Duur: 3 Jaar • Kosten: $8,000 / jaar" },
+    { id: 'cs', title: "Computer Science Major 💻", duration: 3, cost: 10000, desc: "Duur: 3 Jaar • Kosten: $10,000 / jaar" },
+    { id: 'law', title: "Law School ⚖️", duration: 4, cost: 15000, desc: "Duur: 4 Jaar • Kosten: $15,000 / jaar" },
+    { id: 'medicine', title: "Medical School (Doctorate) 🩺", duration: 6, cost: 25000, desc: "Duur: 6 Jaar • Kosten: $25,000 / jaar" }
+  ];
+
+  // BANEN MET VEREISTE DIPLOMA'S
   const availableJobs = [
-    { title: "Cashier 🛒", salary: 24000 },
-    { title: "Software Engineer 💻", salary: 75000 },
-    { title: "Truck Driver 🚚", salary: 36000 },
-    { title: "Manager 📊", salary: 90000 },
-    { title: "Doctor 🩺", salary: 135000 }
+    { title: "Cashier 🛒", salary: 24000, reqDegree: null },
+    { title: "Repair Technician / Mechanic 🛠️", salary: 48000, reqDegree: "trade" },
+    { title: "Software Engineer 💻", salary: 85000, reqDegree: "cs" },
+    { title: "Business Manager 📊", salary: 95000, reqDegree: "business" },
+    { title: "Lawyer ⚖️", salary: 120000, reqDegree: "law" },
+    { title: "Medical Doctor 🩺", salary: 180000, reqDegree: "medicine" }
   ];
 
   const availableAssetsList = [
@@ -474,6 +480,11 @@
       job: "Infant",
       salary: 0,
       isDead: false,
+      education: {
+        current: null, // Huidige studie
+        yearsLeft: 0,
+        degrees: []   // Behaalde diploma's
+      },
       stats: { happy: 80, health: 95, smart: 60, looks: 50 },
       family: [
         { id: 1, name: `John ${lName}`, role: "Father", age: 30, rel: 90, icon: "👨", isPet: false },
@@ -499,8 +510,10 @@
 
     if(!player.isDead) {
       if(player.age < 3) player.job = "Infant";
-      else if(player.age < 18) player.job = "Student 📚";
-      else if(player.job === "Student 📚" || player.job === "Infant") player.job = "Unemployed";
+      else if(player.age >= 6 && player.age < 12) player.job = "Primary School Student 🎒";
+      else if(player.age >= 12 && player.age < 18) player.job = "High School Student 📚";
+      else if(player.education.current) player.job = `Student (${player.education.current.title}) 🎓`;
+      else if(!player.job || player.job.includes("Student") || player.job === "Infant") player.job = "Unemployed";
     }
     
     document.getElementById('char-status').innerText = player.job;
@@ -554,10 +567,40 @@
       return;
     }
 
+    // Automatische meldingen op schoolleeftijden
+    if(player.age === 6) addLog("I started attending Primary School.");
+    if(player.age === 12) addLog("I started attending High School.");
+
+    // Studie Voortgang
+    if(player.education.current) {
+      player.education.yearsLeft--;
+      if(player.money >= player.education.current.cost) {
+        player.money -= player.education.current.cost;
+        addLog(`Paid $${player.education.current.cost.toLocaleString()} for tuition.`);
+      } else {
+        addLog(`Student debt increased for tuition fees.`);
+        player.money -= player.education.current.cost;
+      }
+
+      if(player.education.yearsLeft <= 0) {
+        addLog(`🎓 Graduation! I completed my studies in ${player.education.current.title}!`);
+        player.education.degrees.push(player.education.current.id);
+        player.education.current = null;
+      } else {
+        addLog(`Studying hard... (${player.education.yearsLeft} years remaining)`);
+      }
+    }
+
+    // High School Afgerond? Pop-up op je 18e
+    if(player.age === 18) {
+      addLog("🎓 I graduated from High School!");
+      setTimeout(() => openEducationMenu(true), 300);
+    }
+
     const randomEvt = randomEvents[Math.floor(Math.random() * randomEvents.length)];
     addLog(randomEvt);
 
-    if (player.salary > 0) {
+    if (player.salary > 0 && !player.education.current) {
       player.money += player.salary;
       addLog(`Received salary: +$${player.salary.toLocaleString()}`);
     }
@@ -577,7 +620,7 @@
     options.forEach(opt => {
       const btn = document.createElement('button');
       btn.className = `option-btn ${opt.isClose ? 'close' : ''}`;
-      btn.innerText = opt.text;
+      btn.innerHTML = `<span>${opt.text}</span>` + (opt.subtext ? `<span class="subtext">${opt.subtext}</span>` : '');
       btn.onclick = () => {
         opt.action();
         document.getElementById('event-modal').classList.remove('active');
@@ -609,7 +652,7 @@
           } 
         },
         { text: "🍿 Spend Time Together", action: () => { person.rel = Math.min(100, person.rel + 15); player.stats.happy = Math.min(100, player.stats.happy + 10); addLog(`I spent quality time with my ${person.role}.`); goToLogTab(); } },
-        { text: "⚡ Argue / Bickering", action: () => { person.rel = Math.max(0, person.rel - 20); player.stats.happy = Math.max(0, player.stats.happy - 10); addLog(`I got into an argument with ${person.name}.`); goToLogTab(); } }
+        { text: "⚡ Argue / Bickering", action: () => { person.rel = Math.max(0, person.rel - 20); player.stats.happy = Math.max(0, person.rel - 10); addLog(`I got into an argument with ${person.name}.`); goToLogTab(); } }
       ];
     }
 
@@ -630,21 +673,66 @@
     ]);
   }
 
-  function openUniversityMenu() {
-    showEventModal("EDUCATION", "🎓", "University Majors", "Select a major to study:", [
-      { text: "Computer Science Major", action: () => { player.job = "Software Engineer"; player.salary = 75000; addLog("I graduated and became a Software Engineer!"); goToLogTab(); } },
-      { text: "Medicine Major", action: () => { player.job = "Doctor"; player.salary = 135000; addLog("I graduated and became a Doctor!"); goToLogTab(); } },
-      { text: "Cancel ❌", isClose: true, action: () => {} }
-    ]);
+  // NIEUW UTGEBREID SCHOOL SYSTEEM
+  function openEducationMenu(isAutoPopup = false) {
+    if(player.education.current) {
+      alert(`You are currently studying ${player.education.current.title} (${player.education.yearsLeft} years remaining)!`);
+      return;
+    }
+
+    const options = educationDegrees.map(deg => ({
+      text: deg.title,
+      subtext: deg.desc,
+      action: () => {
+        player.education.current = deg;
+        player.education.yearsLeft = deg.duration;
+        player.salary = 0; // Geen salaris tijdens voltijd studie
+        addLog(`Enrolled in ${deg.title}. Expected duration: ${deg.duration} year(s).`);
+        goToLogTab();
+      }
+    }));
+
+    options.push({ 
+      text: isAutoPopup ? "Start Working Immediately 💼" : "Cancel ❌", 
+      isClose: true, 
+      action: () => { if(isAutoPopup) addLog("I decided not to pursue higher education right now."); } 
+    });
+
+    const title = isAutoPopup ? "High School Graduation!" : "Higher Education";
+    const desc = isAutoPopup ? "Congratulations! Choose your career/education path:" : "Select a degree program to enroll in:";
+
+    showEventModal("EDUCATION", "🎓", title, desc, options);
   }
 
+  // UITGEBREIDE CARRIÈRE OPTIES
   function openJobMarket() {
-    const options = availableJobs.map(j => ({
-      text: `${j.title} ($${j.salary.toLocaleString()}/yr)`,
-      action: () => { player.job = j.title; player.salary = j.salary; addLog(`I got a job as a ${j.title}!`); goToLogTab(); }
-    }));
+    if(player.education.current) {
+      alert("You cannot get a full-time job while studying!");
+      return;
+    }
+
+    const options = availableJobs.map(j => {
+      const hasReq = !j.reqDegree || player.education.degrees.includes(j.reqDegree);
+      const degreeName = j.reqDegree ? educationDegrees.find(d => d.id === j.reqDegree).title : "None";
+
+      return {
+        text: `${j.title} ($${j.salary.toLocaleString()}/yr)`,
+        subtext: hasReq ? "Requirement met ✅" : `Requires degree: ${degreeName} ❌`,
+        action: () => {
+          if(hasReq) {
+            player.job = j.title;
+            player.salary = j.salary;
+            addLog(`I got a job as a ${j.title}!`);
+            goToLogTab();
+          } else {
+            alert(`You need a diploma in ${degreeName} to apply for this job!`);
+          }
+        }
+      };
+    });
+
     options.push({ text: "Cancel ❌", isClose: true, action: () => {} });
-    showEventModal("CAREERS", "💼", "Job Market", "Apply for a position:", options);
+    showEventModal("CAREERS", "💼", "Job Market", "Apply for a position (Higher qualifications = Better Pay):", options);
   }
 
   function switchTab(tabName, btn) {
@@ -681,7 +769,7 @@
     const acts = [
       { name: "🩺 Visit Doctor", icon: "👨‍⚕️", req: 0, action: openDoctorMenu },
       { name: "🏋️ Gym & Fitness", icon: "💪", req: 12, action: () => { player.stats.health = Math.min(100, player.stats.health + 10); addLog("I worked out at the gym."); goToLogTab(); } },
-      { name: "🎓 University", icon: "🏫", req: 18, action: openUniversityMenu },
+      { name: "🎓 Higher Education / Trade School", icon: "🏫", req: 18, action: () => openEducationMenu(false) },
       { name: "💼 Find a Job", icon: "💼", req: 18, action: openJobMarket }
     ];
 
