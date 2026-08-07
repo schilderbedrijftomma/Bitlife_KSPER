@@ -13,6 +13,7 @@
       --accent-green: #22c55e;
       --accent-yellow: #ccff00;
       --accent-blue: #0284c7;
+      --accent-purple: #a855f7;
       --text-main: #ffffff;
     }
 
@@ -106,7 +107,6 @@
       flex-direction: column;
     }
 
-    /* CUSTOM SCHUIFBALK */
     ::-webkit-scrollbar { width: 6px; }
     ::-webkit-scrollbar-track { background: #0d1722; border-radius: 10px; }
     ::-webkit-scrollbar-thumb { background: #2a3c50; border-radius: 10px; }
@@ -124,19 +124,8 @@
     }
 
     .log-age-group { margin-bottom: 16px; }
-
-    .log-age-header {
-      color: var(--accent-yellow);
-      font-weight: bold;
-      font-size: 1.2rem;
-      margin-bottom: 4px;
-    }
-
-    .log-entry {
-      color: #e2e8f0;
-      margin-bottom: 4px;
-      font-size: 1rem;
-    }
+    .log-age-header { color: var(--accent-yellow); font-weight: bold; font-size: 1.2rem; margin-bottom: 4px; }
+    .log-entry { color: #e2e8f0; margin-bottom: 4px; font-size: 1rem; }
 
     .view-panel { display: none; }
     .view-panel.active { display: block; }
@@ -149,6 +138,24 @@
       text-align: center;
       margin-bottom: 10px;
       text-transform: uppercase;
+    }
+
+    .quick-log-btn {
+      width: 100%;
+      background: linear-gradient(90deg, #0284c7, #38bdf8);
+      color: white;
+      border: none;
+      padding: 10px;
+      border-radius: 8px;
+      font-weight: bold;
+      font-size: 0.9rem;
+      cursor: pointer;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
     }
 
     .sub-section-header {
@@ -343,6 +350,7 @@
 
     <div class="main-content">
       <div id="view-career" class="view-panel active">
+        <button class="quick-log-btn" onclick="openLogTab()">📜 Open Life Log</button>
         <div class="panel-header" id="career-panel-header">SCHOOL / WORK</div>
         <div id="career-panel-content"></div>
       </div>
@@ -353,16 +361,19 @@
       </div>
 
       <div id="view-relationships" class="view-panel">
+        <button class="quick-log-btn" onclick="openLogTab()">📜 Open Life Log</button>
         <div class="panel-header">RELATIONSHIPS & PETS</div>
         <div id="family-list"></div>
       </div>
 
       <div id="view-activities" class="view-panel">
+        <button class="quick-log-btn" onclick="openLogTab()">📜 Open Life Log</button>
         <div class="panel-header">ACTIVITIES</div>
         <div id="activities-list"></div>
       </div>
 
       <div id="view-assets" class="view-panel">
+        <button class="quick-log-btn" onclick="openLogTab()">📜 Open Life Log</button>
         <div class="panel-header">ASSETS & PROPERTY</div>
         <div class="sub-section-header">📦 My Belongings</div>
         <div id="owned-assets-list"></div>
@@ -433,45 +444,58 @@
     "I made a new friend today."
   ];
 
-  // SPORT TEAMS VOOR PRIMARY & HIGH SCHOOL
+  // GEAVANCEERD SPORT SYSTEEM (100x Beter!)
   const sportsData = {
     football: {
       name: "Football ⚽",
       primary: [
-        { name: "Little Kickers", stars: "⭐" },
-        { name: "Junior Strikers", stars: "⭐⭐⭐" }
+        { name: "Little Kickers (Youth League)", stars: "⭐", reqSkill: 0 },
+        { name: "Junior Strikers Elite", stars: "⭐⭐⭐", reqSkill: 20 }
       ],
       high: [
-        { name: "High School Freshmen FC", stars: "⭐" },
-        { name: "Varsity Tigers FC", stars: "⭐⭐" },
-        { name: "Regional Youth Elite", stars: "⭐⭐⭐⭐" },
-        { name: "National Academy FC", stars: "⭐⭐⭐⭐⭐" }
+        { name: "Freshmen Benchwarmers", stars: "⭐", reqSkill: 10 },
+        { name: "High School Varsity FC", stars: "⭐⭐", reqSkill: 30 },
+        { name: "Regional Youth Cup Champs", stars: "⭐⭐⭐⭐", reqSkill: 55 },
+        { name: "National Youth Academy 🥇", stars: "⭐⭐⭐⭐⭐", reqSkill: 80 }
       ]
     },
     basketball: {
       name: "Basketball 🏀",
       primary: [
-        { name: "Mini Hoopers", stars: "⭐" },
-        { name: "Junior Dunkers", stars: "⭐⭐" }
+        { name: "Mini Hoopers", stars: "⭐", reqSkill: 0 },
+        { name: "Junior Dunkers", stars: "⭐⭐", reqSkill: 15 }
       ],
       high: [
-        { name: "Rookie Ballers", stars: "⭐" },
-        { name: "Varsity Eagles", stars: "⭐⭐⭐" },
-        { name: "State Championship Squad", stars: "⭐⭐⭐⭐" },
-        { name: "All-Star Prep League", stars: "⭐⭐⭐⭐⭐" }
+        { name: "Rookie Ballers", stars: "⭐", reqSkill: 10 },
+        { name: "Varsity Eagles 🦅", stars: "⭐⭐⭐", reqSkill: 35 },
+        { name: "State Championship Squad", stars: "⭐⭐⭐⭐", reqSkill: 60 },
+        { name: "All-American Prep League 🔥", stars: "⭐⭐⭐⭐⭐", reqSkill: 85 }
       ]
     },
     hockey: {
       name: "Hockey 🏒",
       primary: [
-        { name: "Ice Pups", stars: "⭐" },
-        { name: "Junior Bladers", stars: "⭐⭐⭐" }
+        { name: "Ice Pups", stars: "⭐", reqSkill: 0 },
+        { name: "Junior Bladers", stars: "⭐⭐⭐", reqSkill: 20 }
       ],
       high: [
-        { name: "High School Skaters", stars: "⭐" },
-        { name: "Varsity Rangers", stars: "⭐⭐" },
-        { name: "Regional Ice Kings", stars: "⭐⭐⭐⭐" },
-        { name: "Elite Pro-Prospects", stars: "⭐⭐⭐⭐⭐" }
+        { name: "High School Skaters", stars: "⭐", reqSkill: 10 },
+        { name: "Varsity Ice Rangers", stars: "⭐⭐", reqSkill: 30 },
+        { name: "Regional Ice Kings 👑", stars: "⭐⭐⭐⭐", reqSkill: 55 },
+        { name: "Elite NHL Prospects 🧊", stars: "⭐⭐⭐⭐⭐", reqSkill: 80 }
+      ]
+    },
+    racing: {
+      name: "Motorsport / Karting 🏎️",
+      primary: [
+        { name: "Local Go-Kart Club", stars: "⭐", reqSkill: 0 },
+        { name: "Junior Karting Championship", stars: "⭐⭐⭐", reqSkill: 25 }
+      ],
+      high: [
+        { name: "Formula 4 Junior Team", stars: "⭐⭐", reqSkill: 20 },
+        { name: "Formula 3 Regional Team", stars: "⭐⭐⭐", reqSkill: 45 },
+        { name: "Formula 2 Academy", stars: "⭐⭐⭐⭐", reqSkill: 70 },
+        { name: "F1 Driver Development Program 🏎️", stars: "⭐⭐⭐⭐⭐", reqSkill: 90 }
       ]
     }
   };
@@ -486,7 +510,7 @@
 
   const availableJobs = [
     { title: "Cashier 🛒", salary: 24000, reqDegree: null },
-    { title: "Pro Athlete 🏆", salary: 150000, reqDegree: "pro_sports" },
+    { title: "Pro Athlete / F1 Driver 🏆", salary: 250000, reqDegree: "pro_sports" },
     { title: "Repair Technician / Mechanic 🛠️", salary: 48000, reqDegree: "trade" },
     { title: "Software Engineer 💻", salary: 85000, reqDegree: "cs" },
     { title: "Business Manager 📊", salary: 95000, reqDegree: "business" },
@@ -531,6 +555,7 @@
       job: "Infant",
       salary: 0,
       isDead: false,
+      sportsSkill: 10, // Je sportvaardigheid
       sportsTeam: null,
       education: {
         current: null,
@@ -554,6 +579,12 @@
 
     addLog(`I was born in ${player.country}.`);
     updateUI();
+  }
+
+  function openLogTab() {
+    document.querySelectorAll('.view-panel').forEach(el => el.classList.remove('active'));
+    document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
+    document.getElementById('view-log').classList.add('active');
   }
 
   function updateUI() {
@@ -636,7 +667,7 @@
     if(player.age === 6) addLog("I started attending Primary School.");
     if(player.age === 12) {
       addLog("I started attending High School.");
-      player.sportsTeam = null; // Reset sports team for high school
+      player.sportsTeam = null; // Reset sports team voor High School
     }
 
     if(player.education.current) {
@@ -658,10 +689,19 @@
       }
     }
 
+    // Sport events tijdens ouder worden
+    if(player.sportsTeam) {
+      if(Math.random() > 0.4) {
+        addLog(`🏆 I scored key points for my team ${player.sportsTeam} and won MVP!`);
+        player.sportsSkill += 5;
+      }
+    }
+
     if(player.age === 18) {
       addLog("🎓 I graduated from High School!");
-      if(player.sportsTeam) {
-        player.education.degrees.push("pro_sports"); // Unlock pro sports option
+      if(player.sportsSkill >= 50 && player.sportsTeam) {
+        player.education.degrees.push("pro_sports");
+        addLog("🌟 Scout Alert: Pro Sports scouts are scouting you after your incredible high school sports performance!");
       }
       setTimeout(() => openEducationMenu(true), 300);
     }
@@ -713,7 +753,9 @@
       const schoolName = player.age < 12 ? "Primary School 🎒" : "High School 🏫";
       header.innerText = schoolName;
       
-      let teamInfo = player.sportsTeam ? `<div class="list-item"><b>🏆 Joined Team:</b> ${player.sportsTeam}</div>` : '';
+      let teamInfo = player.sportsTeam 
+        ? `<div class="list-item"><b>🏆 Current Team:</b> ${player.sportsTeam} (Skill: ${player.sportsSkill})</div>` 
+        : `<div class="list-item"><b>🏆 Sports Skill:</b> ${player.sportsSkill}/100</div>`;
 
       content.innerHTML = `
         ${teamInfo}
@@ -721,8 +763,9 @@
           <span>📚 Study Hard</span><span>➡️</span>
         </div>
         <div class="list-item" onclick="openSportsMenu()">
-          <span>⚽ Join Sports Club / Team</span><span>➡️</span>
+          <span>⚽ Sports Club & Teams</span><span>➡️</span>
         </div>
+        ${player.sportsTeam ? `<div class="list-item" onclick="trainSports()"><span>🏋️ Train Extra for Team (+Skill)</span><span>➡️</span></div>` : ''}
         <div class="list-item" onclick="talkClassmates()">
           <span>💬 Talk to Classmates</span><span>➡️</span>
         </div>
@@ -751,17 +794,17 @@
         <div class="list-item"><b>Position:</b> ${player.job}</div>
         <div class="list-item"><b>Salary:</b> $${player.salary.toLocaleString()} / year</div>
         <div class="list-item" onclick="workHarder()">
-          <span>⚡ Work Harder</span><span>➡️</span>
+          <span>⚡ Work Harder / Train Harder</span><span>➡️</span>
         </div>
         <div class="list-item" onclick="quitJob()">
-          <span>🚪 Quit Job</span><span>➡️</span>
+          <span>🚪 Quit Job / Retire</span><span>➡️</span>
         </div>
       `;
     } else {
       header.innerText = "UNEMPLOYED";
       content.innerHTML = `
         <div class="list-item" onclick="openJobMarket()">
-          <span>💼 Find a Job</span><span>➡️</span>
+          <span>💼 Find a Job / Pro Sports Contract</span><span>➡️</span>
         </div>
         <div class="list-item" onclick="openEducationMenu(false)">
           <span>🎓 Go to University / Trade School</span><span>➡️</span>
@@ -770,16 +813,17 @@
     }
   }
 
-  // SPORT MENU MET TEAMS EN STERREN
+  // SPORT SYSTEM FUNCTIES
   function openSportsMenu() {
     const sportsOptions = [
       { text: "⚽ Football", action: () => openTeamSelection('football') },
       { text: "🏀 Basketball", action: () => openTeamSelection('basketball') },
       { text: "🏒 Hockey", action: () => openTeamSelection('hockey') },
+      { text: "🏎️ Motorsport / Karting", action: () => openTeamSelection('racing') },
       { text: "Cancel ❌", isClose: true, action: () => {} }
     ];
 
-    showEventModal("SPORTS CLUB", "🏆", "Choose a Sport", "Select a sport to join a team:", sportsOptions);
+    showEventModal("SPORTS CLUB", "🏆", "Choose a Sport", `Your Sports Skill: ${player.sportsSkill}/100\nSelect a sport:`, sportsOptions);
   }
 
   function openTeamSelection(sportKey) {
@@ -787,20 +831,33 @@
     const isHighSchool = player.age >= 12;
     const teams = isHighSchool ? sport.high : sport.primary;
 
-    const teamOptions = teams.map(t => ({
-      text: `${t.name} (${t.stars})`,
-      subtext: `Level: ${t.stars}`,
-      action: () => {
-        player.sportsTeam = `${t.name} (${sport.name})`;
-        player.stats.health = Math.min(100, player.stats.health + 15);
-        player.stats.happy = Math.min(100, player.stats.happy + 10);
-        addLog(`I joined the ${t.name} team!`);
-      }
-    }));
+    const teamOptions = teams.map(t => {
+      const meetsReq = player.sportsSkill >= t.reqSkill;
+      return {
+        text: `${t.name} (${t.stars})`,
+        subtext: meetsReq ? `Requirement Met ✅ (Req Skill: ${t.reqSkill})` : `Locked! Need Skill: ${t.reqSkill} ❌`,
+        action: () => {
+          if(meetsReq) {
+            player.sportsTeam = `${t.name} (${sport.name})`;
+            player.stats.health = Math.min(100, player.stats.health + 15);
+            player.stats.happy = Math.min(100, player.stats.happy + 10);
+            addLog(`I tried out and successfully joined ${t.name}!`);
+          } else {
+            alert(`You need at least ${t.reqSkill} Sports Skill to make this team! Train more first.`);
+          }
+        }
+      };
+    });
 
     teamOptions.push({ text: "Back ⬅️", isClose: true, action: () => openSportsMenu() });
 
-    showEventModal("SPORTS TEAMS", "🥇", sport.name, `Select a team (${isHighSchool ? '4 Teams Available' : '2 Teams Available'}):`, teamOptions);
+    showEventModal("TEAM SELECTION", "🥇", sport.name, `Select a team to try out for (${isHighSchool ? '4 Teams' : '2 Teams'}):`, teamOptions);
+  }
+
+  function trainSports() {
+    player.sportsSkill = Math.min(100, player.sportsSkill + 8);
+    player.stats.health = Math.min(100, player.stats.health + 5);
+    addLog(`I trained hard for my team. Sports Skill is now ${player.sportsSkill}!`);
   }
 
   function studyHard() {
@@ -898,7 +955,7 @@
     }));
 
     options.push({ 
-      text: isAutoPopup ? "Start Working / Pro Athlete 💼" : "Cancel ❌", 
+      text: isAutoPopup ? "Start Working / Become Pro Athlete 💼" : "Cancel ❌", 
       isClose: true, 
       action: () => { if(isAutoPopup) addLog("I decided not to pursue higher education right now."); } 
     });
@@ -917,7 +974,7 @@
 
     const options = availableJobs.map(j => {
       const hasReq = !j.reqDegree || player.education.degrees.includes(j.reqDegree);
-      const reqName = j.reqDegree === "pro_sports" ? "High School Sports Background 🏆" : (j.reqDegree ? educationDegrees.find(d => d.id === j.reqDegree).title : "None");
+      const reqName = j.reqDegree === "pro_sports" ? "High School Sports Scout Star 🏆" : (j.reqDegree ? educationDegrees.find(d => d.id === j.reqDegree).title : "None");
 
       return {
         text: `${j.title} ($${j.salary.toLocaleString()}/yr)`,
@@ -970,9 +1027,9 @@
   function renderActivities() {
     const container = document.getElementById('activities-list');
     const acts = [
-      { name: "📜 View Life Log", icon: "📜", req: 0, action: () => switchTab('log', document.querySelectorAll('.nav-btn')[0]) },
+      { name: "📜 View Life Log", icon: "📜", req: 0, action: openLogTab },
       { name: "🩺 Visit Doctor", icon: "👨‍⚕️", req: 0, action: openDoctorMenu },
-      { name: "🏋️ Gym & Fitness", icon: "💪", req: 12, action: () => { player.stats.health = Math.min(100, player.stats.health + 10); addLog("I worked out at the gym."); } },
+      { name: "🏋️ Gym & Fitness", icon: "💪", req: 12, action: () => { player.stats.health = Math.min(100, player.stats.health + 10); player.sportsSkill = Math.min(100, player.sportsSkill + 4); addLog("I worked out at the gym."); } },
       { name: "🎓 Higher Education / Trade School", icon: "🏫", req: 18, action: () => openEducationMenu(false) },
       { name: "💼 Find a Job / Pro Sports", icon: "💼", req: 18, action: openJobMarket }
     ];
