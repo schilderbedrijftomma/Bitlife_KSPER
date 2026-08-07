@@ -106,6 +106,22 @@
       flex-direction: column;
     }
 
+    /* === MOOIE CUSTOM SCHUIFBALK (SCROLLBAR) === */
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #0d1722;
+      border-radius: 10px;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #2a3c50;
+      border-radius: 10px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--accent-orange);
+    }
+
     .log-box {
       background-color: var(--bg-dark);
       border-radius: 10px;
@@ -114,6 +130,7 @@
       line-height: 1.45;
       max-height: 420px;
       overflow-y: auto;
+      padding-right: 8px; /* Ruimte voor de schuifbalk */
     }
 
     .log-age-group { margin-bottom: 16px; }
@@ -572,7 +589,6 @@
     document.getElementById('event-modal').classList.add('active');
   }
 
-  // Interaction with Family and Pets (8 Options)
   function interactWithPerson(person) {
     let options = [];
 
