@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>E-Life Simulator</title>
+  <title>E-Life Simulator Pro</title>
   <style>
     :root {
       --bg-dark: #121e2b;
@@ -13,6 +13,7 @@
       --accent-green: #22c55e;
       --accent-yellow: #facc15;
       --accent-blue: #0284c7;
+      --accent-purple: #a855f7;
       --text-main: #ffffff;
     }
 
@@ -32,7 +33,7 @@
     }
 
     .header {
-      background: linear-gradient(90deg, #ef4444, #f97316);
+      background: linear-gradient(90deg, #ef4444, #f97316, #a855f7);
       padding: 14px;
       text-align: center;
       font-weight: 900;
@@ -64,9 +65,7 @@
       outline: none;
       transition: border 0.2s;
     }
-    .form-group input:focus, .form-group select:focus {
-      border-color: var(--accent-orange);
-    }
+    .form-group input:focus, .form-group select:focus { border-color: var(--accent-orange); }
 
     .avatar-preview {
       font-size: 4.5rem;
@@ -107,7 +106,7 @@
 
     .profile-info { display: flex; align-items: center; gap: 14px; }
     .avatar { font-size: 2.4rem; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5)); }
-    .money { color: var(--accent-green); font-weight: bold; font-size: 1.3rem; text-shadow: 0 0 10px rgba(34, 197, 94, 0.3); }
+    .money { color: var(--accent-green); font-weight: bold; font-size: 1.25rem; text-shadow: 0 0 10px rgba(34, 197, 94, 0.3); }
 
     .main-content {
       flex: 1;
@@ -171,8 +170,8 @@
 
     .list-item {
       background-color: var(--card-bg);
-      padding: 14px 16px;
-      margin-bottom: 10px;
+      padding: 12px 16px;
+      margin-bottom: 8px;
       border-radius: 10px;
       display: flex;
       justify-content: space-between;
@@ -184,6 +183,16 @@
     .list-item:hover { background-color: #2a3c50; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.3); }
     .list-item:active { transform: translateY(0); }
     .disabled { opacity: 0.4; cursor: not-allowed; }
+
+    .ovr-badge {
+      background: linear-gradient(135deg, #facc15, #ca8a04);
+      color: #000;
+      font-weight: 900;
+      padding: 3px 8px;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      box-shadow: 0 2px 6px rgba(250, 204, 21, 0.4);
+    }
 
     .rel-bar { width: 80px; height: 10px; background-color: #0d1722; border-radius: 5px; overflow: hidden; margin-top: 4px; }
     .rel-fill { height: 100%; background-color: var(--accent-green); transition: width 0.3s; }
@@ -255,7 +264,7 @@
       background-color: #ffffff;
       color: #1e293b;
       border-radius: 20px;
-      width: 100%; max-width: 420px;
+      width: 100%; max-width: 440px;
       border: 5px solid #ef4444;
       overflow: hidden;
       text-align: center;
@@ -273,7 +282,7 @@
       background: linear-gradient(90deg, #0284c7, #0369a1);
       color: white;
       border: none;
-      padding: 14px;
+      padding: 12px 16px;
       border-radius: 12px;
       font-weight: bold;
       cursor: pointer;
@@ -306,7 +315,7 @@
 <body>
 
 <div class="game-container" id="game-container">
-  <div class="header">E-LIFE SIMULATOR</div>
+  <div class="header">E-LIFE SIMULATOR PRO</div>
 
   <div id="creator-screen">
     <h2 style="text-align: center; color: var(--accent-orange);">Create New Life</h2>
@@ -395,12 +404,12 @@
 
       <div id="view-assets" class="view-panel">
         <div class="panel-header-container">
-          <span class="panel-header-title">ASSETS & PROPERTY</span>
+          <span class="panel-header-title">LUXURY ASSETS & INVESTMENTS</span>
           <button class="close-panel-btn" onclick="soundFx.click(); returnToMainMenu();">✖</button>
         </div>
-        <div class="sub-section-header">📦 My Belongings</div>
+        <div class="sub-section-header">📦 My Belongings & Real Estate</div>
         <div id="owned-assets-list"></div>
-        <div class="sub-section-header">🛍️ Shopping Center</div>
+        <div class="sub-section-header">🛍️ Luxury Shopping & Mega Assets</div>
         <div id="assets-shop-list"></div>
       </div>
     </div>
@@ -412,7 +421,7 @@
       </button>
 
       <button class="nav-btn" id="nav-btn-assets" onclick="soundFx.click(); switchTab('assets', this)">
-        <span class="icon">🏠</span>Assets
+        <span class="icon">💎</span>Assets
       </button>
 
       <button class="age-btn" onclick="ageUp()">
@@ -520,51 +529,95 @@
   }
 
   const countries = [
-    "United States", "United Kingdom", "Netherlands", "Canada", "Australia", "Germany", "France", "Japan",
-    "Brazil", "Italy", "Spain", "Mexico", "South Korea", "Sweden", "Norway", "Denmark"
+    "Netherlands", "United Kingdom", "Spain", "Germany", "Italy", "United States", "Saudi Arabia", "France", "Brazil", "Argentina", "Portugal"
   ];
 
   const randomEvents = [
-    "Panama has launched a boycott of all exports from Jamaica.",
-    "Panama has officially declared war on Jamaica.",
-    "A treaty has been signed between Jamaica and Panama, marking the end of the conflict.",
-    "I bickered with my sibling about our favorite food.",
-    "I apologized to my sibling for bickering.",
-    "I spent a quiet year enjoying time with my family.",
-    "I learned a new skill and felt proud of myself.",
-    "I made a new friend today."
+    "A peaceful year enjoyed with friends and family.",
+    "I picked up a new passion and spent my free time honing it.",
+    "I had a friendly competition with a teammate.",
+    "I donated some money to a local sports charity."
   ];
 
-  // LEAGUES AND PRO SPORTS DATA
+  // MASSIVE EXPANDED LEAGUES & TEAMS WITH HARDER OVR REQUIREMENTS
   const proLeaguesData = {
     football: [
       {
         leagueName: "Eredivisie 🇳🇱",
         minSkill: 40,
         teams: [
-          { name: "Ajax Amsterdam", salary: 350000, reqSkill: 55 },
-          { name: "PSV Eindhoven", salary: 320000, reqSkill: 50 },
-          { name: "Feyenoord Rotterdam", salary: 300000, reqSkill: 48 },
-          { name: "AZ Alkmaar", salary: 180000, reqSkill: 40 }
+          { name: "FC Volendam", salary: 80000, reqSkill: 40 },
+          { name: "SC Heerenveen", salary: 150000, reqSkill: 48 },
+          { name: "AZ Alkmaar", salary: 280000, reqSkill: 55 },
+          { name: "Feyenoord Rotterdam", salary: 450000, reqSkill: 62 },
+          { name: "PSV Eindhoven", salary: 550000, reqSkill: 66 },
+          { name: "Ajax Amsterdam ❌⚪", salary: 650000, reqSkill: 70 }
+        ]
+      },
+      {
+        leagueName: "MLS (USA) 🇺🇸",
+        minSkill: 50,
+        teams: [
+          { name: "LA Galaxy 🌌", salary: 500000, reqSkill: 52 },
+          { name: "Inter Miami CF 💖", salary: 1200000, reqSkill: 65 },
+          { name: "NY Red Bulls 🐂", salary: 450000, reqSkill: 55 }
+        ]
+      },
+      {
+        leagueName: "Serie A 🇮🇹",
+        minSkill: 65,
+        teams: [
+          { name: "AC Monza", salary: 400000, reqSkill: 65 },
+          { name: "SS Lazio", salary: 900000, reqSkill: 72 },
+          { name: "AS Roma 🐺", salary: 1100000, reqSkill: 75 },
+          { name: "AC Milan 🔴⚫", salary: 1800000, reqSkill: 80 },
+          { name: "Inter Milan 🔵⚫", salary: 2000000, reqSkill: 82 },
+          { name: "Juventus FC ⚪⚫", salary: 2200000, reqSkill: 84 }
+        ]
+      },
+      {
+        leagueName: "Bundesliga 🇩🇪",
+        minSkill: 68,
+        teams: [
+          { name: "1. FSV Mainz 05", salary: 500000, reqSkill: 68 },
+          { name: "Bayer Leverkusen 🦁", salary: 1800000, reqSkill: 80 },
+          { name: "Borussia Dortmund 🟡⚫", salary: 2100000, reqSkill: 83 },
+          { name: "Bayern München 🔴", salary: 3200000, reqSkill: 88 }
         ]
       },
       {
         leagueName: "Premier League 🇬🇧",
-        minSkill: 65,
+        minSkill: 72,
         teams: [
-          { name: "Manchester City", salary: 2500000, reqSkill: 85 },
-          { name: "Arsenal FC", salary: 2000000, reqSkill: 80 },
-          { name: "Liverpool FC", salary: 1900000, reqSkill: 78 },
-          { name: "Chelsea FC", salary: 1500000, reqSkill: 70 }
+          { name: "Burnley FC", salary: 600000, reqSkill: 72 },
+          { name: "Brighton & Hove Albion", salary: 1100000, reqSkill: 76 },
+          { name: "Tottenham Hotspur", salary: 2000000, reqSkill: 81 },
+          { name: "Chelsea FC 🔵", salary: 2800000, reqSkill: 84 },
+          { name: "Liverpool FC 🔴", salary: 3500000, reqSkill: 87 },
+          { name: "Arsenal FC 🔴⚪", salary: 3600000, reqSkill: 88 },
+          { name: "Manchester City 🩵", salary: 4500000, reqSkill: 91 }
         ]
       },
       {
         leagueName: "La Liga 🇪🇸",
-        minSkill: 70,
+        minSkill: 75,
         teams: [
-          { name: "Real Madrid CF 👑", salary: 3500000, reqSkill: 90 },
-          { name: "FC Barcelona 💙🔴", salary: 3000000, reqSkill: 88 },
-          { name: "Atlético Madrid", salary: 1800000, reqSkill: 75 }
+          { name: "Getafe CF", salary: 650000, reqSkill: 75 },
+          { name: "Real Betis 💚", salary: 1300000, reqSkill: 78 },
+          { name: "Atlético Madrid 🔴⚪", salary: 2500000, reqSkill: 84 },
+          { name: "FC Barcelona 💙🔴", salary: 4200000, reqSkill: 90 },
+          { name: "Real Madrid CF 👑", salary: 5000000, reqSkill: 93 }
+        ]
+      },
+      {
+        leagueName: "Saudi Pro League 🇸🇦",
+        minSkill: 78,
+        teams: [
+          { name: "Al-Ettifaq FC", salary: 3000000, reqSkill: 78 },
+          { name: "Al-Ahli 💚", salary: 6000000, reqSkill: 82 },
+          { name: "Al-Ittihad 🟡⚫", salary: 8000000, reqSkill: 85 },
+          { name: "Al-Nassr 💛💙", salary: 12000000, reqSkill: 88 },
+          { name: "Al-Hilal 💙", salary: 15000000, reqSkill: 90 }
         ]
       }
     ],
@@ -573,26 +626,31 @@
         leagueName: "Formula 3 Championship 🏎️",
         minSkill: 40,
         teams: [
-          { name: "Prema Racing F3", salary: 120000, reqSkill: 40 },
-          { name: "ART Grand Prix F3", salary: 150000, reqSkill: 45 }
+          { name: "Hitech Pulse-Eight F3", salary: 120000, reqSkill: 40 },
+          { name: "ART Grand Prix F3", salary: 180000, reqSkill: 48 },
+          { name: "Prema Racing F3", salary: 250000, reqSkill: 55 }
         ]
       },
       {
-        leagueName: "Formula 2 World Championship 🏎️💨",
-        minSkill: 65,
+        leagueName: "Formula 2 Championship 🏎️💨",
+        minSkill: 60,
         teams: [
-          { name: "MP Motorsport F2", salary: 500000, reqSkill: 65 },
-          { name: "DAMS Lucas Oil F2", salary: 600000, reqSkill: 70 }
+          { name: "Invicta Racing F2", salary: 500000, reqSkill: 60 },
+          { name: "MP Motorsport F2 🇳🇱", salary: 700000, reqSkill: 68 },
+          { name: "Prema Racing F2", salary: 900000, reqSkill: 75 }
         ]
       },
       {
-        leagueName: "Formula 1 Grand Prix World Championship 🏆🏎️",
-        minSkill: 85,
+        leagueName: "Formula 1 World Championship 🏆🏎️",
+        minSkill: 80,
         teams: [
-          { name: "Red Bull Racing Honda 🏎️⚡", salary: 8500000, reqSkill: 92 },
-          { name: "Scuderia Ferrari 🏎️🐎", salary: 8000000, reqSkill: 90 },
-          { name: "McLaren F1 Team", salary: 6500000, reqSkill: 85 },
-          { name: "Mercedes-AMG F1", salary: 7000000, reqSkill: 88 }
+          { name: "Haas F1 Team", salary: 1500000, reqSkill: 80 },
+          { name: "Williams Racing", salary: 2000000, reqSkill: 82 },
+          { name: "Alpine F1 Team", salary: 3000000, reqSkill: 85 },
+          { name: "Aston Martin Aramco", salary: 5000000, reqSkill: 88 },
+          { name: "McLaren F1 Team", salary: 7500000, reqSkill: 90 },
+          { name: "Scuderia Ferrari 🏎️🐎", salary: 10000000, reqSkill: 93 },
+          { name: "Red Bull Racing 🏎️⚡", salary: 12000000, reqSkill: 95 }
         ]
       }
     ],
@@ -601,18 +659,22 @@
         leagueName: "EuroLeague Basketball 🇪🇺",
         minSkill: 50,
         teams: [
-          { name: "Real Madrid Baloncesto", salary: 800000, reqSkill: 55 },
-          { name: "Fenerbahçe Basketball", salary: 600000, reqSkill: 50 }
+          { name: "Olympiacos Piraeus 🔴", salary: 600000, reqSkill: 50 },
+          { name: "Fenerbahçe Beko", salary: 900000, reqSkill: 58 },
+          { name: "Panathinaikos BC ☘️", salary: 1200000, reqSkill: 65 },
+          { name: "Real Madrid Baloncesto", salary: 1800000, reqSkill: 72 }
         ]
       },
       {
-        leagueName: "NBA (National Basketball Association) 🇺🇸🏀",
-        minSkill: 75,
+        leagueName: "NBA World League 🇺🇸🏀",
+        minSkill: 72,
         teams: [
-          { name: "Los Angeles Lakers 🏀", salary: 4500000, reqSkill: 85 },
-          { name: "Golden State Warriors", salary: 5000000, reqSkill: 88 },
-          { name: "Boston Celtics ☘️", salary: 4200000, reqSkill: 82 },
-          { name: "Chicago Bulls 🐂", salary: 3000000, reqSkill: 75 }
+          { name: "Detroit Pistons 🏀", salary: 2500000, reqSkill: 72 },
+          { name: "Miami Heat 🔥", salary: 4500000, reqSkill: 80 },
+          { name: "Chicago Bulls 🐂", salary: 5000000, reqSkill: 83 },
+          { name: "Boston Celtics ☘️", salary: 7000000, reqSkill: 88 },
+          { name: "Golden State Warriors 🌉", salary: 8500000, reqSkill: 91 },
+          { name: "Los Angeles Lakers 👑", salary: 10000000, reqSkill: 94 }
         ]
       }
     ]
@@ -622,40 +684,36 @@
     football: {
       name: "Football ⚽",
       primary: [
-        { name: "Little Kickers Local League", stars: "⭐⭐✨ (2.5)", reqSkill: 0 },
-        { name: "Junior Strikers Elite Academy", stars: "⭐⭐⭐⭐ (4.0)", reqSkill: 20 }
+        { name: "Local Town Kickers", stars: "⭐✨ (1.5)", reqSkill: 0 },
+        { name: "Regional Youth Academy", stars: "⭐⭐⭐ (3.0)", reqSkill: 20 }
       ],
       high: [
-        { name: "Freshmen Benchwarmers", stars: "⭐⭐ (2.0)", reqSkill: 10 },
-        { name: "High School Varsity FC", stars: "⭐⭐⭐✨ (3.5)", reqSkill: 30 },
-        { name: "Regional Youth Cup Champions", stars: "⭐⭐⭐⭐✨ (4.5)", reqSkill: 55 },
-        { name: "National Youth Academy 🥇", stars: "⭐⭐⭐⭐⭐ (5.0)", reqSkill: 80 }
+        { name: "High School Freshmen FC", stars: "⭐⭐ (2.0)", reqSkill: 15 },
+        { name: "High School Varsity FC", stars: "⭐⭐⭐✨ (3.5)", reqSkill: 35 },
+        { name: "National Youth Elite Academy 🥇", stars: "⭐⭐⭐⭐⭐ (5.0)", reqSkill: 55 }
       ]
     },
     basketball: {
       name: "Basketball 🏀",
       primary: [
-        { name: "Mini Hoopers League", stars: "⭐⭐ (2.0)", reqSkill: 0 },
-        { name: "Junior Dunkers Elite", stars: "⭐⭐⭐✨ (3.5)", reqSkill: 15 }
+        { name: "Junior Hoopers League", stars: "⭐✨ (1.5)", reqSkill: 0 },
+        { name: "District Academy", stars: "⭐⭐⭐ (3.0)", reqSkill: 20 }
       ],
       high: [
-        { name: "Rookie Ballers Squad", stars: "⭐⭐ (2.0)", reqSkill: 10 },
-        { name: "Varsity Eagles 🦅", stars: "⭐⭐⭐⭐ (4.0)", reqSkill: 35 },
-        { name: "State Championship Squad", stars: "⭐⭐⭐⭐✨ (4.5)", reqSkill: 60 },
-        { name: "All-American Prep League 🔥", stars: "⭐⭐⭐⭐⭐ (5.0)", reqSkill: 85 }
+        { name: "Rookie Ballers Squad", stars: "⭐⭐ (2.0)", reqSkill: 15 },
+        { name: "Varsity Eagles 🦅", stars: "⭐⭐⭐⭐ (4.0)", reqSkill: 40 },
+        { name: "All-American Prep Squad 🔥", stars: "⭐⭐⭐⭐⭐ (5.0)", reqSkill: 60 }
       ]
     },
     racing: {
       name: "Motorsport / Karting 🏎️",
       primary: [
-        { name: "Local Go-Kart Club", stars: "⭐⭐✨ (2.5)", reqSkill: 0 },
-        { name: "Junior Karting Championship", stars: "⭐⭐⭐⭐ (4.0)", reqSkill: 25 }
+        { name: "Indoor Karting Club", stars: "⭐✨ (1.5)", reqSkill: 0 },
+        { name: "National Junior Kart Championship", stars: "⭐⭐⭐✨ (3.5)", reqSkill: 25 }
       ],
       high: [
-        { name: "Formula 4 Junior Team", stars: "⭐⭐⭐ (3.0)", reqSkill: 20 },
-        { name: "Formula 3 Regional Team", stars: "⭐⭐⭐⭐ (4.0)", reqSkill: 45 },
-        { name: "Formula 2 Academy", stars: "⭐⭐⭐⭐✨ (4.5)", reqSkill: 70 },
-        { name: "F1 Driver Development Program 🏎️", stars: "⭐⭐⭐⭐⭐ (5.0)", reqSkill: 90 }
+        { name: "Formula 4 Regional Cup", stars: "⭐⭐⭐ (3.0)", reqSkill: 30 },
+        { name: "Formula 3 Driver Academy 🏎️", stars: "⭐⭐⭐⭐⭐ (5.0)", reqSkill: 60 }
       ]
     }
   };
@@ -665,7 +723,7 @@
     { id: 'business', title: "Business Administration Major 📊", duration: 3, cost: 8000, desc: "Duur: 3 Jaar • Kosten: $8,000 / jaar" },
     { id: 'cs', title: "Computer Science Major 💻", duration: 3, cost: 10000, desc: "Duur: 3 Jaar • Kosten: $10,000 / jaar" },
     { id: 'law', title: "Law School ⚖️", duration: 4, cost: 15000, desc: "Duur: 4 Jaar • Kosten: $15,000 / jaar" },
-    { id: 'medicine', title: "Medical School (Doctorate) 🩺", duration: 6, cost: 25000, desc: "Duur: 6 Jaar • Kosten: $25,000 / jaar" }
+    { id: 'medicine', title: "Medical School 🩺", duration: 6, cost: 25000, desc: "Duur: 6 Jaar • Kosten: $25,000 / jaar" }
   ];
 
   const availableJobs = [
@@ -678,14 +736,22 @@
     { title: "Medical Doctor 🩺", salary: 180000, reqDegree: "medicine" }
   ];
 
+  // 10X BETTER MEGA ASSETS LIST
   const availableAssetsList = [
     { id: 'toy', name: "Action Figure / Doll", price: 50, req: 3, icon: "🧸" },
-    { id: 'console', name: "Gaming Console", price: 500, req: 10, icon: "🎮" },
-    { id: 'phone', name: "Latest Smartphone", price: 1200, req: 12, icon: "📱" },
-    { id: 'pc', name: "Pro Gaming PC", price: 3000, req: 14, icon: "🖥️" },
-    { id: 'used_car', name: "Used Sedan", price: 6000, req: 18, icon: "🚗" },
-    { id: 'sports_car', name: "Luxury Sports Car", price: 85000, req: 18, icon: "🏎️" },
-    { id: 'house_small', name: "Cozy Apartment", price: 180000, req: 18, icon: "🏢" }
+    { id: 'console', name: "Gaming Console", price: 600, req: 10, icon: "🎮" },
+    { id: 'phone', name: "Pro Smartphone", price: 1400, req: 12, icon: "📱" },
+    { id: 'rolex', name: "Rolex Luxury Watch", price: 18000, req: 18, icon: "⌚" },
+    { id: 'sports_car', name: "Porsche 911 GT3", price: 180000, req: 18, icon: "🏎️" },
+    { id: 'ferrari', name: "Ferrari SF90 Stradale", price: 520000, req: 18, icon: "🏎️💨" },
+    { id: 'bugatti', name: "Bugatti Chiron Super Sport", price: 3800000, req: 18, icon: "🏎️🔥" },
+    { id: 'apt', name: "Modern City Apartment", price: 350000, req: 18, icon: "🏢" },
+    { id: 'villa', name: "Luxury Villa with Pool", price: 2500000, req: 18, icon: "🏡" },
+    { id: 'penthouse', name: "Penthouse in New York", price: 8500000, req: 18, icon: "🏙️" },
+    { id: 'mansion', name: "Beverly Hills Mega Mansion", price: 28000000, req: 18, icon: "🏰" },
+    { id: 'yacht', name: "Superyacht (50m)", price: 45000000, req: 18, icon: "🛥️" },
+    { id: 'jet', name: "Gulfstream Private Jet", price: 65000000, req: 18, icon: "🛩️" },
+    { id: 'fc_club', name: "Own a Professional Football Club ⚽", price: 250000000, req: 18, icon: "🏟️" }
   ];
 
   const countrySelect = document.getElementById('input-country');
@@ -715,17 +781,16 @@
       job: "Infant",
       salary: 0,
       isDead: false,
-      sportsSkill: 15,
+      sportsSkill: 10, // Starting OVR Rating
       sportsTeam: null,
-      sportsCategory: null, // football, racing, basketball
+      sportsCategory: null,
       proContract: null,
       education: { current: null, yearsLeft: 0, degrees: [] },
       stats: { happy: 80, health: 95, smart: 60, looks: 50 },
       family: [
         { id: 1, name: `John ${lName}`, role: "Father", age: 30, rel: 90, icon: "👨", isPet: false },
         { id: 2, name: `Mary ${lName}`, role: "Mother", age: 28, rel: 95, icon: "👩", isPet: false },
-        { id: 3, name: `Leo ${lName}`, role: "Brother", age: 3, rel: 80, icon: "👦", isPet: false },
-        { id: 4, name: "Buddy", role: "Family Dog", age: 2, rel: 100, icon: "🐶", isPet: true }
+        { id: 3, name: `Buddy`, role: "Family Dog", age: 2, rel: 100, icon: "🐶", isPet: true }
       ],
       inventory: []
     };
@@ -767,7 +832,7 @@
         player.job = `Student (${player.education.current.title}) 🎓`;
         navIcon = "🎓"; navLabel = "Uni";
       } else if(player.proContract) {
-        player.job = `${player.proContract.team} Player 🏆`;
+        player.job = `${player.proContract.team} Pro (${player.sportsSkill} OVR) 🏆`;
         navIcon = "🏆"; navLabel = "Pro Sports";
       } else if(player.salary > 0) {
         navIcon = "💼"; navLabel = "Job";
@@ -835,60 +900,77 @@
       player.sportsTeam = null;
     }
 
+    // MANDATORY PRO SPORTS RETIREMENT AROUND AGE 38-42
+    if(player.proContract && player.age >= 38) {
+      if(player.age >= 41 || Math.random() > 0.4) {
+        showEventModal(
+          "RETIREMENT TIME 👨‍🦳",
+          "🏆",
+          "Time to Hang Up the Boots",
+          `At age ${player.age}, your body can no longer keep up with elite professional sports. Your club <b>${player.proContract.team}</b> gives you a grand farewell match! You retire with $${player.money.toLocaleString()} in career earnings!`,
+          [
+            {
+              text: "Enjoy Wealthy Retirement 🎉",
+              isClose: true,
+              action: () => {
+                addLog(`👨‍🦳 RETIRED! I officially retired from professional sports at age ${player.age}.`);
+                player.proContract = null;
+                player.salary = 0;
+                player.job = "Retired Pro Athlete 🌟";
+                updateUI();
+              }
+            }
+          ]
+        );
+      }
+    }
+
     if(player.education.current) {
       player.education.yearsLeft--;
       if(player.money >= player.education.current.cost) {
         player.money -= player.education.current.cost;
         addLog(`Paid $${player.education.current.cost.toLocaleString()} for tuition.`);
       } else {
-        addLog(`Student debt increased for tuition fees.`);
         player.money -= player.education.current.cost;
       }
 
       if(player.education.yearsLeft <= 0) {
         soundFx.success();
         spawnParticles("🎓", 8);
-        addLog(`🎓 Graduation! I completed my studies in ${player.education.current.title}!`);
+        addLog(`🎓 Graduation! Completed studies in ${player.education.current.title}!`);
         player.education.degrees.push(player.education.current.id);
         player.education.current = null;
-      } else {
-        addLog(`Studying hard... (${player.education.yearsLeft} years remaining)`);
       }
     }
 
     if(player.proContract) {
-      // Pro player match/race simulation
-      if(Math.random() > 0.3) {
-        player.sportsSkill = Math.min(100, player.sportsSkill + 3);
-        addLog(`🌟 Outstanding performance for ${player.proContract.team}! Skill increased to ${player.sportsSkill}!`);
+      // Small chance of rating decay after age 34
+      if(player.age > 34) {
+        player.sportsSkill = Math.max(30, player.sportsSkill - 2);
+        addLog(`👴 Age is catching up: OVR dropped slightly to ${player.sportsSkill}.`);
+      } else if(Math.random() > 0.5) {
+        player.sportsSkill = Math.min(99, player.sportsSkill + 2);
+        addLog(`🌟 Great season! OVR improved to ${player.sportsSkill}.`);
       } else {
-        addLog(`Played a regular season match for ${player.proContract.team}.`);
+        addLog(`Played a consistent season with ${player.proContract.team}.`);
       }
 
-      // Check for promotion / transfer offer
-      if(player.sportsSkill >= 65 && Math.random() > 0.4) {
+      // Check for transfer offer
+      if(player.sportsSkill >= 55 && Math.random() > 0.5 && player.age < 38) {
         setTimeout(() => triggerTransferOffer(), 400);
-      }
-    } else if(player.sportsTeam) {
-      if(Math.random() > 0.4) {
-        addLog(`🏆 I scored key points for my team ${player.sportsTeam} and won MVP!`);
-        player.sportsSkill += 5;
       }
     }
 
     if(player.age === 18) {
-      addLog("🎓 I graduated from High School!");
-      if(player.sportsSkill >= 40) {
+      addLog("🎓 Graduated High School!");
+      if(player.sportsSkill >= 35) {
         player.education.degrees.push("pro_sports");
-        addLog("🌟 Scout Alert: Pro Sports scouts are offering you professional athlete contracts!");
+        addLog("🌟 Scout Alert: Pro scouts are offering contract trials!");
       }
       setTimeout(() => openEducationMenu(true), 300);
     }
 
-    const randomEvt = randomEvents[Math.floor(Math.random() * randomEvents.length)];
-    addLog(randomEvt);
-
-    if (player.salary > 0 && !player.education.current) {
+    if(player.salary > 0 && !player.education.current) {
       player.money += player.salary;
       addLog(`Received salary: +$${player.salary.toLocaleString()}`);
     }
@@ -904,8 +986,8 @@
     let availableOffers = [];
     leagues.forEach(l => {
       l.teams.forEach(t => {
-        if(t.reqSkill <= player.sportsSkill && t.name !== player.proContract?.team) {
-          availableOffers.push({ team: t.name, league: l.leagueName, salary: t.salary });
+        if(player.sportsSkill >= t.reqSkill && player.sportsSkill <= t.reqSkill + 12 && t.name !== player.proContract?.team) {
+          availableOffers.push({ team: t.name, league: l.leagueName, salary: t.salary, req: t.reqSkill });
         }
       });
     });
@@ -915,27 +997,27 @@
     const offer = availableOffers[Math.floor(Math.random() * availableOffers.length)];
 
     showEventModal(
-      "PRO TRANSFER OFFER 🌟",
+      "TRANSFER OFFER RECEIVED 🌟",
       "🏆",
-      `Contract Offer from ${offer.team}!`,
-      `The scouts of <b>${offer.team}</b> (${offer.league}) were impressed by your skills!\n\n<b>New Salary Offer:</b> $${offer.salary.toLocaleString()} / year`,
+      `Offer from ${offer.team}!`,
+      `Scouts from <b>${offer.team}</b> (${offer.league}) have made an offer!\n\n• Required OVR: <b>${offer.req}</b>\n• Your OVR: <b>${player.sportsSkill}</b>\n• Salary Offered: <b>$${offer.salary.toLocaleString()}/yr</b>`,
       [
         {
-          text: `Accept & Sign Contract 📝`,
-          subtext: `Salary: $${offer.salary.toLocaleString()}/yr`,
+          text: `Sign Contract 📝`,
+          subtext: `New Salary: $${offer.salary.toLocaleString()}/yr`,
           action: () => {
             soundFx.success();
             spawnParticles("⚽", 10);
             player.proContract = { team: offer.team, league: offer.league };
             player.salary = offer.salary;
-            addLog(`🚀 TRANSFER COMPLETE! I signed a new contract with ${offer.team} in the ${offer.league}!`);
+            addLog(`🚀 TRANSFER! Signed with ${offer.team} (${offer.league})!`);
             updateUI();
           }
         },
         {
-          text: "Decline Offer ❌",
+          text: "Decline Transfer ❌",
           isClose: true,
-          action: () => { addLog(`I rejected the contract offer from ${offer.team}.`); }
+          action: () => { addLog(`Rejected transfer offer from ${offer.team}.`); }
         }
       ]
     );
@@ -977,38 +1059,38 @@
       const schoolName = player.age < 12 ? "Primary School 🎒" : "High School 🏫";
       header.innerText = schoolName;
       
-      let teamInfo = player.sportsTeam 
-        ? `<div class="list-item"><b>🏆 Current Team:</b> ${player.sportsTeam}</div>` 
-        : `<div class="list-item"><b>🏆 Sports Skill:</b> ${player.sportsSkill}/100</div>`;
-
       content.innerHTML = `
-        ${teamInfo}
+        <div class="list-item">
+          <span><b>🏆 Sports Overall (OVR):</b></span>
+          <span class="ovr-badge">${player.sportsSkill} OVR</span>
+        </div>
+        ${player.sportsTeam ? `<div class="list-item"><b>Current Team:</b> ${player.sportsTeam}</div>` : ''}
         <div class="list-item" onclick="soundFx.click(); studyHard()">
           <span>📚 Study Hard</span><span>➡️</span>
         </div>
         <div class="list-item" onclick="soundFx.click(); openSportsMenu()">
-          <span>⚽ Sports Club & Teams</span><span>➡️</span>
+          <span>⚽ Sports Club & Academies</span><span>➡️</span>
         </div>
-        ${player.sportsTeam ? `<div class="list-item" onclick="soundFx.click(); trainSports()"><span>🏋️ Extra Training (+Skill)</span><span>➡️</span></div>` : ''}
+        ${player.sportsTeam ? `<div class="list-item" onclick="soundFx.click(); trainSports()"><span>🏋️ Hard Training (+1-2 OVR)</span><span>➡️</span></div>` : ''}
         <div class="list-item" onclick="soundFx.click(); talkClassmates()">
           <span>💬 Talk to Classmates</span><span>➡️</span>
-        </div>
-        <div class="list-item" onclick="soundFx.click(); skipClass()">
-          <span>🏃 Skip Class / Slack Off</span><span>➡️</span>
         </div>
       `;
     } else if(player.proContract) {
       header.innerText = "PRO ATHLETE CAREER 🏆";
       content.innerHTML = `
-        <div class="list-item"><b>Team:</b> ${player.proContract.team}</div>
+        <div class="list-item">
+          <span><b>Overall Rating:</b></span>
+          <span class="ovr-badge">${player.sportsSkill} OVR</span>
+        </div>
+        <div class="list-item"><b>Club:</b> ${player.proContract.team}</div>
         <div class="list-item"><b>League:</b> ${player.proContract.league}</div>
         <div class="list-item"><b>Salary:</b> $${player.salary.toLocaleString()} / year</div>
-        <div class="list-item"><b>Sports Rating:</b> ${player.sportsSkill} / 100</div>
         <div class="list-item" onclick="soundFx.click(); trainProSkill()">
-          <span>🏋️ Heavy Fitness & Tactical Training (+Skill)</span><span>➡️</span>
+          <span>🏋️ Intensity Training (+1-2 OVR)</span><span>➡️</span>
         </div>
         <div class="list-item" onclick="soundFx.click(); openProLeagueOffers()">
-          <span>⚽ Browse League Teams & Transfers</span><span>➡️</span>
+          <span>⚽ Search Leagues & Club Transfers</span><span>➡️</span>
         </div>
         <div class="list-item" onclick="soundFx.click(); retirePro()">
           <span>🚪 Retire from Pro Sports</span><span>➡️</span>
@@ -1019,36 +1101,25 @@
       content.innerHTML = `
         <div class="list-item"><b>Degree:</b> ${player.education.current.title}</div>
         <div class="list-item"><b>Years Remaining:</b> ${player.education.yearsLeft} Year(s)</div>
-        <div class="list-item" onclick="soundFx.click(); studyHard()">
-          <span>📚 Study Hard</span><span>➡️</span>
-        </div>
-        <div class="list-item" onclick="soundFx.click(); partyUni()">
-          <span>🎉 Go to Campus Party</span><span>➡️</span>
-        </div>
-        <div class="list-item" onclick="soundFx.click(); dropOutUni()">
-          <span>❌ Drop Out of University</span><span>➡️</span>
-        </div>
+        <div class="list-item" onclick="soundFx.click(); studyHard()"><span>📚 Study Hard</span><span>➡️</span></div>
+        <div class="list-item" onclick="soundFx.click(); dropOutUni()"><span>❌ Drop Out</span><span>➡️</span></div>
       `;
     } else if(player.salary > 0) {
       header.innerText = "JOB & CAREER";
       content.innerHTML = `
         <div class="list-item"><b>Position:</b> ${player.job}</div>
         <div class="list-item"><b>Salary:</b> $${player.salary.toLocaleString()} / year</div>
-        <div class="list-item" onclick="soundFx.click(); workHarder()">
-          <span>⚡ Work Harder</span><span>➡️</span>
-        </div>
-        <div class="list-item" onclick="soundFx.click(); quitJob()">
-          <span>🚪 Quit Job</span><span>➡️</span>
-        </div>
+        <div class="list-item" onclick="soundFx.click(); workHarder()"><span>⚡ Work Harder</span><span>➡️</span></div>
+        <div class="list-item" onclick="soundFx.click(); quitJob()"><span>🚪 Quit Job</span><span>➡️</span></div>
       `;
     } else {
       header.innerText = "UNEMPLOYED";
       content.innerHTML = `
         <div class="list-item" onclick="soundFx.click(); openJobMarket()">
-          <span>💼 Find a Job / Pro Sports Contract</span><span>➡️</span>
+          <span>💼 Find a Job / Pro Sports Draft</span><span>➡️</span>
         </div>
         <div class="list-item" onclick="soundFx.click(); openEducationMenu(false)">
-          <span>🎓 Go to University / Trade School</span><span>➡️</span>
+          <span>🎓 Go to University / College</span><span>➡️</span>
         </div>
       `;
     }
@@ -1056,25 +1127,23 @@
 
   function openProLeagueOffers() {
     const category = player.sportsCategory || 'football';
-    const sportsName = category === 'football' ? 'Voetbal Leagues' : (category === 'racing' ? 'Motorsport Leagues' : 'Basketball Leagues');
-
     const leagues = proLeaguesData[category] || proLeaguesData.football;
 
     const options = leagues.map(l => ({
       text: `${l.leagueName}`,
-      subtext: player.sportsSkill >= l.minSkill ? "Available Teams Inside ✅" : `Min Skill Needed: ${l.minSkill} ❌`,
+      subtext: player.sportsSkill >= l.minSkill ? `Min Rating: ${l.minSkill} OVR ✅` : `Requires ${l.minSkill} OVR 🔒`,
       action: () => {
         if(player.sportsSkill >= l.minSkill) {
           openLeagueTeams(l);
         } else {
-          alert(`Your skill is ${player.sportsSkill}. You need at least ${l.minSkill} to play in ${l.leagueName}!`);
+          alert(`Your rating is ${player.sportsSkill} OVR. You need at least ${l.minSkill} OVR to enter ${l.leagueName}!`);
         }
       }
     }));
 
     options.push({ text: "Back ⬅️", isClose: true, action: () => {} });
 
-    showEventModal("PRO LEAGUES", "🏆", sportsName, `Your Rating: ${player.sportsSkill}/100. Choose a league to view teams:`, options);
+    showEventModal("PRO LEAGUES", "🏆", "Choose League", `Your Rating: ${player.sportsSkill} OVR. Select a league:`, options);
   }
 
   function openLeagueTeams(league) {
@@ -1083,8 +1152,8 @@
       const isCurrent = player.proContract?.team === t.name;
 
       return {
-        text: `${t.name} ${isCurrent ? '(Current Team)' : ''}`,
-        subtext: `Salary: $${t.salary.toLocaleString()}/yr • Rating Needed: ${t.reqSkill}`,
+        text: `${t.name} ${isCurrent ? '(Current)' : ''}`,
+        subtext: `Salary: $${t.salary.toLocaleString()}/yr • Required: ${t.reqSkill} OVR ${meetsReq ? '✅' : '🔒'}`,
         action: () => {
           if(isCurrent) {
             alert("You are already playing for this team!");
@@ -1093,10 +1162,10 @@
             spawnParticles("⚽", 8);
             player.proContract = { team: t.name, league: league.leagueName };
             player.salary = t.salary;
-            addLog(`Signed a professional contract with ${t.name} (${league.leagueName})!`);
+            addLog(`Signed with ${t.name} (${league.leagueName})!`);
             returnToMainMenu();
           } else {
-            alert(`Team scouts require a rating of ${t.reqSkill}. Keep training!`);
+            alert(`Team scouts require an Overall Rating of ${t.reqSkill} OVR. (Your OVR: ${player.sportsSkill})`);
           }
         }
       };
@@ -1104,13 +1173,18 @@
 
     options.push({ text: "Back ⬅️", isClose: true, action: () => openProLeagueOffers() });
 
-    showEventModal("TEAMS LIST", "⚽", league.leagueName, "Select a team to request a contract transfer:", options);
+    showEventModal("TEAMS LIST", "⚽", league.leagueName, `Your Rating: ${player.sportsSkill} OVR. Select a team:`, options);
   }
 
   function trainProSkill() {
-    player.sportsSkill = Math.min(100, player.sportsSkill + 4);
-    player.stats.health = Math.min(100, player.stats.health + 4);
-    addLog(`Trained hard with the squad. Sports Rating is now ${player.sportsSkill}!`);
+    if(player.sportsSkill >= 99) {
+      alert("You are already at maximum rating (99 OVR)!");
+      return;
+    }
+    const gain = Math.floor(Math.random() * 2) + 1;
+    player.sportsSkill = Math.min(99, player.sportsSkill + gain);
+    player.stats.health = Math.min(100, player.stats.health + 3);
+    addLog(`Hard training paid off! OVR increased by +${gain} to ${player.sportsSkill} OVR!`);
     returnToMainMenu();
   }
 
@@ -1130,7 +1204,7 @@
       { text: "Cancel ❌", isClose: true, action: () => {} }
     ];
 
-    showEventModal("SPORTS CLUB", "🏆", "Choose a Sport", `Your Sports Skill: ${player.sportsSkill}/100\nSelect a sport:`, sportsOptions);
+    showEventModal("SPORTS CLUB", "🏆", "Select Sport", `Your Rating: ${player.sportsSkill} OVR`, sportsOptions);
   }
 
   function openTeamSelection(sportKey) {
@@ -1142,18 +1216,17 @@
       const meetsReq = player.sportsSkill >= t.reqSkill;
       return {
         text: `${t.name}`,
-        subtext: `${t.stars} • ${meetsReq ? 'Requirement Met ✅' : `Skill Needed: ${t.reqSkill} ❌`}`,
+        subtext: `${t.stars} • Required: ${t.reqSkill} OVR ${meetsReq ? '✅' : '🔒'}`,
         action: () => {
           if(meetsReq) {
             soundFx.success();
             spawnParticles("⚽", 6);
-            player.sportsTeam = `${t.name} (${sport.name})`;
-            player.stats.health = Math.min(100, player.stats.health + 15);
-            player.stats.happy = Math.min(100, player.stats.happy + 10);
-            addLog(`I tried out and successfully joined ${t.name}!`);
+            player.sportsTeam = `${t.name}`;
+            player.stats.health = Math.min(100, player.stats.health + 10);
+            addLog(`Joined ${t.name}!`);
             returnToMainMenu();
           } else {
-            alert(`You need at least ${t.reqSkill} Sports Skill to make this team! Train more first.`);
+            alert(`You need ${t.reqSkill} OVR to join this academy! (Your OVR: ${player.sportsSkill})`);
           }
         }
       };
@@ -1161,123 +1234,74 @@
 
     teamOptions.push({ text: "Back ⬅️", isClose: true, action: () => openSportsMenu() });
 
-    showEventModal(
-      "TEAM SELECTION", 
-      "🥇", 
-      sport.name, 
-      `Select a team for ${isHighSchool ? 'High School' : 'Primary School'}:`, 
-      teamOptions
-    );
+    showEventModal("TEAM TRIALS", "🥇", sport.name, `Your Rating: ${player.sportsSkill} OVR`, teamOptions);
   }
 
   function trainSports() {
-    player.sportsSkill = Math.min(100, player.sportsSkill + 8);
-    player.stats.health = Math.min(100, player.stats.health + 5);
-    addLog(`I trained hard for my team. Sports Skill is now ${player.sportsSkill}!`);
+    const gain = Math.floor(Math.random() * 3) + 2;
+    player.sportsSkill = Math.min(99, player.sportsSkill + gain);
+    player.stats.health = Math.min(100, player.stats.health + 4);
+    addLog(`Trained with squad: +${gain} OVR (Now ${player.sportsSkill} OVR).`);
     returnToMainMenu();
   }
 
   function studyHard() {
     player.stats.smart = Math.min(100, player.stats.smart + 8);
-    addLog("I studied hard and improved my grades!");
+    addLog("Studied hard and improved grades!");
     returnToMainMenu();
   }
 
   function talkClassmates() {
     player.stats.happy = Math.min(100, player.stats.happy + 10);
-    addLog("I hung out with my classmates and had fun.");
-    returnToMainMenu();
-  }
-
-  function skipClass() {
-    player.stats.happy = Math.min(100, player.stats.happy + 8);
-    player.stats.smart = Math.max(0, player.stats.smart - 5);
-    addLog("I skipped class to chill out.");
-    returnToMainMenu();
-  }
-
-  function partyUni() {
-    player.stats.happy = Math.min(100, player.stats.happy + 15);
-    player.stats.health = Math.max(0, player.stats.health - 5);
-    addLog("I went to a crazy campus party!");
+    addLog("Hung out with classmates.");
     returnToMainMenu();
   }
 
   function dropOutUni() {
     player.education.current = null;
-    addLog("I dropped out of university.");
+    addLog("Dropped out of university.");
     returnToMainMenu();
   }
 
   function workHarder() {
     player.stats.happy = Math.max(0, player.stats.happy - 5);
-    addLog("I worked extra hours to impress my boss.");
+    addLog("Worked overtime at my job.");
     returnToMainMenu();
   }
 
   function quitJob() {
     player.job = "Unemployed";
     player.salary = 0;
-    addLog("I quit my job!");
+    addLog("Quit my job!");
     returnToMainMenu();
   }
 
   function interactWithPerson(person) {
-    let options = [];
-
-    if (person.isPet) {
-      options = [
-        { text: "🐶 Pet / Cuddle", action: () => { person.rel = Math.min(100, person.rel + 15); player.stats.happy = Math.min(100, player.stats.happy + 10); addLog(`I petted ${person.name}.`); } },
-        { text: "🎾 Play Fetch", action: () => { person.rel = Math.min(100, person.rel + 15); addLog(`I played fetch with ${person.name}.`); } },
-        { text: "🦴 Give a Treat", action: () => { person.rel = Math.min(100, person.rel + 20); addLog(`I gave ${person.name} a delicious treat.`); } },
-        { text: "🚶 Walk the Pet", action: () => { person.rel = Math.min(100, person.rel + 10); player.stats.health = Math.min(100, player.stats.health + 5); addLog(`I took ${person.name} out for a walk.`); } }
-      ];
-    } else {
-      options = [
-        { text: "💬 Conversation", action: () => { person.rel = Math.min(100, person.rel + 10); addLog(`I had a nice conversation with my ${person.role}, ${person.name}.`); } },
-        { text: "🎁 Give a Gift", action: () => { 
-            if(player.money >= 50) { player.money -= 50; person.rel = Math.min(100, person.rel + 25); soundFx.success(); addLog(`I bought a gift for ${person.name}.`); } 
-            else { addLog("I didn't have enough money to buy a gift!"); }
-          } 
-        },
-        { text: "🍿 Spend Time Together", action: () => { person.rel = Math.min(100, person.rel + 15); player.stats.happy = Math.min(100, player.stats.happy + 10); addLog(`I spent quality time with my ${person.role}.`); } },
-        { text: "⚡ Argue / Bickering", action: () => { person.rel = Math.max(0, person.rel - 20); player.stats.happy = Math.max(0, person.rel - 10); addLog(`I got into an argument with ${person.name}.`); } }
-      ];
-    }
-
+    let options = [
+      { text: "💬 Conversation", action: () => { person.rel = Math.min(100, person.rel + 10); addLog(`Had a chat with ${person.name}.`); } },
+      { text: "🎁 Spend Time", action: () => { person.rel = Math.min(100, person.rel + 15); player.stats.happy = Math.min(100, player.stats.happy + 10); addLog(`Spent time with ${person.name}.`); } }
+    ];
     options.push({ text: "Cancel ❌", isClose: true, action: () => {} });
-    showEventModal("RELATIONSHIP", person.icon, person.name, `What do you want to do with ${person.name}?`, options);
+    showEventModal("RELATIONSHIP", person.icon, person.name, `Interact with ${person.name}:`, options);
   }
 
   function openDoctorMenu() {
-    showEventModal("HEALTHCARE", "👨‍⚕️", "Medical Options", "Choose a healthcare service:", [
-      { text: "General Checkup (Free)", action: () => { player.stats.health = 100; addLog("I visited the doctor and feel healthy."); returnToMainMenu(); } },
-      { text: "Plastic Surgery ($2,500)", action: () => { 
-          if(player.money >= 2500) { player.money -= 2500; player.stats.looks = Math.min(100, player.stats.looks + 30); soundFx.success(); addLog("Plastic surgery was a success!"); } 
-          else addLog("I couldn't afford plastic surgery!");
-          returnToMainMenu();
-        } 
-      },
+    showEventModal("DOCTOR", "👨‍⚕️", "Medical Clinic", "Choose a treatment:", [
+      { text: "Medical Checkup (Free)", action: () => { player.stats.health = 100; addLog("Visited doctor. Health restored!"); returnToMainMenu(); } },
       { text: "Cancel ❌", isClose: true, action: () => {} }
     ]);
   }
 
   function openEducationMenu(isAutoPopup = false) {
-    if(player.education.current) {
-      alert(`You are currently studying ${player.education.current.title}!`);
-      return;
-    }
+    if(player.education.current) return;
 
     const options = [];
 
-    // Check if sports career option available
     if(player.education.degrees.includes("pro_sports")) {
       options.push({
-        text: "🏆 Turn Professional Athlete (Draft / Contract)",
-        subtext: "Join top professional sports leagues!",
-        action: () => {
-          openProLeagueOffers();
-        }
+        text: "🏆 Enter Professional Sports Draft / Contracts",
+        subtext: `Your Rating: ${player.sportsSkill} OVR`,
+        action: () => openProLeagueOffers()
       });
     }
 
@@ -1290,37 +1314,29 @@
           player.education.current = deg;
           player.education.yearsLeft = deg.duration;
           player.salary = 0;
-          addLog(`Enrolled in ${deg.title}. Expected duration: ${deg.duration} year(s).`);
+          addLog(`Enrolled in ${deg.title}.`);
           returnToMainMenu();
         }
       });
     });
 
     options.push({ 
-      text: isAutoPopup ? "Start Working Regular Jobs 💼" : "Cancel ❌", 
+      text: isAutoPopup ? "Look for Jobs 💼" : "Cancel ❌", 
       isClose: true, 
-      action: () => { if(isAutoPopup) addLog("I decided to look for work."); returnToMainMenu(); } 
+      action: () => { returnToMainMenu(); } 
     });
 
-    const title = isAutoPopup ? "High School Graduation!" : "Higher Education";
-    const desc = isAutoPopup ? "Congratulations! Choose your career path:" : "Select a degree program to enroll in:";
-
-    showEventModal("EDUCATION & CAREER", "🎓", title, desc, options);
+    showEventModal("EDUCATION", "🎓", "Select Career Path", "Choose higher education or pro sports:", options);
   }
 
   function openJobMarket() {
-    if(player.education.current) {
-      alert("You cannot get a full-time job while studying!");
-      return;
-    }
+    if(player.education.current) return;
 
     const options = availableJobs.map(j => {
       const hasReq = !j.reqDegree || player.education.degrees.includes(j.reqDegree);
-      const reqName = j.reqDegree === "pro_sports" ? "Sports Talent Scout 🏆" : (j.reqDegree ? educationDegrees.find(d => d.id === j.reqDegree).title : "None");
-
       return {
         text: `${j.title} ($${j.salary.toLocaleString()}/yr)`,
-        subtext: hasReq ? "Requirement met ✅" : `Requires: ${reqName} ❌`,
+        subtext: hasReq ? "Qualified ✅" : "Not Qualified ❌",
         action: () => {
           if(j.reqDegree === "pro_sports" && hasReq) {
             openProLeagueOffers();
@@ -1329,17 +1345,17 @@
             spawnParticles("💼", 6);
             player.job = j.title;
             player.salary = j.salary;
-            addLog(`I got a job as a ${j.title}!`);
+            addLog(`Hired as ${j.title}!`);
             returnToMainMenu();
           } else {
-            alert(`You need ${reqName} to apply for this position!`);
+            alert("You do not meet the qualifications for this job!");
           }
         }
       };
     });
 
     options.push({ text: "Cancel ❌", isClose: true, action: () => {} });
-    showEventModal("CAREERS", "💼", "Job Market", "Apply for a position:", options);
+    showEventModal("JOB MARKET", "💼", "Open Positions", "Select a job to apply:", options);
   }
 
   function switchTab(tabName, btn) {
@@ -1375,9 +1391,9 @@
     const container = document.getElementById('activities-list');
     const acts = [
       { name: "🩺 Visit Doctor", icon: "👨‍⚕️", req: 0, action: openDoctorMenu },
-      { name: "🏋️ Gym & Fitness", icon: "💪", req: 12, action: () => { player.stats.health = Math.min(100, player.stats.health + 10); player.sportsSkill = Math.min(100, player.sportsSkill + 4); addLog("I worked out at the gym."); returnToMainMenu(); } },
-      { name: "🎓 Higher Education / Trade School", icon: "🏫", req: 18, action: () => openEducationMenu(false) },
-      { name: "💼 Find a Job / Pro Sports", icon: "💼", req: 18, action: openJobMarket }
+      { name: "🏋️ Gym Workouts (+Health)", icon: "💪", req: 12, action: () => { player.stats.health = Math.min(100, player.stats.health + 10); addLog("Worked out at the gym."); returnToMainMenu(); } },
+      { name: "🎓 University / Pro Sports", icon: "🏫", req: 18, action: () => openEducationMenu(false) },
+      { name: "💼 Find Job / Pro Transfers", icon: "💼", req: 18, action: openJobMarket }
     ];
 
     container.innerHTML = acts.map((act, i) => {
@@ -1398,15 +1414,15 @@
     const shopContainer = document.getElementById('assets-shop-list');
 
     ownedContainer.innerHTML = player.inventory.length === 0 
-      ? `<div style="font-size:0.9rem; color:#94a3b8; padding: 5px;">No belongings yet.</div>`
-      : player.inventory.map(item => `<div class="list-item"><span>${item.icon} <b>${item.name}</b></span><span>Owned</span></div>`).join('');
+      ? `<div style="font-size:0.9rem; color:#94a3b8; padding: 5px;">No luxury assets owned yet.</div>`
+      : player.inventory.map(item => `<div class="list-item"><span>${item.icon} <b>${item.name}</b></span><span style="color:var(--accent-green)">Owned</span></div>`).join('');
 
     shopContainer.innerHTML = availableAssetsList.map((item, i) => {
       const isLocked = player.age < item.req || player.isDead;
       return `
         <div class="list-item ${isLocked ? 'disabled' : ''}" onclick="${!isLocked ? `soundFx.click(); buyAsset(${i})` : ''}">
           <span>${item.icon} <b>${item.name}</b></span>
-          <span style="color:var(--accent-green)">$${item.price.toLocaleString()}</span>
+          <span style="color:var(--accent-green); font-weight:bold;">$${item.price.toLocaleString()}</span>
         </div>
       `;
     }).join('');
@@ -1415,13 +1431,13 @@
       const item = availableAssetsList[i];
       if(player.money >= item.price) {
         soundFx.success();
-        spawnParticles("🛍️", 5);
+        spawnParticles("💎", 6);
         player.money -= item.price;
         player.inventory.push(item);
-        addLog(`I purchased: ${item.name}!`);
+        addLog(`🛍️ ACQUIRED LUXURY ASSET: ${item.name}!`);
         updateUI();
         returnToMainMenu();
-      } else { alert("Not enough money!"); }
+      } else { alert(`You need $${item.price.toLocaleString()} to purchase ${item.name}!`); }
     };
   }
 </script>
