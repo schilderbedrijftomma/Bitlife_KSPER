@@ -532,14 +532,6 @@
     "Netherlands", "United Kingdom", "Spain", "Germany", "Italy", "United States", "Saudi Arabia", "France", "Brazil", "Argentina", "Portugal"
   ];
 
-  const randomEvents = [
-    "A peaceful year enjoyed with friends and family.",
-    "I picked up a new passion and spent my free time honing it.",
-    "I had a friendly competition with a teammate.",
-    "I donated some money to a local sports charity."
-  ];
-
-  // MASSIVE EXPANDED LEAGUES & TEAMS WITH HARDER OVR REQUIREMENTS
   const proLeaguesData = {
     football: [
       {
@@ -736,7 +728,6 @@
     { title: "Medical Doctor 🩺", salary: 180000, reqDegree: "medicine" }
   ];
 
-  // 10X BETTER MEGA ASSETS LIST
   const availableAssetsList = [
     { id: 'toy', name: "Action Figure / Doll", price: 50, req: 3, icon: "🧸" },
     { id: 'console', name: "Gaming Console", price: 600, req: 10, icon: "🎮" },
@@ -894,15 +885,42 @@
       return;
     }
 
-    if(player.age === 6) addLog("I started attending Primary School.");
-    if(player.age === 12) {
-      addLog("I started attending High School.");
-      player.sportsTeam = null;
+    // ALWAYS LOG SOMETHING EVERY YEAR (FIX FOR EMPTY LOGS)
+    if(player.age < 6) {
+      addLog(`I spent a peaceful year growing up as a child.`);
+    } else if(player.age >= 6 && player.age < 12) {
+      if(player.age === 6) addLog("I started attending Primary School 🎒.");
+      else addLog(`I had a fun year progressing through primary school.`);
+    } else if(player.age >= 12 && player.age < 18) {
+      if(player.age === 12) {
+        addLog("I started attending High School 🏫.");
+        player.sportsTeam = null;
+      } else {
+        addLog(`High school life continues smoothly.`);
+      }
+    } else if(!player.proContract && !player.education.current && player.salary === 0) {
+      addLog(`Another year passed looking for new opportunities in life.`);
+    }
+
+    // REALISTIC OVR DECAY SYSTEM
+    if(player.sportsSkill > 10) {
+      if(player.age >= 30 && player.age < 35) {
+        // Slow natural drop after 30
+        if(Math.random() > 0.4) {
+          player.sportsSkill--;
+          addLog(`👴 Physical decline (Age ${player.age}): My rating dropped slightly to ${player.sportsSkill} OVR.`);
+        }
+      } else if(player.age >= 35) {
+        // Faster decline after 35
+        const drop = Math.floor(Math.random() * 2) + 1;
+        player.sportsSkill = Math.max(10, player.sportsSkill - drop);
+        addLog(`👴 Age decline (Age ${player.age}): Physical stamina dropped. Overall is now ${player.sportsSkill} OVR.`);
+      }
     }
 
     // MANDATORY PRO SPORTS RETIREMENT AROUND AGE 38-42
     if(player.proContract && player.age >= 38) {
-      if(player.age >= 41 || Math.random() > 0.4) {
+      if(player.age >= 41 || Math.random() > 0.3) {
         showEventModal(
           "RETIREMENT TIME 👨‍🦳",
           "🏆",
@@ -944,15 +962,8 @@
     }
 
     if(player.proContract) {
-      // Small chance of rating decay after age 34
-      if(player.age > 34) {
-        player.sportsSkill = Math.max(30, player.sportsSkill - 2);
-        addLog(`👴 Age is catching up: OVR dropped slightly to ${player.sportsSkill}.`);
-      } else if(Math.random() > 0.5) {
-        player.sportsSkill = Math.min(99, player.sportsSkill + 2);
-        addLog(`🌟 Great season! OVR improved to ${player.sportsSkill}.`);
-      } else {
-        addLog(`Played a consistent season with ${player.proContract.team}.`);
+      if(player.age < 30) {
+        addLog(`Played a solid season with ${player.proContract.team}. Current Rating: ${player.sportsSkill} OVR.`);
       }
 
       // Check for transfer offer
@@ -1071,7 +1082,7 @@
         <div class="list-item" onclick="soundFx.click(); openSportsMenu()">
           <span>⚽ Sports Club & Academies</span><span>➡️</span>
         </div>
-        ${player.sportsTeam ? `<div class="list-item" onclick="soundFx.click(); trainSports()"><span>🏋️ Hard Training (+1-2 OVR)</span><span>➡️</span></div>` : ''}
+        ${player.sportsTeam ? `<div class="list-item" onclick="soundFx.click(); trainSports()"><span>🏋️ Hard Training (+1 OVR)</span><span>➡️</span></div>` : ''}
         <div class="list-item" onclick="soundFx.click(); talkClassmates()">
           <span>💬 Talk to Classmates</span><span>➡️</span>
         </div>
@@ -1087,7 +1098,7 @@
         <div class="list-item"><b>League:</b> ${player.proContract.league}</div>
         <div class="list-item"><b>Salary:</b> $${player.salary.toLocaleString()} / year</div>
         <div class="list-item" onclick="soundFx.click(); trainProSkill()">
-          <span>🏋️ Intensity Training (+1-2 OVR)</span><span>➡️</span>
+          <span>🏋️ Intensity Training (+1 OVR)</span><span>➡️</span>
         </div>
         <div class="list-item" onclick="soundFx.click(); openProLeagueOffers()">
           <span>⚽ Search Leagues & Club Transfers</span><span>➡️</span>
@@ -1176,15 +1187,25 @@
     showEventModal("TEAMS LIST", "⚽", league.leagueName, `Your Rating: ${player.sportsSkill} OVR. Select a team:`, options);
   }
 
+  // HARDER TRAINING SYSTEM TO REACH 99 OVR
   function trainProSkill() {
     if(player.sportsSkill >= 99) {
-      alert("You are already at maximum rating (99 OVR)!");
+      alert("You have reached maximum potential (99 OVR)!");
       return;
     }
-    const gain = Math.floor(Math.random() * 2) + 1;
-    player.sportsSkill = Math.min(99, player.sportsSkill + gain);
-    player.stats.health = Math.min(100, player.stats.health + 3);
-    addLog(`Hard training paid off! OVR increased by +${gain} to ${player.sportsSkill} OVR!`);
+
+    // Risk of injury or plateauing at higher OVR
+    const roll = Math.random();
+    if(player.sportsSkill > 88 && roll < 0.4) {
+      addLog(`⚠️ Intense Training: Plateau reached! No rating gain this session. (OVR remains ${player.sportsSkill})`);
+    } else if(roll < 0.05) {
+      player.stats.health = Math.max(20, player.stats.health - 15);
+      addLog(`🤕 Minor Injury during training session! Lost health.`);
+    } else {
+      player.sportsSkill = Math.min(99, player.sportsSkill + 1);
+      player.stats.health = Math.min(100, player.stats.health + 2);
+      addLog(`🏋️ Hard training completed: +1 OVR (Now ${player.sportsSkill} OVR).`);
+    }
     returnToMainMenu();
   }
 
@@ -1238,10 +1259,16 @@
   }
 
   function trainSports() {
-    const gain = Math.floor(Math.random() * 3) + 2;
-    player.sportsSkill = Math.min(99, player.sportsSkill + gain);
-    player.stats.health = Math.min(100, player.stats.health + 4);
-    addLog(`Trained with squad: +${gain} OVR (Now ${player.sportsSkill} OVR).`);
+    if(player.sportsSkill >= 99) return;
+    
+    // Slower progression in youth
+    if(Math.random() > 0.2) {
+      player.sportsSkill = Math.min(99, player.sportsSkill + 1);
+      addLog(`Trained with squad: +1 OVR (Now ${player.sportsSkill} OVR).`);
+    } else {
+      addLog(`Trained with squad: Worked on tactical discipline.`);
+    }
+    player.stats.health = Math.min(100, player.stats.health + 3);
     returnToMainMenu();
   }
 
