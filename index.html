@@ -130,18 +130,46 @@
     .view-panel { display: none; }
     .view-panel.active { display: block; }
 
-    .panel-header {
+    .panel-header-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       background: linear-gradient(90deg, #f97316, #ef4444);
-      padding: 10px;
-      border-radius: 8px 8px 0 0;
-      font-weight: bold;
-      text-align: center;
+      padding: 8px 12px;
+      border-radius: 8px;
       margin-bottom: 10px;
+    }
+
+    .panel-header-title {
+      font-weight: bold;
       text-transform: uppercase;
+      color: white;
+    }
+
+    .close-panel-btn {
+      background: rgba(0, 0, 0, 0.25);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 28px;
+      height: 28px;
+      font-weight: bold;
+      font-size: 1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .close-panel-btn:hover { background: rgba(0, 0, 0, 0.5); }
+
+    .top-actions-bar {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 10px;
     }
 
     .quick-log-btn {
-      width: 100%;
+      flex: 1;
       background: linear-gradient(90deg, #0284c7, #38bdf8);
       color: white;
       border: none;
@@ -150,11 +178,25 @@
       font-weight: bold;
       font-size: 0.9rem;
       cursor: pointer;
-      margin-bottom: 12px;
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
+
+    .exit-to-main-btn {
+      background: #e11d48;
+      color: white;
+      border: none;
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-weight: bold;
+      font-size: 0.9rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       box-shadow: 0 2px 8px rgba(0,0,0,0.3);
     }
 
@@ -353,31 +395,56 @@
 
     <div class="main-content">
       <div id="view-career" class="view-panel active">
-        <button class="quick-log-btn" onclick="openLogTab()">📜 Open Life Log</button>
-        <div class="panel-header" id="career-panel-header">SCHOOL / WORK</div>
+        <div class="top-actions-bar">
+          <button class="quick-log-btn" onclick="openLogTab()">📜 Open Life Log</button>
+        </div>
+        <div class="panel-header-container">
+          <span class="panel-header-title" id="career-panel-header">SCHOOL / WORK</span>
+        </div>
         <div id="career-panel-content"></div>
       </div>
 
       <div id="view-log" class="view-panel">
-        <div class="panel-header">LIFE LOG 📜</div>
+        <div class="panel-header-container">
+          <span class="panel-header-title">LIFE LOG 📜</span>
+          <button class="close-panel-btn" onclick="returnToMainMenu()">✖</button>
+        </div>
         <div class="log-box" id="log-box"></div>
       </div>
 
       <div id="view-relationships" class="view-panel">
-        <button class="quick-log-btn" onclick="openLogTab()">📜 Open Life Log</button>
-        <div class="panel-header">RELATIONSHIPS & PETS</div>
+        <div class="top-actions-bar">
+          <button class="quick-log-btn" onclick="openLogTab()">📜 Open Life Log</button>
+          <button class="exit-to-main-btn" onclick="returnToMainMenu()">✖ Exit</button>
+        </div>
+        <div class="panel-header-container">
+          <span class="panel-header-title">RELATIONSHIPS & PETS</span>
+          <button class="close-panel-btn" onclick="returnToMainMenu()">✖</button>
+        </div>
         <div id="family-list"></div>
       </div>
 
       <div id="view-activities" class="view-panel">
-        <button class="quick-log-btn" onclick="openLogTab()">📜 Open Life Log</button>
-        <div class="panel-header">ACTIVITIES</div>
+        <div class="top-actions-bar">
+          <button class="quick-log-btn" onclick="openLogTab()">📜 Open Life Log</button>
+          <button class="exit-to-main-btn" onclick="returnToMainMenu()">✖ Exit</button>
+        </div>
+        <div class="panel-header-container">
+          <span class="panel-header-title">ACTIVITIES</span>
+          <button class="close-panel-btn" onclick="returnToMainMenu()">✖</button>
+        </div>
         <div id="activities-list"></div>
       </div>
 
       <div id="view-assets" class="view-panel">
-        <button class="quick-log-btn" onclick="openLogTab()">📜 Open Life Log</button>
-        <div class="panel-header">ASSETS & PROPERTY</div>
+        <div class="top-actions-bar">
+          <button class="quick-log-btn" onclick="openLogTab()">📜 Open Life Log</button>
+          <button class="exit-to-main-btn" onclick="returnToMainMenu()">✖ Exit</button>
+        </div>
+        <div class="panel-header-container">
+          <span class="panel-header-title">ASSETS & PROPERTY</span>
+          <button class="close-panel-btn" onclick="returnToMainMenu()">✖</button>
+        </div>
         <div class="sub-section-header">📦 My Belongings</div>
         <div id="owned-assets-list"></div>
         <div class="sub-section-header">🛍️ Shopping Center</div>
@@ -583,7 +650,7 @@
     updateUI();
   }
 
-  // Funkcja automatycznie powracająca do głównego ekranu (z przyciskiem Age)
+  // Funkcja powrotu do ekranu głównego
   function returnToMainMenu() {
     switchTab('career', document.getElementById('nav-btn-career'));
   }
@@ -664,6 +731,9 @@
     player.age++;
     player.family.forEach(f => f.age++);
 
+    // Kliknięcie Age automatycznie przenosi do głównej zakładki
+    returnToMainMenu();
+
     if(player.stats.health <= 0 || player.age >= 100) {
       player.isDead = true;
       addLog("I passed away.");
@@ -740,7 +810,7 @@
         opt.action();
         document.getElementById('event-modal').classList.remove('active');
         updateUI();
-        returnToMainMenu(); // Automatyczny powrót do menu z przyciskiem Age
+        returnToMainMenu();
       };
       optContainer.appendChild(btn);
     });
@@ -1085,7 +1155,7 @@
         player.inventory.push(item);
         addLog(`I purchased: ${item.name}!`);
         updateUI();
-        returnToMainMenu(); // Automatyczny powrót do ekranu głównego po zakupie
+        returnToMainMenu();
       } else { alert("Not enough money!"); }
     };
   }
