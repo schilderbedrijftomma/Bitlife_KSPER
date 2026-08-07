@@ -535,6 +535,89 @@
     "I made a new friend today."
   ];
 
+  // LEAGUES AND PRO SPORTS DATA
+  const proLeaguesData = {
+    football: [
+      {
+        leagueName: "Eredivisie 🇳🇱",
+        minSkill: 40,
+        teams: [
+          { name: "Ajax Amsterdam", salary: 350000, reqSkill: 55 },
+          { name: "PSV Eindhoven", salary: 320000, reqSkill: 50 },
+          { name: "Feyenoord Rotterdam", salary: 300000, reqSkill: 48 },
+          { name: "AZ Alkmaar", salary: 180000, reqSkill: 40 }
+        ]
+      },
+      {
+        leagueName: "Premier League 🇬🇧",
+        minSkill: 65,
+        teams: [
+          { name: "Manchester City", salary: 2500000, reqSkill: 85 },
+          { name: "Arsenal FC", salary: 2000000, reqSkill: 80 },
+          { name: "Liverpool FC", salary: 1900000, reqSkill: 78 },
+          { name: "Chelsea FC", salary: 1500000, reqSkill: 70 }
+        ]
+      },
+      {
+        leagueName: "La Liga 🇪🇸",
+        minSkill: 70,
+        teams: [
+          { name: "Real Madrid CF 👑", salary: 3500000, reqSkill: 90 },
+          { name: "FC Barcelona 💙🔴", salary: 3000000, reqSkill: 88 },
+          { name: "Atlético Madrid", salary: 1800000, reqSkill: 75 }
+        ]
+      }
+    ],
+    racing: [
+      {
+        leagueName: "Formula 3 Championship 🏎️",
+        minSkill: 40,
+        teams: [
+          { name: "Prema Racing F3", salary: 120000, reqSkill: 40 },
+          { name: "ART Grand Prix F3", salary: 150000, reqSkill: 45 }
+        ]
+      },
+      {
+        leagueName: "Formula 2 World Championship 🏎️💨",
+        minSkill: 65,
+        teams: [
+          { name: "MP Motorsport F2", salary: 500000, reqSkill: 65 },
+          { name: "DAMS Lucas Oil F2", salary: 600000, reqSkill: 70 }
+        ]
+      },
+      {
+        leagueName: "Formula 1 Grand Prix World Championship 🏆🏎️",
+        minSkill: 85,
+        teams: [
+          { name: "Red Bull Racing Honda 🏎️⚡", salary: 8500000, reqSkill: 92 },
+          { name: "Scuderia Ferrari 🏎️🐎", salary: 8000000, reqSkill: 90 },
+          { name: "McLaren F1 Team", salary: 6500000, reqSkill: 85 },
+          { name: "Mercedes-AMG F1", salary: 7000000, reqSkill: 88 }
+        ]
+      }
+    ],
+    basketball: [
+      {
+        leagueName: "EuroLeague Basketball 🇪🇺",
+        minSkill: 50,
+        teams: [
+          { name: "Real Madrid Baloncesto", salary: 800000, reqSkill: 55 },
+          { name: "Fenerbahçe Basketball", salary: 600000, reqSkill: 50 }
+        ]
+      },
+      {
+        leagueName: "NBA (National Basketball Association) 🇺🇸🏀",
+        minSkill: 75,
+        teams: [
+          { name: "Los Angeles Lakers 🏀", salary: 4500000, reqSkill: 85 },
+          { name: "Golden State Warriors", salary: 5000000, reqSkill: 88 },
+          { name: "Boston Celtics ☘️", salary: 4200000, reqSkill: 82 },
+          { name: "Chicago Bulls 🐂", salary: 3000000, reqSkill: 75 }
+        ]
+      }
+    ]
+  };
+
   const sportsData = {
     football: {
       name: "Football ⚽",
@@ -562,19 +645,6 @@
         { name: "All-American Prep League 🔥", stars: "⭐⭐⭐⭐⭐ (5.0)", reqSkill: 85 }
       ]
     },
-    hockey: {
-      name: "Hockey 🏒",
-      primary: [
-        { name: "Ice Pups Club", stars: "⭐⭐✨ (2.5)", reqSkill: 0 },
-        { name: "Junior Bladers Elite", stars: "⭐⭐⭐⭐ (4.0)", reqSkill: 20 }
-      ],
-      high: [
-        { name: "High School Skaters", stars: "⭐⭐ (2.0)", reqSkill: 10 },
-        { name: "Varsity Ice Rangers", stars: "⭐⭐⭐✨ (3.5)", reqSkill: 30 },
-        { name: "Regional Ice Kings 👑", stars: "⭐⭐⭐⭐✨ (4.5)", reqSkill: 55 },
-        { name: "Elite NHL Prospects 🧊", stars: "⭐⭐⭐⭐⭐ (5.0)", reqSkill: 80 }
-      ]
-    },
     racing: {
       name: "Motorsport / Karting 🏎️",
       primary: [
@@ -600,7 +670,7 @@
 
   const availableJobs = [
     { title: "Cashier 🛒", salary: 24000, reqDegree: null },
-    { title: "Pro Athlete / F1 Driver 🏆", salary: 250000, reqDegree: "pro_sports" },
+    { title: "Pro Athlete 🏆", salary: 250000, reqDegree: "pro_sports" },
     { title: "Repair Technician / Mechanic 🛠️", salary: 48000, reqDegree: "trade" },
     { title: "Software Engineer 💻", salary: 85000, reqDegree: "cs" },
     { title: "Business Manager 📊", salary: 95000, reqDegree: "business" },
@@ -647,6 +717,8 @@
       isDead: false,
       sportsSkill: 15,
       sportsTeam: null,
+      sportsCategory: null, // football, racing, basketball
+      proContract: null,
       education: { current: null, yearsLeft: 0, degrees: [] },
       stats: { happy: 80, health: 95, smart: 60, looks: 50 },
       family: [
@@ -694,6 +766,9 @@
       } else if(player.education.current) {
         player.job = `Student (${player.education.current.title}) 🎓`;
         navIcon = "🎓"; navLabel = "Uni";
+      } else if(player.proContract) {
+        player.job = `${player.proContract.team} Player 🏆`;
+        navIcon = "🏆"; navLabel = "Pro Sports";
       } else if(player.salary > 0) {
         navIcon = "💼"; navLabel = "Job";
       } else {
@@ -781,7 +856,20 @@
       }
     }
 
-    if(player.sportsTeam) {
+    if(player.proContract) {
+      // Pro player match/race simulation
+      if(Math.random() > 0.3) {
+        player.sportsSkill = Math.min(100, player.sportsSkill + 3);
+        addLog(`🌟 Outstanding performance for ${player.proContract.team}! Skill increased to ${player.sportsSkill}!`);
+      } else {
+        addLog(`Played a regular season match for ${player.proContract.team}.`);
+      }
+
+      // Check for promotion / transfer offer
+      if(player.sportsSkill >= 65 && Math.random() > 0.4) {
+        setTimeout(() => triggerTransferOffer(), 400);
+      }
+    } else if(player.sportsTeam) {
       if(Math.random() > 0.4) {
         addLog(`🏆 I scored key points for my team ${player.sportsTeam} and won MVP!`);
         player.sportsSkill += 5;
@@ -790,9 +878,9 @@
 
     if(player.age === 18) {
       addLog("🎓 I graduated from High School!");
-      if(player.sportsSkill >= 50 && player.sportsTeam) {
+      if(player.sportsSkill >= 40) {
         player.education.degrees.push("pro_sports");
-        addLog("🌟 Scout Alert: Pro Sports scouts are scouting you after your incredible high school sports performance!");
+        addLog("🌟 Scout Alert: Pro Sports scouts are offering you professional athlete contracts!");
       }
       setTimeout(() => openEducationMenu(true), 300);
     }
@@ -806,6 +894,51 @@
     }
 
     updateUI();
+  }
+
+  function triggerTransferOffer() {
+    const category = player.sportsCategory || 'football';
+    const leagues = proLeaguesData[category];
+    if(!leagues) return;
+
+    let availableOffers = [];
+    leagues.forEach(l => {
+      l.teams.forEach(t => {
+        if(t.reqSkill <= player.sportsSkill && t.name !== player.proContract?.team) {
+          availableOffers.push({ team: t.name, league: l.leagueName, salary: t.salary });
+        }
+      });
+    });
+
+    if(availableOffers.length === 0) return;
+
+    const offer = availableOffers[Math.floor(Math.random() * availableOffers.length)];
+
+    showEventModal(
+      "PRO TRANSFER OFFER 🌟",
+      "🏆",
+      `Contract Offer from ${offer.team}!`,
+      `The scouts of <b>${offer.team}</b> (${offer.league}) were impressed by your skills!\n\n<b>New Salary Offer:</b> $${offer.salary.toLocaleString()} / year`,
+      [
+        {
+          text: `Accept & Sign Contract 📝`,
+          subtext: `Salary: $${offer.salary.toLocaleString()}/yr`,
+          action: () => {
+            soundFx.success();
+            spawnParticles("⚽", 10);
+            player.proContract = { team: offer.team, league: offer.league };
+            player.salary = offer.salary;
+            addLog(`🚀 TRANSFER COMPLETE! I signed a new contract with ${offer.team} in the ${offer.league}!`);
+            updateUI();
+          }
+        },
+        {
+          text: "Decline Offer ❌",
+          isClose: true,
+          action: () => { addLog(`I rejected the contract offer from ${offer.team}.`); }
+        }
+      ]
+    );
   }
 
   function showEventModal(headerText, icon, title, desc, options) {
@@ -856,12 +989,29 @@
         <div class="list-item" onclick="soundFx.click(); openSportsMenu()">
           <span>⚽ Sports Club & Teams</span><span>➡️</span>
         </div>
-        ${player.sportsTeam ? `<div class="list-item" onclick="soundFx.click(); trainSports()"><span>🏋️ Train Extra for Team (+Skill)</span><span>➡️</span></div>` : ''}
+        ${player.sportsTeam ? `<div class="list-item" onclick="soundFx.click(); trainSports()"><span>🏋️ Extra Training (+Skill)</span><span>➡️</span></div>` : ''}
         <div class="list-item" onclick="soundFx.click(); talkClassmates()">
           <span>💬 Talk to Classmates</span><span>➡️</span>
         </div>
         <div class="list-item" onclick="soundFx.click(); skipClass()">
           <span>🏃 Skip Class / Slack Off</span><span>➡️</span>
+        </div>
+      `;
+    } else if(player.proContract) {
+      header.innerText = "PRO ATHLETE CAREER 🏆";
+      content.innerHTML = `
+        <div class="list-item"><b>Team:</b> ${player.proContract.team}</div>
+        <div class="list-item"><b>League:</b> ${player.proContract.league}</div>
+        <div class="list-item"><b>Salary:</b> $${player.salary.toLocaleString()} / year</div>
+        <div class="list-item"><b>Sports Rating:</b> ${player.sportsSkill} / 100</div>
+        <div class="list-item" onclick="soundFx.click(); trainProSkill()">
+          <span>🏋️ Heavy Fitness & Tactical Training (+Skill)</span><span>➡️</span>
+        </div>
+        <div class="list-item" onclick="soundFx.click(); openProLeagueOffers()">
+          <span>⚽ Browse League Teams & Transfers</span><span>➡️</span>
+        </div>
+        <div class="list-item" onclick="soundFx.click(); retirePro()">
+          <span>🚪 Retire from Pro Sports</span><span>➡️</span>
         </div>
       `;
     } else if(player.education.current) {
@@ -885,10 +1035,10 @@
         <div class="list-item"><b>Position:</b> ${player.job}</div>
         <div class="list-item"><b>Salary:</b> $${player.salary.toLocaleString()} / year</div>
         <div class="list-item" onclick="soundFx.click(); workHarder()">
-          <span>⚡ Work Harder / Train Harder</span><span>➡️</span>
+          <span>⚡ Work Harder</span><span>➡️</span>
         </div>
         <div class="list-item" onclick="soundFx.click(); quitJob()">
-          <span>🚪 Quit Job / Retire</span><span>➡️</span>
+          <span>🚪 Quit Job</span><span>➡️</span>
         </div>
       `;
     } else {
@@ -904,12 +1054,79 @@
     }
   }
 
+  function openProLeagueOffers() {
+    const category = player.sportsCategory || 'football';
+    const sportsName = category === 'football' ? 'Voetbal Leagues' : (category === 'racing' ? 'Motorsport Leagues' : 'Basketball Leagues');
+
+    const leagues = proLeaguesData[category] || proLeaguesData.football;
+
+    const options = leagues.map(l => ({
+      text: `${l.leagueName}`,
+      subtext: player.sportsSkill >= l.minSkill ? "Available Teams Inside ✅" : `Min Skill Needed: ${l.minSkill} ❌`,
+      action: () => {
+        if(player.sportsSkill >= l.minSkill) {
+          openLeagueTeams(l);
+        } else {
+          alert(`Your skill is ${player.sportsSkill}. You need at least ${l.minSkill} to play in ${l.leagueName}!`);
+        }
+      }
+    }));
+
+    options.push({ text: "Back ⬅️", isClose: true, action: () => {} });
+
+    showEventModal("PRO LEAGUES", "🏆", sportsName, `Your Rating: ${player.sportsSkill}/100. Choose a league to view teams:`, options);
+  }
+
+  function openLeagueTeams(league) {
+    const options = league.teams.map(t => {
+      const meetsReq = player.sportsSkill >= t.reqSkill;
+      const isCurrent = player.proContract?.team === t.name;
+
+      return {
+        text: `${t.name} ${isCurrent ? '(Current Team)' : ''}`,
+        subtext: `Salary: $${t.salary.toLocaleString()}/yr • Rating Needed: ${t.reqSkill}`,
+        action: () => {
+          if(isCurrent) {
+            alert("You are already playing for this team!");
+          } else if(meetsReq) {
+            soundFx.success();
+            spawnParticles("⚽", 8);
+            player.proContract = { team: t.name, league: league.leagueName };
+            player.salary = t.salary;
+            addLog(`Signed a professional contract with ${t.name} (${league.leagueName})!`);
+            returnToMainMenu();
+          } else {
+            alert(`Team scouts require a rating of ${t.reqSkill}. Keep training!`);
+          }
+        }
+      };
+    });
+
+    options.push({ text: "Back ⬅️", isClose: true, action: () => openProLeagueOffers() });
+
+    showEventModal("TEAMS LIST", "⚽", league.leagueName, "Select a team to request a contract transfer:", options);
+  }
+
+  function trainProSkill() {
+    player.sportsSkill = Math.min(100, player.sportsSkill + 4);
+    player.stats.health = Math.min(100, player.stats.health + 4);
+    addLog(`Trained hard with the squad. Sports Rating is now ${player.sportsSkill}!`);
+    returnToMainMenu();
+  }
+
+  function retirePro() {
+    player.proContract = null;
+    player.salary = 0;
+    player.job = "Unemployed";
+    addLog("I retired from professional sports.");
+    returnToMainMenu();
+  }
+
   function openSportsMenu() {
     const sportsOptions = [
-      { text: "⚽ Football", action: () => openTeamSelection('football') },
-      { text: "🏀 Basketball", action: () => openTeamSelection('basketball') },
-      { text: "🏒 Hockey", action: () => openTeamSelection('hockey') },
-      { text: "🏎️ Motorsport / Karting", action: () => openTeamSelection('racing') },
+      { text: "⚽ Football", action: () => { player.sportsCategory = 'football'; openTeamSelection('football'); } },
+      { text: "🏎️ Motorsport / Karting", action: () => { player.sportsCategory = 'racing'; openTeamSelection('racing'); } },
+      { text: "🏀 Basketball", action: () => { player.sportsCategory = 'basketball'; openTeamSelection('basketball'); } },
       { text: "Cancel ❌", isClose: true, action: () => {} }
     ];
 
@@ -948,7 +1165,7 @@
       "TEAM SELECTION", 
       "🥇", 
       sport.name, 
-      `Select a team for ${isHighSchool ? 'High School (4 teams)' : 'Primary School (2 teams)'}:`, 
+      `Select a team for ${isHighSchool ? 'High School' : 'Primary School'}:`, 
       teamOptions
     );
   }
@@ -1051,29 +1268,44 @@
       return;
     }
 
-    const options = educationDegrees.map(deg => ({
-      text: deg.title,
-      subtext: deg.desc,
-      action: () => {
-        soundFx.success();
-        player.education.current = deg;
-        player.education.yearsLeft = deg.duration;
-        player.salary = 0;
-        addLog(`Enrolled in ${deg.title}. Expected duration: ${deg.duration} year(s).`);
-        returnToMainMenu();
-      }
-    }));
+    const options = [];
+
+    // Check if sports career option available
+    if(player.education.degrees.includes("pro_sports")) {
+      options.push({
+        text: "🏆 Turn Professional Athlete (Draft / Contract)",
+        subtext: "Join top professional sports leagues!",
+        action: () => {
+          openProLeagueOffers();
+        }
+      });
+    }
+
+    educationDegrees.forEach(deg => {
+      options.push({
+        text: deg.title,
+        subtext: deg.desc,
+        action: () => {
+          soundFx.success();
+          player.education.current = deg;
+          player.education.yearsLeft = deg.duration;
+          player.salary = 0;
+          addLog(`Enrolled in ${deg.title}. Expected duration: ${deg.duration} year(s).`);
+          returnToMainMenu();
+        }
+      });
+    });
 
     options.push({ 
-      text: isAutoPopup ? "Start Working / Become Pro Athlete 💼" : "Cancel ❌", 
+      text: isAutoPopup ? "Start Working Regular Jobs 💼" : "Cancel ❌", 
       isClose: true, 
-      action: () => { if(isAutoPopup) addLog("I decided not to pursue higher education right now."); returnToMainMenu(); } 
+      action: () => { if(isAutoPopup) addLog("I decided to look for work."); returnToMainMenu(); } 
     });
 
     const title = isAutoPopup ? "High School Graduation!" : "Higher Education";
-    const desc = isAutoPopup ? "Congratulations! Choose your career/education path:" : "Select a degree program to enroll in:";
+    const desc = isAutoPopup ? "Congratulations! Choose your career path:" : "Select a degree program to enroll in:";
 
-    showEventModal("EDUCATION", "🎓", title, desc, options);
+    showEventModal("EDUCATION & CAREER", "🎓", title, desc, options);
   }
 
   function openJobMarket() {
@@ -1084,13 +1316,15 @@
 
     const options = availableJobs.map(j => {
       const hasReq = !j.reqDegree || player.education.degrees.includes(j.reqDegree);
-      const reqName = j.reqDegree === "pro_sports" ? "High School Sports Scout Star 🏆" : (j.reqDegree ? educationDegrees.find(d => d.id === j.reqDegree).title : "None");
+      const reqName = j.reqDegree === "pro_sports" ? "Sports Talent Scout 🏆" : (j.reqDegree ? educationDegrees.find(d => d.id === j.reqDegree).title : "None");
 
       return {
         text: `${j.title} ($${j.salary.toLocaleString()}/yr)`,
         subtext: hasReq ? "Requirement met ✅" : `Requires: ${reqName} ❌`,
         action: () => {
-          if(hasReq) {
+          if(j.reqDegree === "pro_sports" && hasReq) {
+            openProLeagueOffers();
+          } else if(hasReq) {
             soundFx.success();
             spawnParticles("💼", 6);
             player.job = j.title;
