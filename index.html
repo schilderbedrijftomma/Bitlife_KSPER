@@ -176,8 +176,9 @@
       align-items: center;
       cursor: pointer;
       border: 1px solid #2a3c50;
+      transition: background-color 0.2s, transform 0.1s;
     }
-    .list-item:hover { background-color: #2a3c50; }
+    .list-item:hover { background-color: #2a3c50; transform: translateY(-1px); }
     .disabled { opacity: 0.4; cursor: not-allowed; }
 
     .rel-bar {
@@ -229,7 +230,9 @@
       align-items: center;
       justify-content: center;
       box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+      transition: transform 0.1s;
     }
+    .age-btn:active { transform: translateY(-8px) scale(0.96); }
 
     .stats-container {
       background-color: #0d1722;
@@ -388,7 +391,7 @@
         <span id="dynamic-nav-label">School</span>
       </button>
 
-      <button class="nav-btn" onclick="switchTab('assets', this)">
+      <button class="nav-btn" id="nav-btn-assets" onclick="switchTab('assets', this)">
         <span class="icon">🏠</span>Assets
       </button>
 
@@ -397,11 +400,11 @@
         <span style="font-size: 0.65rem;">Age</span>
       </button>
 
-      <button class="nav-btn" onclick="switchTab('relationships', this)">
+      <button class="nav-btn" id="nav-btn-relationships" onclick="switchTab('relationships', this)">
         <span class="icon">❤️</span>Rel.
       </button>
 
-      <button class="nav-btn" onclick="switchTab('activities', this)">
+      <button class="nav-btn" id="nav-btn-activities" onclick="switchTab('activities', this)">
         <span class="icon">💬</span>Actions
       </button>
     </div>
@@ -444,7 +447,6 @@
     "I made a new friend today."
   ];
 
-  // GEAVANCEERD SPORT SYSTEEM (100x Beter!)
   const sportsData = {
     football: {
       name: "Football ⚽",
@@ -555,7 +557,7 @@
       job: "Infant",
       salary: 0,
       isDead: false,
-      sportsSkill: 10, // Je sportvaardigheid
+      sportsSkill: 10,
       sportsTeam: null,
       education: {
         current: null,
@@ -579,6 +581,11 @@
 
     addLog(`I was born in ${player.country}.`);
     updateUI();
+  }
+
+  // Funkcja automatycznie powracająca do głównego ekranu (z przyciskiem Age)
+  function returnToMainMenu() {
+    switchTab('career', document.getElementById('nav-btn-career'));
   }
 
   function openLogTab() {
@@ -667,7 +674,7 @@
     if(player.age === 6) addLog("I started attending Primary School.");
     if(player.age === 12) {
       addLog("I started attending High School.");
-      player.sportsTeam = null; // Reset sports team voor High School
+      player.sportsTeam = null;
     }
 
     if(player.education.current) {
@@ -689,7 +696,6 @@
       }
     }
 
-    // Sport events tijdens ouder worden
     if(player.sportsTeam) {
       if(Math.random() > 0.4) {
         addLog(`🏆 I scored key points for my team ${player.sportsTeam} and won MVP!`);
@@ -734,6 +740,7 @@
         opt.action();
         document.getElementById('event-modal').classList.remove('active');
         updateUI();
+        returnToMainMenu(); // Automatyczny powrót do menu z przyciskiem Age
       };
       optContainer.appendChild(btn);
     });
@@ -741,7 +748,6 @@
     document.getElementById('event-modal').classList.add('active');
   }
 
-  // CAREER & SCHOOL PANEL
   function renderCareerPanel() {
     const header = document.getElementById('career-panel-header');
     const content = document.getElementById('career-panel-content');
@@ -813,7 +819,6 @@
     }
   }
 
-  // SPORT SYSTEM FUNCTIES
   function openSportsMenu() {
     const sportsOptions = [
       { text: "⚽ Football", action: () => openTeamSelection('football') },
@@ -858,44 +863,52 @@
     player.sportsSkill = Math.min(100, player.sportsSkill + 8);
     player.stats.health = Math.min(100, player.stats.health + 5);
     addLog(`I trained hard for my team. Sports Skill is now ${player.sportsSkill}!`);
+    returnToMainMenu();
   }
 
   function studyHard() {
     player.stats.smart = Math.min(100, player.stats.smart + 8);
     addLog("I studied hard and improved my grades!");
+    returnToMainMenu();
   }
 
   function talkClassmates() {
     player.stats.happy = Math.min(100, player.stats.happy + 10);
     addLog("I hung out with my classmates and had fun.");
+    returnToMainMenu();
   }
 
   function skipClass() {
     player.stats.happy = Math.min(100, player.stats.happy + 8);
     player.stats.smart = Math.max(0, player.stats.smart - 5);
     addLog("I skipped class to chill out.");
+    returnToMainMenu();
   }
 
   function partyUni() {
     player.stats.happy = Math.min(100, player.stats.happy + 15);
     player.stats.health = Math.max(0, player.stats.health - 5);
     addLog("I went to a crazy campus party!");
+    returnToMainMenu();
   }
 
   function dropOutUni() {
     player.education.current = null;
     addLog("I dropped out of university.");
+    returnToMainMenu();
   }
 
   function workHarder() {
     player.stats.happy = Math.max(0, player.stats.happy - 5);
     addLog("I worked extra hours to impress my boss.");
+    returnToMainMenu();
   }
 
   function quitJob() {
     player.job = "Unemployed";
     player.salary = 0;
     addLog("I quit my job!");
+    returnToMainMenu();
   }
 
   function interactWithPerson(person) {
@@ -999,7 +1012,7 @@
     document.querySelectorAll('.view-panel').forEach(el => el.classList.remove('active'));
     document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
     document.getElementById(`view-${tabName}`).classList.add('active');
-    btn.classList.add('active');
+    if(btn) btn.classList.add('active');
   }
 
   function renderFamily() {
@@ -1029,7 +1042,7 @@
     const acts = [
       { name: "📜 View Life Log", icon: "📜", req: 0, action: openLogTab },
       { name: "🩺 Visit Doctor", icon: "👨‍⚕️", req: 0, action: openDoctorMenu },
-      { name: "🏋️ Gym & Fitness", icon: "💪", req: 12, action: () => { player.stats.health = Math.min(100, player.stats.health + 10); player.sportsSkill = Math.min(100, player.sportsSkill + 4); addLog("I worked out at the gym."); } },
+      { name: "🏋️ Gym & Fitness", icon: "💪", req: 12, action: () => { player.stats.health = Math.min(100, player.stats.health + 10); player.sportsSkill = Math.min(100, player.sportsSkill + 4); addLog("I worked out at the gym."); returnToMainMenu(); } },
       { name: "🎓 Higher Education / Trade School", icon: "🏫", req: 18, action: () => openEducationMenu(false) },
       { name: "💼 Find a Job / Pro Sports", icon: "💼", req: 18, action: openJobMarket }
     ];
@@ -1072,6 +1085,7 @@
         player.inventory.push(item);
         addLog(`I purchased: ${item.name}!`);
         updateUI();
+        returnToMainMenu(); // Automatyczny powrót do ekranu głównego po zakupie
       } else { alert("Not enough money!"); }
     };
   }
