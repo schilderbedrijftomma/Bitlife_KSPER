@@ -286,7 +286,6 @@
     .option-btn .subtext { font-size: 0.8rem; opacity: 0.9; font-weight: normal; }
     .option-btn.close { background: #64748b; text-align: center; box-shadow: none; }
 
-    /* FX Animations & Particles */
     @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     @keyframes slideIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     @keyframes popIn { from { opacity: 0; transform: scale(0.85); } to { opacity: 1; transform: scale(1); } }
@@ -452,7 +451,7 @@
 </div>
 
 <script>
-  // Web Audio Synthesizer (Geluidseffecten)
+  // Web Audio Synthesizer
   const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
   
   const soundFx = {
@@ -536,7 +535,6 @@
     "I made a new friend today."
   ];
 
-  // Vernieuwd sport-systeem met duidelijke sterren-ratings (inclusief 4.5 sterren!)
   const sportsData = {
     football: {
       name: "Football ⚽",
@@ -825,8 +823,8 @@
       btn.innerHTML = `<span>${opt.text}</span>` + (opt.subtext ? `<span class="subtext">${opt.subtext}</span>` : '');
       btn.onclick = () => {
         soundFx.click();
-        opt.action();
         document.getElementById('event-modal').classList.remove('active');
+        opt.action();
         updateUI();
       };
       optContainer.appendChild(btn);
@@ -950,7 +948,7 @@
       "TEAM SELECTION", 
       "🥇", 
       sport.name, 
-      `Select a team for ${isHighSchool ? 'High School' : 'Primary School'}:`, 
+      `Select a team for ${isHighSchool ? 'High School (4 teams)' : 'Primary School (2 teams)'}:`, 
       teamOptions
     );
   }
