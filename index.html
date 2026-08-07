@@ -167,11 +167,12 @@
     .disabled { opacity: 0.4; cursor: not-allowed; }
 
     .rel-bar {
-      width: 80px;
+      width: 70px;
       height: 10px;
       background-color: #0d1722;
       border-radius: 5px;
       overflow: hidden;
+      margin-top: 4px;
     }
     .rel-fill { height: 100%; background-color: var(--accent-green); }
 
@@ -334,7 +335,7 @@
       </div>
 
       <div id="view-relationships" class="view-panel">
-        <div class="panel-header">RELATIONSHIPS</div>
+        <div class="panel-header">RELATIONSHIPS & PETS</div>
         <div id="family-list"></div>
       </div>
 
@@ -397,8 +398,7 @@
 <script>
   const countries = [
     "United States", "United Kingdom", "Netherlands", "Canada", "Australia", "Germany", "France", "Japan",
-    "Brazil", "Italy", "Spain", "Mexico", "South Korea", "Sweden", "Norway", "Denmark",
-    "Switzerland", "Argentina", "Belgium", "Greece", "India", "Indonesia", "Ireland", "Portugal"
+    "Brazil", "Italy", "Spain", "Mexico", "South Korea", "Sweden", "Norway", "Denmark"
   ];
 
   const randomEvents = [
@@ -409,9 +409,7 @@
     "I apologized to my sibling for bickering.",
     "I spent a quiet year enjoying time with my family.",
     "I learned a new skill and felt proud of myself.",
-    "I went on a small trip to the beach with my family.",
-    "I made a new friend in school today.",
-    "I spent the afternoon watching my favorite movie."
+    "I made a new friend today."
   ];
 
   const availableJobs = [
@@ -419,7 +417,6 @@
     { title: "Software Engineer 💻", salary: 75000 },
     { title: "Truck Driver 🚚", salary: 36000 },
     { title: "Manager 📊", salary: 90000 },
-    { title: "Architect 📐", salary: 82000 },
     { title: "Doctor 🩺", salary: 135000 }
   ];
 
@@ -428,11 +425,9 @@
     { id: 'console', name: "Gaming Console", price: 500, req: 10, icon: "🎮" },
     { id: 'phone', name: "Latest Smartphone", price: 1200, req: 12, icon: "📱" },
     { id: 'pc', name: "Pro Gaming PC", price: 3000, req: 14, icon: "🖥️" },
-    { id: 'scooter', name: "Electric Scooter", price: 800, req: 14, icon: "🛴" },
     { id: 'used_car', name: "Used Sedan", price: 6000, req: 18, icon: "🚗" },
     { id: 'sports_car', name: "Luxury Sports Car", price: 85000, req: 18, icon: "🏎️" },
-    { id: 'house_small', name: "Cozy Apartment", price: 180000, req: 18, icon: "🏢" },
-    { id: 'house_villa', name: "Modern Villa with Pool", price: 750000, req: 18, icon: "🏡" }
+    { id: 'house_small', name: "Cozy Apartment", price: 180000, req: 18, icon: "🏢" }
   ];
 
   const countrySelect = document.getElementById('input-country');
@@ -450,9 +445,10 @@
   let player = {};
 
   function startGame() {
+    const lName = document.getElementById('input-lastname').value || "Moore";
     player = {
       firstName: document.getElementById('input-firstname').value || "Felix",
-      lastName: document.getElementById('input-lastname').value || "Moore",
+      lastName: lName,
       gender: document.getElementById('input-gender').value,
       skin: document.getElementById('input-skin').value,
       country: document.getElementById('input-country').value,
@@ -463,8 +459,10 @@
       isDead: false,
       stats: { happy: 80, health: 95, smart: 60, looks: 50 },
       family: [
-        { name: `John ${document.getElementById('input-lastname').value}`, role: "Father", age: 30, rel: 90, icon: "👨" },
-        { name: `Mary ${document.getElementById('input-lastname').value}`, role: "Mother", age: 28, rel: 95, icon: "👩" }
+        { id: 1, name: `John ${lName}`, role: "Father", age: 30, rel: 90, icon: "👨", isPet: false },
+        { id: 2, name: `Mary ${lName}`, role: "Mother", age: 28, rel: 95, icon: "👩", isPet: false },
+        { id: 3, name: `Leo ${lName}`, role: "Brother", age: 3, rel: 80, icon: "👦", isPet: false },
+        { id: 4, name: "Buddy", role: "Family Dog", age: 2, rel: 100, icon: "🐶", isPet: true }
       ],
       inventory: []
     };
@@ -574,6 +572,35 @@
     document.getElementById('event-modal').classList.add('active');
   }
 
+  // Interaction with Family and Pets (8 Options)
+  function interactWithPerson(person) {
+    let options = [];
+
+    if (person.isPet) {
+      options = [
+        { text: "🐶 Pet / Cuddle", action: () => { person.rel = Math.min(100, person.rel + 15); player.stats.happy = Math.min(100, player.stats.happy + 10); addLog(`I petted ${person.name}.`); goToLogTab(); } },
+        { text: "🎾 Play Fetch", action: () => { person.rel = Math.min(100, person.rel + 15); addLog(`I played fetch with ${person.name}.`); goToLogTab(); } },
+        { text: "🦴 Give a Treat", action: () => { person.rel = Math.min(100, person.rel + 20); addLog(`I gave ${person.name} a delicious treat.`); goToLogTab(); } },
+        { text: "🚶 Walk the Pet", action: () => { person.rel = Math.min(100, person.rel + 10); player.stats.health = Math.min(100, player.stats.health + 5); addLog(`I took ${person.name} out for a walk.`); goToLogTab(); } }
+      ];
+    } else {
+      options = [
+        { text: "💬 Conversation", action: () => { person.rel = Math.min(100, person.rel + 10); addLog(`I had a nice conversation with my ${person.role}, ${person.name}.`); goToLogTab(); } },
+        { text: "🎁 Give a Gift", action: () => { 
+            if(player.money >= 50) { player.money -= 50; person.rel = Math.min(100, person.rel + 25); addLog(`I bought a gift for ${person.name}.`); } 
+            else { addLog("I didn't have enough money to buy a gift!"); }
+            goToLogTab(); 
+          } 
+        },
+        { text: "🍿 Spend Time Together", action: () => { person.rel = Math.min(100, person.rel + 15); player.stats.happy = Math.min(100, player.stats.happy + 10); addLog(`I spent quality time with my ${person.role}.`); goToLogTab(); } },
+        { text: "⚡ Argue / Bickering", action: () => { person.rel = Math.max(0, person.rel - 20); player.stats.happy = Math.max(0, player.stats.happy - 10); addLog(`I got into an argument with ${person.name}.`); goToLogTab(); } }
+      ];
+    }
+
+    options.push({ text: "Cancel ❌", isClose: true, action: () => {} });
+    showEventModal("RELATIONSHIP", person.icon, person.name, `What do you want to do with ${person.name}?`, options);
+  }
+
   function openDoctorMenu() {
     showEventModal("HEALTHCARE", "👨‍⚕️", "Medical Options", "Choose a healthcare service:", [
       { text: "General Checkup (Free)", action: () => { player.stats.health = 100; addLog("I visited the doctor and feel healthy."); goToLogTab(); } },
@@ -613,15 +640,24 @@
 
   function renderFamily() {
     const container = document.getElementById('family-list');
-    container.innerHTML = player.family.map(f => `
-      <div class="list-item">
+    container.innerHTML = "";
+    player.family.forEach(f => {
+      const div = document.createElement('div');
+      div.className = "list-item";
+      div.onclick = () => interactWithPerson(f);
+      div.innerHTML = `
         <div style="display:flex; align-items:center; gap:10px;">
           <span style="font-size:1.5rem">${f.icon}</span>
-          <div><b>${f.name}</b> (${f.role})<div style="font-size:0.75rem; color:#94a3b8">Age: ${f.age}</div></div>
+          <div>
+            <b>${f.name}</b> (${f.role})
+            <div style="font-size:0.75rem; color:#94a3b8">Age: ${f.age}</div>
+            <div class="rel-bar"><div class="rel-fill" style="width: ${f.rel}%;"></div></div>
+          </div>
         </div>
-        <div class="rel-bar"><div class="rel-fill" style="width: ${f.rel}%;"></div></div>
-      </div>
-    `).join('');
+        <span>➡️</span>
+      `;
+      container.appendChild(div);
+    });
   }
 
   function renderActivities() {
