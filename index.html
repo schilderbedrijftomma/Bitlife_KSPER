@@ -162,44 +162,6 @@
     }
     .close-panel-btn:hover { background: rgba(0, 0, 0, 0.5); }
 
-    .top-actions-bar {
-      display: flex;
-      gap: 8px;
-      margin-bottom: 10px;
-    }
-
-    .quick-log-btn {
-      flex: 1;
-      background: linear-gradient(90deg, #0284c7, #38bdf8);
-      color: white;
-      border: none;
-      padding: 10px;
-      border-radius: 8px;
-      font-weight: bold;
-      font-size: 0.9rem;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-    }
-
-    .exit-to-main-btn {
-      background: #e11d48;
-      color: white;
-      border: none;
-      padding: 10px 14px;
-      border-radius: 8px;
-      font-weight: bold;
-      font-size: 0.9rem;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-    }
-
     .sub-section-header {
       font-size: 0.9rem;
       color: #f97316;
@@ -395,9 +357,6 @@
 
     <div class="main-content">
       <div id="view-career" class="view-panel active">
-        <div class="top-actions-bar">
-          <button class="quick-log-btn" onclick="openLogTab()">📜 Open Life Log</button>
-        </div>
         <div class="panel-header-container">
           <span class="panel-header-title" id="career-panel-header">SCHOOL / WORK</span>
         </div>
@@ -413,10 +372,6 @@
       </div>
 
       <div id="view-relationships" class="view-panel">
-        <div class="top-actions-bar">
-          <button class="quick-log-btn" onclick="openLogTab()">📜 Open Life Log</button>
-          <button class="exit-to-main-btn" onclick="returnToMainMenu()">✖ Exit</button>
-        </div>
         <div class="panel-header-container">
           <span class="panel-header-title">RELATIONSHIPS & PETS</span>
           <button class="close-panel-btn" onclick="returnToMainMenu()">✖</button>
@@ -425,10 +380,6 @@
       </div>
 
       <div id="view-activities" class="view-panel">
-        <div class="top-actions-bar">
-          <button class="quick-log-btn" onclick="openLogTab()">📜 Open Life Log</button>
-          <button class="exit-to-main-btn" onclick="returnToMainMenu()">✖ Exit</button>
-        </div>
         <div class="panel-header-container">
           <span class="panel-header-title">ACTIVITIES</span>
           <button class="close-panel-btn" onclick="returnToMainMenu()">✖</button>
@@ -437,10 +388,6 @@
       </div>
 
       <div id="view-assets" class="view-panel">
-        <div class="top-actions-bar">
-          <button class="quick-log-btn" onclick="openLogTab()">📜 Open Life Log</button>
-          <button class="exit-to-main-btn" onclick="returnToMainMenu()">✖ Exit</button>
-        </div>
         <div class="panel-header-container">
           <span class="panel-header-title">ASSETS & PROPERTY</span>
           <button class="close-panel-btn" onclick="returnToMainMenu()">✖</button>
@@ -647,10 +594,12 @@
     document.getElementById('char-name').innerText = `${player.firstName} ${player.lastName}`;
 
     addLog(`I was born in ${player.country}.`);
+    
+    // Zawsze powrót na główny ekran z przyciskiem Age
+    returnToMainMenu();
     updateUI();
   }
 
-  // Funkcja powrotu do ekranu głównego
   function returnToMainMenu() {
     switchTab('career', document.getElementById('nav-btn-career'));
   }
@@ -731,7 +680,6 @@
     player.age++;
     player.family.forEach(f => f.age++);
 
-    // Kliknięcie Age automatycznie przenosi do głównej zakładki
     returnToMainMenu();
 
     if(player.stats.health <= 0 || player.age >= 100) {
