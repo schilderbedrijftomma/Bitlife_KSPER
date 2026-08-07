@@ -342,13 +342,14 @@
     </div>
 
     <div class="main-content">
-      <div id="view-main" class="view-panel active">
-        <div class="log-box" id="log-box"></div>
-      </div>
-
-      <div id="view-career" class="view-panel">
+      <div id="view-career" class="view-panel active">
         <div class="panel-header" id="career-panel-header">SCHOOL / WORK</div>
         <div id="career-panel-content"></div>
+      </div>
+
+      <div id="view-log" class="view-panel">
+        <div class="panel-header">LIFE LOG 📜</div>
+        <div class="log-box" id="log-box"></div>
       </div>
 
       <div id="view-relationships" class="view-panel">
@@ -371,13 +372,13 @@
     </div>
 
     <div class="navbar">
-      <button class="nav-btn active" id="nav-btn-main" onclick="switchTab('main', this)">
-        <span class="icon">📜</span>Log
+      <button class="nav-btn active" id="nav-btn-career" onclick="switchTab('career', this)">
+        <span class="icon" id="dynamic-nav-icon">🎒</span>
+        <span id="dynamic-nav-label">School</span>
       </button>
 
-      <button class="nav-btn" id="nav-btn-career" onclick="switchTab('career', this)">
-        <span class="icon" id="dynamic-nav-icon">🏫</span>
-        <span id="dynamic-nav-label">School</span>
+      <button class="nav-btn" onclick="switchTab('assets', this)">
+        <span class="icon">🏠</span>Assets
       </button>
 
       <button class="age-btn" onclick="ageUp()">
@@ -388,6 +389,7 @@
       <button class="nav-btn" onclick="switchTab('relationships', this)">
         <span class="icon">❤️</span>Rel.
       </button>
+
       <button class="nav-btn" onclick="switchTab('activities', this)">
         <span class="icon">💬</span>Actions
       </button>
@@ -431,6 +433,49 @@
     "I made a new friend today."
   ];
 
+  // SPORT TEAMS VOOR PRIMARY & HIGH SCHOOL
+  const sportsData = {
+    football: {
+      name: "Football ⚽",
+      primary: [
+        { name: "Little Kickers", stars: "⭐" },
+        { name: "Junior Strikers", stars: "⭐⭐⭐" }
+      ],
+      high: [
+        { name: "High School Freshmen FC", stars: "⭐" },
+        { name: "Varsity Tigers FC", stars: "⭐⭐" },
+        { name: "Regional Youth Elite", stars: "⭐⭐⭐⭐" },
+        { name: "National Academy FC", stars: "⭐⭐⭐⭐⭐" }
+      ]
+    },
+    basketball: {
+      name: "Basketball 🏀",
+      primary: [
+        { name: "Mini Hoopers", stars: "⭐" },
+        { name: "Junior Dunkers", stars: "⭐⭐" }
+      ],
+      high: [
+        { name: "Rookie Ballers", stars: "⭐" },
+        { name: "Varsity Eagles", stars: "⭐⭐⭐" },
+        { name: "State Championship Squad", stars: "⭐⭐⭐⭐" },
+        { name: "All-Star Prep League", stars: "⭐⭐⭐⭐⭐" }
+      ]
+    },
+    hockey: {
+      name: "Hockey 🏒",
+      primary: [
+        { name: "Ice Pups", stars: "⭐" },
+        { name: "Junior Bladers", stars: "⭐⭐⭐" }
+      ],
+      high: [
+        { name: "High School Skaters", stars: "⭐" },
+        { name: "Varsity Rangers", stars: "⭐⭐" },
+        { name: "Regional Ice Kings", stars: "⭐⭐⭐⭐" },
+        { name: "Elite Pro-Prospects", stars: "⭐⭐⭐⭐⭐" }
+      ]
+    }
+  };
+
   const educationDegrees = [
     { id: 'trade', title: "Trade School (Mechanic / Technician) 🔧", duration: 1, cost: 2000, desc: "Duur: 1 Jaar • Kosten: $2,000 / jaar" },
     { id: 'business', title: "Business Administration Major 📊", duration: 3, cost: 8000, desc: "Duur: 3 Jaar • Kosten: $8,000 / jaar" },
@@ -441,6 +486,7 @@
 
   const availableJobs = [
     { title: "Cashier 🛒", salary: 24000, reqDegree: null },
+    { title: "Pro Athlete 🏆", salary: 150000, reqDegree: "pro_sports" },
     { title: "Repair Technician / Mechanic 🛠️", salary: 48000, reqDegree: "trade" },
     { title: "Software Engineer 💻", salary: 85000, reqDegree: "cs" },
     { title: "Business Manager 📊", salary: 95000, reqDegree: "business" },
@@ -485,6 +531,7 @@
       job: "Infant",
       salary: 0,
       isDead: false,
+      sportsTeam: null,
       education: {
         current: null,
         yearsLeft: 0,
@@ -513,7 +560,6 @@
     document.getElementById('money-display').innerText = `$${player.money.toLocaleString()}`;
     document.getElementById('avatar').innerText = player.isDead ? "🪦" : (player.age < 3 ? player.skin : (player.gender === "male" ? "👦" : "👧"));
 
-    // Bepaal de status en update de Nav-knop
     let navIcon = "👶";
     let navLabel = "Baby";
 
@@ -525,7 +571,7 @@
         player.job = "Primary School Student 🎒";
         navIcon = "🎒"; navLabel = "School";
       } else if(player.age >= 12 && player.age < 18) {
-        player.job = "High School Student 📚";
+        player.job = "High School Student 🏫";
         navIcon = "🏫"; navLabel = "School";
       } else if(player.education.current) {
         player.job = `Student (${player.education.current.title}) 🎓`;
@@ -574,13 +620,8 @@
     group.appendChild(entry);
   }
 
-  function goToLogTab() {
-    switchTab('main', document.getElementById('nav-btn-main'));
-  }
-
   function ageUp() {
     if(player.isDead) return;
-    goToLogTab();
 
     player.age++;
     player.family.forEach(f => f.age++);
@@ -593,7 +634,10 @@
     }
 
     if(player.age === 6) addLog("I started attending Primary School.");
-    if(player.age === 12) addLog("I started attending High School.");
+    if(player.age === 12) {
+      addLog("I started attending High School.");
+      player.sportsTeam = null; // Reset sports team for high school
+    }
 
     if(player.education.current) {
       player.education.yearsLeft--;
@@ -616,6 +660,9 @@
 
     if(player.age === 18) {
       addLog("🎓 I graduated from High School!");
+      if(player.sportsTeam) {
+        player.education.degrees.push("pro_sports"); // Unlock pro sports option
+      }
       setTimeout(() => openEducationMenu(true), 300);
     }
 
@@ -654,7 +701,7 @@
     document.getElementById('event-modal').classList.add('active');
   }
 
-  // INTERACTIEF CAREER / SCHOOL PANEL
+  // CAREER & SCHOOL PANEL
   function renderCareerPanel() {
     const header = document.getElementById('career-panel-header');
     const content = document.getElementById('career-panel-content');
@@ -665,9 +712,16 @@
     } else if(player.age >= 6 && player.age < 18) {
       const schoolName = player.age < 12 ? "Primary School 🎒" : "High School 🏫";
       header.innerText = schoolName;
+      
+      let teamInfo = player.sportsTeam ? `<div class="list-item"><b>🏆 Joined Team:</b> ${player.sportsTeam}</div>` : '';
+
       content.innerHTML = `
+        ${teamInfo}
         <div class="list-item" onclick="studyHard()">
           <span>📚 Study Hard</span><span>➡️</span>
+        </div>
+        <div class="list-item" onclick="openSportsMenu()">
+          <span>⚽ Join Sports Club / Team</span><span>➡️</span>
         </div>
         <div class="list-item" onclick="talkClassmates()">
           <span>💬 Talk to Classmates</span><span>➡️</span>
@@ -716,50 +770,75 @@
     }
   }
 
-  // SCHOOL & WORK ACTIES
+  // SPORT MENU MET TEAMS EN STERREN
+  function openSportsMenu() {
+    const sportsOptions = [
+      { text: "⚽ Football", action: () => openTeamSelection('football') },
+      { text: "🏀 Basketball", action: () => openTeamSelection('basketball') },
+      { text: "🏒 Hockey", action: () => openTeamSelection('hockey') },
+      { text: "Cancel ❌", isClose: true, action: () => {} }
+    ];
+
+    showEventModal("SPORTS CLUB", "🏆", "Choose a Sport", "Select a sport to join a team:", sportsOptions);
+  }
+
+  function openTeamSelection(sportKey) {
+    const sport = sportsData[sportKey];
+    const isHighSchool = player.age >= 12;
+    const teams = isHighSchool ? sport.high : sport.primary;
+
+    const teamOptions = teams.map(t => ({
+      text: `${t.name} (${t.stars})`,
+      subtext: `Level: ${t.stars}`,
+      action: () => {
+        player.sportsTeam = `${t.name} (${sport.name})`;
+        player.stats.health = Math.min(100, player.stats.health + 15);
+        player.stats.happy = Math.min(100, player.stats.happy + 10);
+        addLog(`I joined the ${t.name} team!`);
+      }
+    }));
+
+    teamOptions.push({ text: "Back ⬅️", isClose: true, action: () => openSportsMenu() });
+
+    showEventModal("SPORTS TEAMS", "🥇", sport.name, `Select a team (${isHighSchool ? '4 Teams Available' : '2 Teams Available'}):`, teamOptions);
+  }
+
   function studyHard() {
     player.stats.smart = Math.min(100, player.stats.smart + 8);
     addLog("I studied hard and improved my grades!");
-    goToLogTab();
   }
 
   function talkClassmates() {
     player.stats.happy = Math.min(100, player.stats.happy + 10);
     addLog("I hung out with my classmates and had fun.");
-    goToLogTab();
   }
 
   function skipClass() {
     player.stats.happy = Math.min(100, player.stats.happy + 8);
     player.stats.smart = Math.max(0, player.stats.smart - 5);
     addLog("I skipped class to chill out.");
-    goToLogTab();
   }
 
   function partyUni() {
     player.stats.happy = Math.min(100, player.stats.happy + 15);
     player.stats.health = Math.max(0, player.stats.health - 5);
     addLog("I went to a crazy campus party!");
-    goToLogTab();
   }
 
   function dropOutUni() {
     player.education.current = null;
     addLog("I dropped out of university.");
-    goToLogTab();
   }
 
   function workHarder() {
     player.stats.happy = Math.max(0, player.stats.happy - 5);
     addLog("I worked extra hours to impress my boss.");
-    goToLogTab();
   }
 
   function quitJob() {
     player.job = "Unemployed";
     player.salary = 0;
     addLog("I quit my job!");
-    goToLogTab();
   }
 
   function interactWithPerson(person) {
@@ -767,22 +846,21 @@
 
     if (person.isPet) {
       options = [
-        { text: "🐶 Pet / Cuddle", action: () => { person.rel = Math.min(100, person.rel + 15); player.stats.happy = Math.min(100, player.stats.happy + 10); addLog(`I petted ${person.name}.`); goToLogTab(); } },
-        { text: "🎾 Play Fetch", action: () => { person.rel = Math.min(100, person.rel + 15); addLog(`I played fetch with ${person.name}.`); goToLogTab(); } },
-        { text: "🦴 Give a Treat", action: () => { person.rel = Math.min(100, person.rel + 20); addLog(`I gave ${person.name} a delicious treat.`); goToLogTab(); } },
-        { text: "🚶 Walk the Pet", action: () => { person.rel = Math.min(100, person.rel + 10); player.stats.health = Math.min(100, player.stats.health + 5); addLog(`I took ${person.name} out for a walk.`); goToLogTab(); } }
+        { text: "🐶 Pet / Cuddle", action: () => { person.rel = Math.min(100, person.rel + 15); player.stats.happy = Math.min(100, player.stats.happy + 10); addLog(`I petted ${person.name}.`); } },
+        { text: "🎾 Play Fetch", action: () => { person.rel = Math.min(100, person.rel + 15); addLog(`I played fetch with ${person.name}.`); } },
+        { text: "🦴 Give a Treat", action: () => { person.rel = Math.min(100, person.rel + 20); addLog(`I gave ${person.name} a delicious treat.`); } },
+        { text: "🚶 Walk the Pet", action: () => { person.rel = Math.min(100, person.rel + 10); player.stats.health = Math.min(100, player.stats.health + 5); addLog(`I took ${person.name} out for a walk.`); } }
       ];
     } else {
       options = [
-        { text: "💬 Conversation", action: () => { person.rel = Math.min(100, person.rel + 10); addLog(`I had a nice conversation with my ${person.role}, ${person.name}.`); goToLogTab(); } },
+        { text: "💬 Conversation", action: () => { person.rel = Math.min(100, person.rel + 10); addLog(`I had a nice conversation with my ${person.role}, ${person.name}.`); } },
         { text: "🎁 Give a Gift", action: () => { 
             if(player.money >= 50) { player.money -= 50; person.rel = Math.min(100, person.rel + 25); addLog(`I bought a gift for ${person.name}.`); } 
             else { addLog("I didn't have enough money to buy a gift!"); }
-            goToLogTab(); 
           } 
         },
-        { text: "🍿 Spend Time Together", action: () => { person.rel = Math.min(100, person.rel + 15); player.stats.happy = Math.min(100, player.stats.happy + 10); addLog(`I spent quality time with my ${person.role}.`); goToLogTab(); } },
-        { text: "⚡ Argue / Bickering", action: () => { person.rel = Math.max(0, person.rel - 20); player.stats.happy = Math.max(0, person.rel - 10); addLog(`I got into an argument with ${person.name}.`); goToLogTab(); } }
+        { text: "🍿 Spend Time Together", action: () => { person.rel = Math.min(100, person.rel + 15); player.stats.happy = Math.min(100, player.stats.happy + 10); addLog(`I spent quality time with my ${person.role}.`); } },
+        { text: "⚡ Argue / Bickering", action: () => { person.rel = Math.max(0, person.rel - 20); player.stats.happy = Math.max(0, person.rel - 10); addLog(`I got into an argument with ${person.name}.`); } }
       ];
     }
 
@@ -792,11 +870,10 @@
 
   function openDoctorMenu() {
     showEventModal("HEALTHCARE", "👨‍⚕️", "Medical Options", "Choose a healthcare service:", [
-      { text: "General Checkup (Free)", action: () => { player.stats.health = 100; addLog("I visited the doctor and feel healthy."); goToLogTab(); } },
+      { text: "General Checkup (Free)", action: () => { player.stats.health = 100; addLog("I visited the doctor and feel healthy."); } },
       { text: "Plastic Surgery ($2,500)", action: () => { 
           if(player.money >= 2500) { player.money -= 2500; player.stats.looks = Math.min(100, player.stats.looks + 30); addLog("Plastic surgery was a success!"); } 
           else addLog("I couldn't afford plastic surgery!");
-          goToLogTab();
         } 
       },
       { text: "Cancel ❌", isClose: true, action: () => {} }
@@ -817,12 +894,11 @@
         player.education.yearsLeft = deg.duration;
         player.salary = 0;
         addLog(`Enrolled in ${deg.title}. Expected duration: ${deg.duration} year(s).`);
-        goToLogTab();
       }
     }));
 
     options.push({ 
-      text: isAutoPopup ? "Start Working Immediately 💼" : "Cancel ❌", 
+      text: isAutoPopup ? "Start Working / Pro Athlete 💼" : "Cancel ❌", 
       isClose: true, 
       action: () => { if(isAutoPopup) addLog("I decided not to pursue higher education right now."); } 
     });
@@ -841,19 +917,18 @@
 
     const options = availableJobs.map(j => {
       const hasReq = !j.reqDegree || player.education.degrees.includes(j.reqDegree);
-      const degreeName = j.reqDegree ? educationDegrees.find(d => d.id === j.reqDegree).title : "None";
+      const reqName = j.reqDegree === "pro_sports" ? "High School Sports Background 🏆" : (j.reqDegree ? educationDegrees.find(d => d.id === j.reqDegree).title : "None");
 
       return {
         text: `${j.title} ($${j.salary.toLocaleString()}/yr)`,
-        subtext: hasReq ? "Requirement met ✅" : `Requires degree: ${degreeName} ❌`,
+        subtext: hasReq ? "Requirement met ✅" : `Requires: ${reqName} ❌`,
         action: () => {
           if(hasReq) {
             player.job = j.title;
             player.salary = j.salary;
             addLog(`I got a job as a ${j.title}!`);
-            goToLogTab();
           } else {
-            alert(`You need a diploma in ${degreeName} to apply for this job!`);
+            alert(`You need ${reqName} to apply for this position!`);
           }
         }
       };
@@ -895,10 +970,11 @@
   function renderActivities() {
     const container = document.getElementById('activities-list');
     const acts = [
+      { name: "📜 View Life Log", icon: "📜", req: 0, action: () => switchTab('log', document.querySelectorAll('.nav-btn')[0]) },
       { name: "🩺 Visit Doctor", icon: "👨‍⚕️", req: 0, action: openDoctorMenu },
-      { name: "🏋️ Gym & Fitness", icon: "💪", req: 12, action: () => { player.stats.health = Math.min(100, player.stats.health + 10); addLog("I worked out at the gym."); goToLogTab(); } },
+      { name: "🏋️ Gym & Fitness", icon: "💪", req: 12, action: () => { player.stats.health = Math.min(100, player.stats.health + 10); addLog("I worked out at the gym."); } },
       { name: "🎓 Higher Education / Trade School", icon: "🏫", req: 18, action: () => openEducationMenu(false) },
-      { name: "💼 Find a Job", icon: "💼", req: 18, action: openJobMarket }
+      { name: "💼 Find a Job / Pro Sports", icon: "💼", req: 18, action: openJobMarket }
     ];
 
     container.innerHTML = acts.map((act, i) => {
@@ -938,7 +1014,6 @@
         player.money -= item.price;
         player.inventory.push(item);
         addLog(`I purchased: ${item.name}!`);
-        goToLogTab();
         updateUI();
       } else { alert("Not enough money!"); }
     };
