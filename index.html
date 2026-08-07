@@ -772,10 +772,17 @@
       job: "Infant",
       salary: 0,
       isDead: false,
-      sportsSkill: 10, // Starting OVR Rating
+      sportsSkill: 10,
       sportsTeam: null,
       sportsCategory: null,
       proContract: null,
+      social: {
+        youtube: { subs: 0, accounts: false },
+        tiktok: { followers: 0, accounts: false },
+        instagram: { followers: 0, accounts: false },
+        twitch: { subs: 0, accounts: false },
+        twitter: { followers: 0, accounts: false }
+      },
       education: { current: null, yearsLeft: 0, degrees: [] },
       stats: { happy: 80, health: 95, smart: 60, looks: 50 },
       family: [
@@ -885,7 +892,7 @@
       return;
     }
 
-    // ALWAYS LOG SOMETHING EVERY YEAR (FIX FOR EMPTY LOGS)
+    // ANNUAL LOGS
     if(player.age < 6) {
       addLog(`I spent a peaceful year growing up as a child.`);
     } else if(player.age >= 6 && player.age < 12) {
@@ -902,23 +909,37 @@
       addLog(`Another year passed looking for new opportunities in life.`);
     }
 
+    // SOCIAL MEDIA PASSIVE INCOME
+    let socialEarnings = 0;
+    if(player.social.youtube.accounts && player.social.youtube.subs > 1000) {
+      const ytEarn = Math.floor((player.social.youtube.subs / 1000) * 85);
+      socialEarnings += ytEarn;
+    }
+    if(player.social.twitch.accounts && player.social.twitch.subs > 100) {
+      const twEarn = Math.floor(player.social.twitch.subs * 12);
+      socialEarnings += twEarn;
+    }
+
+    if(socialEarnings > 0) {
+      player.money += socialEarnings;
+      addLog(`📲 Social Media Revenue: Made +$${socialEarnings.toLocaleString()} from YouTube AdSense & Twitch Subscriptions!`);
+    }
+
     // REALISTIC OVR DECAY SYSTEM
     if(player.sportsSkill > 10) {
       if(player.age >= 30 && player.age < 35) {
-        // Slow natural drop after 30
         if(Math.random() > 0.4) {
           player.sportsSkill--;
           addLog(`👴 Physical decline (Age ${player.age}): My rating dropped slightly to ${player.sportsSkill} OVR.`);
         }
       } else if(player.age >= 35) {
-        // Faster decline after 35
         const drop = Math.floor(Math.random() * 2) + 1;
         player.sportsSkill = Math.max(10, player.sportsSkill - drop);
         addLog(`👴 Age decline (Age ${player.age}): Physical stamina dropped. Overall is now ${player.sportsSkill} OVR.`);
       }
     }
 
-    // MANDATORY PRO SPORTS RETIREMENT AROUND AGE 38-42
+    // MANDATORY PRO RETIREMENT
     if(player.proContract && player.age >= 38) {
       if(player.age >= 41 || Math.random() > 0.3) {
         showEventModal(
@@ -966,7 +987,6 @@
         addLog(`Played a solid season with ${player.proContract.team}. Current Rating: ${player.sportsSkill} OVR.`);
       }
 
-      // Check for transfer offer
       if(player.sportsSkill >= 55 && Math.random() > 0.5 && player.age < 38) {
         setTimeout(() => triggerTransferOffer(), 400);
       }
@@ -1082,7 +1102,7 @@
         <div class="list-item" onclick="soundFx.click(); openSportsMenu()">
           <span>⚽ Sports Club & Academies</span><span>➡️</span>
         </div>
-        ${player.sportsTeam ? `<div class="list-item" onclick="soundFx.click(); trainSports()"><span>🏋️ Hard Training (+1 OVR)</span><span>➡️</span></div>` : ''}
+        ${player.sportsTeam ? `<div class="list-item" onclick="soundFx.click(); trainSports()"><span>🏋️ Hard Training (+1 or +2 OVR 🔥)</span><span>➡️</span></div>` : ''}
         <div class="list-item" onclick="soundFx.click(); talkClassmates()">
           <span>💬 Talk to Classmates</span><span>➡️</span>
         </div>
@@ -1098,7 +1118,7 @@
         <div class="list-item"><b>League:</b> ${player.proContract.league}</div>
         <div class="list-item"><b>Salary:</b> $${player.salary.toLocaleString()} / year</div>
         <div class="list-item" onclick="soundFx.click(); trainProSkill()">
-          <span>🏋️ Intensity Training (+1 OVR)</span><span>➡️</span>
+          <span>🏋️ Intensity Training (+1 or +2 OVR 🔥)</span><span>➡️</span>
         </div>
         <div class="list-item" onclick="soundFx.click(); openProLeagueOffers()">
           <span>⚽ Search Leagues & Club Transfers</span><span>➡️</span>
@@ -1187,24 +1207,31 @@
     showEventModal("TEAMS LIST", "⚽", league.leagueName, `Your Rating: ${player.sportsSkill} OVR. Select a team:`, options);
   }
 
-  // HARDER TRAINING SYSTEM TO REACH 99 OVR
+  // ENHANCED HARD TRAINING: CHANCE TO GET +1 OR +2 OVR
   function trainProSkill() {
     if(player.sportsSkill >= 99) {
       alert("You have reached maximum potential (99 OVR)!");
       return;
     }
 
-    // Risk of injury or plateauing at higher OVR
     const roll = Math.random();
-    if(player.sportsSkill > 88 && roll < 0.4) {
-      addLog(`⚠️ Intense Training: Plateau reached! No rating gain this session. (OVR remains ${player.sportsSkill})`);
-    } else if(roll < 0.05) {
+    if(player.sportsSkill > 90 && roll < 0.35) {
+      addLog(`⚠️ Intense Training: Reached plateau! No rating gain this session. (OVR remains ${player.sportsSkill})`);
+    } else if(roll < 0.04) {
       player.stats.health = Math.max(20, player.stats.health - 15);
       addLog(`🤕 Minor Injury during training session! Lost health.`);
     } else {
-      player.sportsSkill = Math.min(99, player.sportsSkill + 1);
+      // 30% chance for +2 OVR Boost!
+      const gain = (Math.random() < 0.3) ? 2 : 1;
+      player.sportsSkill = Math.min(99, player.sportsSkill + gain);
       player.stats.health = Math.min(100, player.stats.health + 2);
-      addLog(`🏋️ Hard training completed: +1 OVR (Now ${player.sportsSkill} OVR).`);
+
+      if(gain === 2) {
+        spawnParticles("🔥", 8);
+        addLog(`🔥 INSANE PROGRESSION! Hard training gave you a DOUBLE BOOST (+2 OVR)! Now ${player.sportsSkill} OVR.`);
+      } else {
+        addLog(`🏋️ Hard training completed: +1 OVR (Now ${player.sportsSkill} OVR).`);
+      }
     }
     returnToMainMenu();
   }
@@ -1261,15 +1288,221 @@
   function trainSports() {
     if(player.sportsSkill >= 99) return;
     
-    // Slower progression in youth
-    if(Math.random() > 0.2) {
-      player.sportsSkill = Math.min(99, player.sportsSkill + 1);
-      addLog(`Trained with squad: +1 OVR (Now ${player.sportsSkill} OVR).`);
+    // 25% chance to get +2 OVR in Youth
+    const gain = (Math.random() < 0.25) ? 2 : 1;
+    player.sportsSkill = Math.min(99, player.sportsSkill + gain);
+    
+    if(gain === 2) {
+      spawnParticles("🔥", 8);
+      addLog(`🔥 INSANE SESSION! You gained +2 OVR from academy training! (Now ${player.sportsSkill} OVR).`);
     } else {
-      addLog(`Trained with squad: Worked on tactical discipline.`);
+      addLog(`Trained with squad: +1 OVR (Now ${player.sportsSkill} OVR).`);
     }
+
     player.stats.health = Math.min(100, player.stats.health + 3);
     returnToMainMenu();
+  }
+
+  // SOCIAL MEDIA HUB SYSTEM 100X BETTER
+  function openSocialMediaMenu() {
+    const s = player.social;
+    const options = [
+      {
+        text: "📹 YouTube",
+        subtext: s.youtube.accounts ? `Subscribers: ${s.youtube.subs.toLocaleString()}` : "Create Channel 🔴",
+        action: () => handleYouTube()
+      },
+      {
+        text: "🎵 TikTok",
+        subtext: s.tiktok.accounts ? `Followers: ${s.tiktok.followers.toLocaleString()}` : "Create Account 🎵",
+        action: () => handleTikTok()
+      },
+      {
+        text: "📸 Instagram",
+        subtext: s.instagram.accounts ? `Followers: ${s.instagram.followers.toLocaleString()}` : "Create Profile 📸",
+        action: () => handleInstagram()
+      },
+      {
+        text: "🟣 Twitch",
+        subtext: s.twitch.accounts ? `Subscribers: ${s.twitch.subs.toLocaleString()}` : "Start Streaming Channel 💜",
+        action: () => handleTwitch()
+      },
+      {
+        text: "🐦 X / Twitter",
+        subtext: s.twitter.accounts ? `Followers: ${s.twitter.followers.toLocaleString()}` : "Create Account 🐦",
+        action: () => handleTwitter()
+      },
+      { text: "Back ⬅️", isClose: true, action: () => {} }
+    ];
+
+    showEventModal("SOCIAL MEDIA HUB 📱", "📲", "Platforms & Creator Center", "Manage your social media empire:", options);
+  }
+
+  function handleYouTube() {
+    const yt = player.social.youtube;
+    if(!yt.accounts) {
+      yt.accounts = true;
+      addLog("📹 Started a YouTube Channel!");
+      spawnParticles("🔴", 5);
+      openSocialMediaMenu();
+      return;
+    }
+
+    const opts = [
+      {
+        text: "🎬 Post a Video",
+        subtext: "Upload content to grow subscribers!",
+        action: () => {
+          const gain = Math.floor(Math.random() * 800) + 100 + Math.floor(yt.subs * 0.15);
+          yt.subs += gain;
+          spawnParticles("📹", 6);
+          addLog(`📹 YouTube: Uploaded a video! Gained +${gain.toLocaleString()} subscribers! Total: ${yt.subs.toLocaleString()}`);
+          returnToMainMenu();
+        }
+      },
+      {
+        text: "🚀 Go Viral (Promote Video)",
+        subtext: "Cost: $500 • High chance of massive subscriber blowup!",
+        action: () => {
+          if(player.money < 500) { alert("You need $500 to run a promo campaign!"); return; }
+          player.money -= 500;
+          const gain = Math.floor(Math.random() * 15000) + 2500;
+          yt.subs += gain;
+          soundFx.success();
+          spawnParticles("🚀", 10);
+          addLog(`🚀 VIRAL YOUTUBE VIDEO! Promo paid off, gaining +${gain.toLocaleString()} subscribers!`);
+          returnToMainMenu();
+        }
+      },
+      { text: "Back ⬅️", isClose: true, action: () => openSocialMediaMenu() }
+    ];
+
+    showEventModal("YOUTUBE STUDIO 📹", "🔴", `Subs: ${yt.subs.toLocaleString()}`, "Choose an action:", opts);
+  }
+
+  function handleTikTok() {
+    const tk = player.social.tiktok;
+    if(!tk.accounts) {
+      tk.accounts = true;
+      addLog("🎵 Created a TikTok Account!");
+      spawnParticles("🎵", 5);
+      openSocialMediaMenu();
+      return;
+    }
+
+    const opts = [
+      {
+        text: "🕺 Post Trend / Short",
+        subtext: "Quick content for fast growth!",
+        action: () => {
+          const gain = Math.floor(Math.random() * 2500) + 200 + Math.floor(tk.followers * 0.2);
+          tk.followers += gain;
+          spawnParticles("🎵", 6);
+          addLog(`🎵 TikTok: Posted a trending video! Gained +${gain.toLocaleString()} followers!`);
+          returnToMainMenu();
+        }
+      },
+      { text: "Back ⬅️", isClose: true, action: () => openSocialMediaMenu() }
+    ];
+
+    showEventModal("TIKTOK CENTER 🎵", "🎶", `Followers: ${tk.followers.toLocaleString()}`, "Choose an action:", opts);
+  }
+
+  function handleInstagram() {
+    const ig = player.social.instagram;
+    if(!ig.accounts) {
+      ig.accounts = true;
+      addLog("📸 Created an Instagram Account!");
+      openSocialMediaMenu();
+      return;
+    }
+
+    const opts = [
+      {
+        text: "📸 Post Photo / Reel",
+        subtext: "Gain followers and clout!",
+        action: () => {
+          const gain = Math.floor(Math.random() * 1200) + 150 + Math.floor(ig.followers * 0.12);
+          ig.followers += gain;
+          addLog(`📸 Instagram: Posted a new photo! Gained +${gain.toLocaleString()} followers!`);
+          returnToMainMenu();
+        }
+      }
+    ];
+
+    if(ig.followers >= 10000) {
+      opts.push({
+        text: "💸 Accept Brand Sponsor Deal",
+        subtext: "Earn money based on your follower count!",
+        action: () => {
+          const dealEarn = Math.floor(ig.followers * 0.15);
+          player.money += dealEarn;
+          soundFx.success();
+          spawnParticles("💰", 8);
+          addLog(`💸 INSTAGRAM SPONSOR: Signed a brand deal for +$${dealEarn.toLocaleString()}!`);
+          returnToMainMenu();
+        }
+      });
+    }
+
+    opts.push({ text: "Back ⬅️", isClose: true, action: () => openSocialMediaMenu() });
+
+    showEventModal("INSTAGRAM 📸", "📷", `Followers: ${ig.followers.toLocaleString()}`, "Choose an action:", opts);
+  }
+
+  function handleTwitch() {
+    const tw = player.social.twitch;
+    if(!tw.accounts) {
+      tw.accounts = true;
+      addLog("🟣 Created a Twitch Stream Channel!");
+      openSocialMediaMenu();
+      return;
+    }
+
+    const opts = [
+      {
+        text: "🎮 Live Stream (4 Hours)",
+        subtext: "Stream gaming or chatting to get active paid subs!",
+        action: () => {
+          const newSubs = Math.floor(Math.random() * 85) + 10;
+          tw.subs += newSubs;
+          const instantCash = newSubs * 5;
+          player.money += instantCash;
+          spawnParticles("🟣", 6);
+          addLog(`🟣 Twitch Stream Finished! Gained +${newSubs} subscribers and earned +$${instantCash} in donations!`);
+          returnToMainMenu();
+        }
+      },
+      { text: "Back ⬅️", isClose: true, action: () => openSocialMediaMenu() }
+    ];
+
+    showEventModal("TWITCH STREAM 🟣", "💜", `Paid Subs: ${tw.subs.toLocaleString()}`, "Choose an action:", opts);
+  }
+
+  function handleTwitter() {
+    const tw = player.social.twitter;
+    if(!tw.accounts) {
+      tw.accounts = true;
+      addLog("🐦 Created an X (Twitter) Account!");
+      openSocialMediaMenu();
+      return;
+    }
+
+    const opts = [
+      {
+        text: "💬 Tweet Hot Take / Update",
+        subtext: "Build public status and followers!",
+        action: () => {
+          const gain = Math.floor(Math.random() * 600) + 50;
+          tw.followers += gain;
+          addLog(`🐦 Posted an update on X! Gained +${gain.toLocaleString()} followers.`);
+          returnToMainMenu();
+        }
+      },
+      { text: "Back ⬅️", isClose: true, action: () => openSocialMediaMenu() }
+    ];
+
+    showEventModal("X / TWITTER 🐦", "💬", `Followers: ${tw.followers.toLocaleString()}`, "Choose an action:", opts);
   }
 
   function studyHard() {
@@ -1417,6 +1650,7 @@
   function renderActivities() {
     const container = document.getElementById('activities-list');
     const acts = [
+      { name: "📱 Social Media Hub (YouTube, TikTok, Twitch)", icon: "📲", req: 12, action: openSocialMediaMenu },
       { name: "🩺 Visit Doctor", icon: "👨‍⚕️", req: 0, action: openDoctorMenu },
       { name: "🏋️ Gym Workouts (+Health)", icon: "💪", req: 12, action: () => { player.stats.health = Math.min(100, player.stats.health + 10); addLog("Worked out at the gym."); returnToMainMenu(); } },
       { name: "🎓 University / Pro Sports", icon: "🏫", req: 18, action: () => openEducationMenu(false) },
